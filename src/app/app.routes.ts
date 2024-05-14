@@ -7,7 +7,7 @@ import {FormComponent} from "./form/form.component";
 import {PsychologistVisitsComponent} from "./psychologist-visits/psychologist-visits.component";
 import {VisitsComponent} from "./visits/visits.component";
 import {ClientVisitsComponent} from "./client-visits/client-visits.component";
-import {RoleGuardService} from "./role-guard.service";
+import {RoleGuardService} from "./services/role-guard.service";
 
 export const routes: Routes = [
   {path: '', component: HomeComponent},

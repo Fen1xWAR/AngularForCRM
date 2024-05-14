@@ -4,7 +4,7 @@ import
 }
   from
     "@angular/common/http";
-import {AuthService} from "./auth.service";
+import {AuthService} from "../services/auth.service";
 import {EMPTY, Observable, of, switchMap, tap, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
 import {Injectable} from "@angular/core";
@@ -46,7 +46,7 @@ export class AuthInterceptor implements HttpInterceptor {
           return EMPTY;
         }
         else {
-          return throwError(error);
+          return EMPTY;
         }
       })
     );

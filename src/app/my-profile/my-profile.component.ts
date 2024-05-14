@@ -1,8 +1,7 @@
 import {Component} from '@angular/core';
 import {Router, RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
-import {Contact, UserData, UserDataService} from "../user-data.service";
+import {Contact, UserData, UserDataService} from "../services/user-data.service";
 import {AsyncPipe, NgIf} from "@angular/common";
-import {LoadingService} from "../loading.service";
 import {LoaderComponent} from "../loader/loader.component";
 
 @Component({

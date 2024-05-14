@@ -3,7 +3,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormGroup, FormControl, Validators, Form, ReactiveFormsModule} from '@angular/forms';
 import {Router} from '@angular/router';
 import {NgClass, NgIf} from "@angular/common";
-import {AuthService} from "../auth.service";
+import {AuthService} from "../services/auth.service";
 
 @Component({
   selector: 'app-login',

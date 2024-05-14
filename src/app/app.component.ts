@@ -4,7 +4,6 @@ import {HeaderComponent} from "./header/header.component";
 import {FooterComponent} from "./footer/footer.component";
 import {AsyncPipe, NgIf} from "@angular/common";
 import {LoaderComponent} from "./loader/loader.component";
-import {LoadingService} from "./loading.service";
 
 @Component({
   selector: 'app-root',
@@ -14,5 +13,5 @@ import {LoadingService} from "./loading.service";
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  constructor(protected loadingService: LoadingService) {}
+  constructor() {}
 }

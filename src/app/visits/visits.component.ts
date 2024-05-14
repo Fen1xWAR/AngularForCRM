@@ -1,7 +1,7 @@
 import {Component, Injectable} from '@angular/core';
 import {FormGroup} from "@angular/forms";
 import {Router} from "@angular/router";
-import {UserDataService} from "../user-data.service";
+import {UserDataService} from "../services/user-data.service";
 import {ClientVisitsComponent} from "../client-visits/client-visits.component";
 import {NgIf} from "@angular/common";
 import {PsychologistVisitsComponent} from "../psychologist-visits/psychologist-visits.component";

@@ -4,12 +4,11 @@ import {HttpClientModule, provideHttpClient, withInterceptorsFromDi} from '@angu
 
 import {routes} from './app.routes';
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
-import {AuthInterceptor} from "./auth.interceptor";
-import {AuthService} from "./auth.service";
-import {UserDataService} from "./user-data.service";
-import {LoadingInterceptor} from "./loading.interceptor";
-import {LoadingService} from "./loading.service";
-import {RoleGuardService} from "./role-guard.service";
+import {AuthInterceptor} from "./interceptor/auth.interceptor";
+import {AuthService} from "./services/auth.service";
+import {UserDataService} from "./services/user-data.service";
+
+import {RoleGuardService} from "./services/role-guard.service";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,9 +16,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptorsFromDi()), // Add this to provide HttpClient
     AuthService,
     UserDataService,
-    LoadingService,
     RoleGuardService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true }
   ]
 };

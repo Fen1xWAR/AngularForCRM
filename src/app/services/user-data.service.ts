@@ -23,9 +23,18 @@ export interface Contact {
 }
 
 export interface Visit {
+  visitId: string,
+  clientId: string,
+  dateTime: Date,
+  clientNote: string,
+  psychologistDescription: string,
+  serviceId: string,
+  psychologistId: string
 
 }
+export interface FullVisitClient{
 
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -73,6 +82,7 @@ export class UserDataService {
         }
       }),
       catchError(err => {
+        retry(1)
         throw new Error(err);
       })
     );
@@ -89,6 +99,7 @@ export class UserDataService {
         }
       }),
       catchError(error => {
+        retry(1)
         const errorMessage = error.error.errorMessage;
         throw new Error(errorMessage);
       })
@@ -105,6 +116,7 @@ export class UserDataService {
         throw new Error(result.errorMessage);
       }),
       catchError(error => {
+        retry(1)
           const errorMessage = error.error.errorMessage
           throw new Error(errorMessage)
         }

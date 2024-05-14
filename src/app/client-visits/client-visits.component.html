@@ -1,1 +1,24 @@
-<p>client-visits works!</p>
+<div class="accordion" id="visitsAccordion">
+  <div *ngFor="let visit of this.visits" class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button"  type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#'+visit.visitId" aria-expanded="true" [attr.aria-controls]="'colapse'+visit.visitId">
+       {{visit.psychologistId}} - {{ visit.dateTime | date:'dd MMM, yyyy  HH:mm':'ru'}}
+      </button>
+    </h2>
+    <div id="{{visit.visitId}}" class="accordion-collapse collapse show" data-bs-parent="#visitsAccordion">
+      <div class="accordion-body">
+        <div class="d-flex flex-column">
+          <h5>Тип услуги:</h5>
+          <p>{{visit.serviceId}} - 1500р - ОПЛАЧЕНО</p>
+
+          <h5>Заметка вашего психолога о визите:</h5>
+         <p>{{visit.psychologistDescription}}</p>
+          <h5>Оставьте вашу заметку для психолога:</h5>
+          <textarea  name="" id="cl-desc" cols="30" rows="10">{{visit.clientNote}}</textarea>
+          <button  class="mt-sm-3 btn btn-primary w-25">Сохранить заметку</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
