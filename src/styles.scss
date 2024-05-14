@@ -1,6 +1,26 @@
 /* You can add global styles to this file, and also import other style files */
 
-
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons';
+
+.active-link {
+  background-color: $primary;
+  color: $white;
+
+
+}
+
+a.nav-link:hover {
+  background-color: #e4e4e4;
+}
+
+.active-link:hover {
+  background-color: $primary !important;
+  color: $white;
+
+}
+
+.active-link:hover {
+  color: $white;
+}

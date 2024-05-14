@@ -1,18 +1,27 @@
-<div class="row w-100 p-md-4">
-  <div class="col-2 " style="min-width: 100px; max-width: 150px">
-    <nav class="nav sticky-top flex-column h-100 mw-50 align-items-center text-center border border-black border-1 rounded-4 p-md-2 mt-md-3">
-      <a class="nav-link" [routerLink]="['/me/visits']">Мои визиты</a>
-      <a class="nav-link" [routerLink]="['/me/form']">Моя форма</a>
-    </nav>
-  </div>
-  <!-- Main content area -->
-  <div class="col-10">
+<div class="w-100 container container-xxl d-flex my-md-4 flex-column">
 
-    <h2 ngIf>Привет, {{this.UserData?.role}}!</h2>
-    <router-outlet></router-outlet>
+
+  <div class="col-auto ms-md-3    mh-25"><h2 class="border-bottom border-gray mb-0 pb-1">
+    Hello, {{ this.UserContact?.name +" "+ this.UserContact?.lastname }}!</h2>
+  </div> <!-- Main content area -->
+  <div class="row flex-nowrap h-100 p-md-2">
+
+
+    <div class="col-sm-2" style="min-width: 120px; max-width: 150px">
+      <nav
+        class="nav sticky-top flex-column h-100 mw-50  rounded-4  border border-black border-1">
+        <a class="nav-link  text-center rounded-top-4" [routerLink]="['./visits']" routerLinkActive="active-link">Мои визиты</a>
+        <ng-container *ngIf="UserData?.role == 'Client'">
+          <a class="nav-link" [routerLink]="['./form']" routerLinkActive="active-link ">Моя форма</a>
+        </ng-container>
+        <ng-container *ngIf="UserData?.role == 'Psychologist'">
+          <a class="nav-link" [routerLink]="['./clients']" routerLinkActive="active-link ">Мои клиенты</a>
+        </ng-container>
+      </nav>
+    </div>
+    <div class="col-sm-10 border border-black border-1 rounded-4">
+      <router-outlet></router-outlet>
+    </div>
   </div>
 
 </div>
-<!-- Navigation panel on the left -->
-
-

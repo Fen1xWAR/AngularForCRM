@@ -1,39 +1,17 @@
-// // import {HttpInterceptorFn} from '@angular/common/http';
-// // import {AuthService} from './auth.service';
-// //
-// import {Injectable} from "@angular/core";
-//
-//
-// // private
-// //
-// // // export const AuthInterceptor : HttpInterceptorFn = (req, next) => {
-// // //   const request = req.clone({
-// // //     headers : req.headers.set('Authorization', 'Bearer ' + )
-// // //   })
-// // //   return next(req)
-// // // };
-// //
-// //
-//
-//
 import
 {
-  HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse
+  HttpEvent, HttpHandler, HttpInterceptor, HttpRequest
 }
   from
     "@angular/common/http";
 import {AuthService} from "./auth.service";
-import {Observable, of, switchMap, tap, throwError} from "rxjs";
+import {EMPTY, Observable, of, switchMap, tap, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
 import {Injectable} from "@angular/core";
 
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  // intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-  //   console.log(req);
-  //   return next.handle(req);
-  // }
 
 
   constructor(private authService: AuthService) {
@@ -43,7 +21,6 @@ export class AuthInterceptor implements HttpInterceptor {
   private excludedUrls: string[] = ['/login', '/register', '/refreshToken'];
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // console.log("a");
     if (this.isExcludedUrl(request.url)) {
       return next.handle(request);
     }
@@ -61,15 +38,14 @@ export class AuthInterceptor implements HttpInterceptor {
     }
 
     return next.handle(request).pipe(
-      tap(response => {
-        if (response instanceof HttpResponse && response.status === 200) {
-          // Handle successful response here if needed
-        }
-      }),
       catchError(error => {
         if (error.status === 401) {
           return this.handle401Error(request, next);
-        } else {
+        }
+        if(error.status === 502) {
+          return EMPTY;
+        }
+        else {
           return throwError(error);
         }
       })
@@ -79,8 +55,10 @@ export class AuthInterceptor implements HttpInterceptor {
   private isExcludedUrl(url: string): boolean {
     return this.excludedUrls.some(excludedUrl => url.includes(excludedUrl));
   }
+
   private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
     if (!this.isRefreshing) {
+
       this.isRefreshing = true;
 
       if (this.authService.getTokens()) {
@@ -114,6 +92,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
     return next.handle(request);
   }
+
   // private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
   //   if (!this.isRefreshing) {
   //     this.isRefreshing = true;

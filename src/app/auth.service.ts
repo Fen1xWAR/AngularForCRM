@@ -51,7 +51,6 @@ export class AuthService {
       map(result => {
         if (result.successful && result.result != undefined) {
           const tokens = result.result;
-          console.log(tokens);
           this.setTokens(tokens);
 
           return tokens;
@@ -60,7 +59,7 @@ export class AuthService {
         }
       }),
       catchError(error => {
-        const errorMessage = error.errorMessage;
+        const errorMessage = error.error.errorMessage;
         throw new Error(errorMessage);
       })
     );
