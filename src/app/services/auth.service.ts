@@ -1,6 +1,6 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable, throwError} from 'rxjs';
+import {BehaviorSubject, EMPTY, Observable, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 
 export interface IOperationResult<T> {
@@ -67,6 +67,9 @@ export class AuthService {
 
   refreshTokens(): Observable<Tokens> {
     const tokens = this.getTokens();
+    if(tokens == null){
+      return EMPTY;
+    }
     return this.http.post<IOperationResult<Tokens>>(`${this.apiUrl}/RefreshToken`, tokens).pipe(
       map(result => {
         if (result.successful && result.result != undefined) {
@@ -76,10 +79,12 @@ export class AuthService {
 
           return tokens;
         } else {
+          this.logout();
           throw new Error(result.errorMessage);
         }
       }),
       catchError(error => {
+        this.logout()
         const errorMessage = error.error.errorMessage;
         throw new Error(error);
       })

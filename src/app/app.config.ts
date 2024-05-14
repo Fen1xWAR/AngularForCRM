@@ -9,6 +9,9 @@ import {AuthService} from "./services/auth.service";
 import {UserDataService} from "./services/user-data.service";
 
 import {RoleGuardService} from "./services/role-guard.service";
+import {LoadingInterceptor} from "./services/loaderStuff/loading.interceptor";
+import {LoaderService} from "./services/loaderStuff/loader.service";
+import {VisitService} from "./visit.service";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,6 +20,9 @@ export const appConfig: ApplicationConfig = {
     AuthService,
     UserDataService,
     RoleGuardService,
+    LoaderService,
+    VisitService,
+    {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true},
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ]
 };

@@ -1,12 +1,12 @@
 <app-header></app-header>
 
-<!--&lt;!&ndash;<ng-container *ngIf="loadingService.isLoading; else elseBlock">&ndash;&gt;-->
-<!--  <app-loader></app-loader>-->
+<ng-container *ngIf="loaderService.isLoading | async else elseBlock">
+  <app-loader></app-loader>
 
-<!--</ng-container>-->
-<!--<ng-template #elseBlock>-->
+</ng-container>
+<ng-template #elseBlock>
   <router-outlet></router-outlet>
-<!--</ng-template>-->
+</ng-template>
 
 <app-footer></app-footer>
 

@@ -11,8 +11,8 @@ export interface IOperationResult<T> {
 }
 
 export interface UserData {
-  userId: string;
-  role: string;
+  userId?: string;
+  role?: string;
 }
 
 export interface Contact {
