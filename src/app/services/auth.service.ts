@@ -2,6 +2,7 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, EMPTY, Observable, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
+import {CookieService, SameSite} from "ngx-cookie-service";
 
 export interface IOperationResult<T> {
   successful: boolean;
@@ -40,7 +41,7 @@ interface RefreshToken {
 export class AuthService {
   private apiUrl = 'https://localhost:7002/api/User';
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private cookieService: CookieService) {
 
   }
 
@@ -67,7 +68,7 @@ export class AuthService {
 
   refreshTokens(): Observable<Tokens> {
     const tokens = this.getTokens();
-    if(tokens == null){
+    if (tokens == null) {
       return EMPTY;
     }
     return this.http.post<IOperationResult<Tokens>>(`${this.apiUrl}/RefreshToken`, tokens).pipe(
@@ -112,16 +113,27 @@ export class AuthService {
 
 
   logout(): void {
-    localStorage.removeItem('tokens');
+    this.cookieService.delete("tokens")
+    // localStorage.removeItem('tokens');
   }
-
 
   private setTokens(tokens: Tokens): void {
-    localStorage.setItem('tokens', JSON.stringify(tokens));
-  }
+    const expiryDate = new Date();
+    expiryDate.setDate(expiryDate.getDate() + 7); // Set expiration to 7 days from now
 
+    const options = {
+      expires: expiryDate,
+      path: '/',
+      httpOnly: true,
+      sameSite: 'Strict' as SameSite,
+    };
+    this.cookieService.set('tokens', JSON.stringify(tokens), options);
+    // localStorage.setItem('tokens', JSON.stringify(tokens));
+  }
   getTokens(): Tokens | null {
-    const tokensJson = localStorage.getItem('tokens');
+    const tokensJson = this.cookieService.get('tokens');
+    console.log(tokensJson);
+    // const tokensJson = localStorage.getItem('tokens');
     if (tokensJson) {
       return JSON.parse(tokensJson);
     } else {

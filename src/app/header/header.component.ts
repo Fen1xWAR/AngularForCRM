@@ -23,4 +23,7 @@ export class HeaderComponent {
       this.authService.refreshTokens() == EMPTY ? this.isLoggedIn  = false : this.isLoggedIn = true;
       console.log(this.isLoggedIn);
     }
+    logout(): void {
+      this.authService.logout();
+    }
 }

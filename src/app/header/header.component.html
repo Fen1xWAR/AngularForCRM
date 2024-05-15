@@ -1,6 +1,6 @@
 <!-- Header -->
-<nav class="navbar navbar-expand-lg navbar-light">
-  <div class="container">
+<nav class="navbar navbar-expand-lg bd-navbar navbar-light">
+  <div class="container-xxl flex-lg-nowrap flex-wrap">
 
     <a class="navbar-brand" href="/">Psychologist</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -9,7 +9,7 @@
     </button>
     <div class="collapse px-sm-4 navbar-collapse justify-content-between" id="navbarSupportedContent">
       <ul class="navbar-nav mx-auto">
-        <li class="nav-item active">
+        <li class="nav-item">
           <a class="nav-link" href="/">Главная <span class="sr-only"></span></a>
         </li>
         <li class="nav-item">
@@ -22,11 +22,27 @@
         <li class="nav-item">
           <a class="nav-link" href="/about">О нас</a>
         </li>
+
       </ul>
-      <div>
-        <button *ngIf="!isLoggedIn" class="btn btn-primary" onclick="location.href='/login'">Войти</button>
-        <button *ngIf="isLoggedIn" class="btn btn-primary" onclick="location.href='/me'">Личный кабинет</button>
-      </div>
+      <ul class="navbar-nav flex-grow flex-wrap">
+
+        <ng-container *ngIf="isLoggedIn; else elseBlock">
+          <li class="nav-item dropdown">
+            <a class="nav-link bg-primary p-2 text-white rounded-2 dropdown-toggle" href="#" role="button" style="max-width: 180px" data-bs-toggle="dropdown" aria-expanded="false">
+              Личный кабинет
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="/me">Мой профиль</a></li>
+              <li><a class="dropdown-item" (click)="logout()" href="">Выйти</a></li>
+            </ul>
+          </li>
+        </ng-container>
+        <ng-template #elseBlock>
+
+          <button *ngIf="!isLoggedIn" class="btn btn-primary" onclick="location.href='/login'">Войти</button>
+        </ng-template>
+<!--        <button *ngIf="isLoggedIn" class="btn btn-primary" onclick="location.href='/me'">Личный кабинет</button>-->
+      </ul>
     </div>
   </div>
 </nav>

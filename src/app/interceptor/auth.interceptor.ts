@@ -34,6 +34,7 @@ export class AuthInterceptor implements HttpInterceptor {
         }
       });
     } else {
+      console.error('Unauthorized');
       location.href = '/login';
     }
 

@@ -1,9 +1,8 @@
 import {Component} from '@angular/core';
 import {Contact, UserDataService, Visit} from "../services/user-data.service";
-import {DatePipe, NgClass, NgForOf} from "@angular/common";
-import {Psychologist, Service, VisitService} from "../visit.service";
-import {visit} from "@angular/compiler-cli/src/ngtsc/util/src/visitor";
+import {DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
+import {Service, VisitService} from "../services/visit.service";
 
 
 @Component({
@@ -13,7 +12,8 @@ import {FormsModule} from "@angular/forms";
     NgForOf,
     DatePipe,
     NgClass,
-    FormsModule
+    FormsModule,
+    NgIf
   ],
   templateUrl: './client-visits.component.html',
   styleUrl: './client-visits.component.scss'

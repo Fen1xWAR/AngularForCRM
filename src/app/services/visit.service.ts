@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable, retry} from 'rxjs';
-import {Contact, Visit} from "./services/user-data.service";
-import {IOperationResult} from "./services/auth.service";
+
 import {catchError, map} from "rxjs/operators";
+import {IOperationResult} from "./auth.service";
+import {Contact, Visit} from "./user-data.service";
 
 
 export interface Psychologist {
