@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
-import {Router, RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
 import {Contact, UserData, UserDataService} from "../services/user-data.service";
-import {AsyncPipe, NgIf} from "@angular/common";
+import {AsyncPipe, NgClass, NgIf} from "@angular/common";
 import {LoaderComponent} from "../loader/loader.component";
 
 @Component({
@@ -13,7 +13,8 @@ import {LoaderComponent} from "../loader/loader.component";
     NgIf,
     AsyncPipe,
     LoaderComponent,
-    RouterLinkActive
+    RouterLinkActive,
+    NgClass
   ],
   templateUrl: './my-profile.component.html',
   styleUrl: './my-profile.component.scss'
@@ -23,11 +24,14 @@ export class MyProfileComponent {
   UserData: UserData |undefined = undefined;
   UserContact : Contact | undefined = undefined;
 
-  constructor(private UserDataService: UserDataService) {
+  constructor(private router: Router, private activatedRoute: ActivatedRoute,private userDataService: UserDataService) { }
+
+  isActive(path : string){
+    return this.router.url.includes( path);
   }
 
   ngOnInit() {
-   this.UserDataService.getUserData().subscribe(data=> this.UserData = data);
-   this.UserDataService.getUserContact().subscribe(data=> this.UserContact = data);
+   this.userDataService.getUserData().subscribe(data=> this.UserData = data);
+   this.userDataService.getUserContact().subscribe(data=> this.UserContact = data);
   }
 }
