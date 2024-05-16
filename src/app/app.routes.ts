@@ -10,6 +10,8 @@ import {RoleGuardService} from "./services/role-guard.service";
 import {ClientsComponent} from "./clients/clients.component";
 
 import {Component404} from "./404/404.component";
+import {UserProfileSettingsComponent} from "./user-profile-settings/user-profile-settings.component";
+import {ServerErrorComponent} from "./server-error/server-error.component";
 
 export const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -23,10 +25,11 @@ export const routes: Routes = [
       {path: 'visits', component: VisitsComponent,},
       {path: 'form', component: FormComponent, canActivate: [RoleGuardService],data: {expectedRole: "Client"}},
       {path: 'clients',component: ClientsComponent,canActivate: [RoleGuardService], data : {expectedRole : "Psychologist"}},
-      {path: 'login', component: LoginComponent},
+      {path: "settings", component: UserProfileSettingsComponent}
 
     ]
   },
+  {path: 'error', component: ServerErrorComponent},
   {path: "**", component: Component404}
 
 ];

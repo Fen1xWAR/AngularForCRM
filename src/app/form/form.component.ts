@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
 import {UserData, UserDataService, Visit} from "../services/user-data.service";
-import {Client, ClientService} from "../client.service";
-import {FormService} from "../form.service";
+import {Client, ClientService} from "../services/client.service";
+import {FormService} from "../services/form.service";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import {Form} from "../form.service";
+import {Form} from "../services/form.service";
 import {NgClass, NgIf} from "@angular/common";
 import {switchMap} from "rxjs";
 

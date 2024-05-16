@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {EMPTY, from, Observable, of, retry, tap, throwError} from 'rxjs';
 import {map, catchError} from 'rxjs/operators';
 import {error} from "@angular/compiler-cli/src/transformers/util";
+import {Contact} from "./contact.service";
 
 export interface IOperationResult<T> {
   successful: boolean;
@@ -15,12 +16,7 @@ export interface UserData {
   role?: string;
 }
 
-export interface Contact {
-  contactId?: string;
-  phoneNumber?: string | undefined;
-  name: string;
-  lastname: string;
-}
+
 
 export interface Visit {
   visitId: string,
@@ -32,9 +28,15 @@ export interface Visit {
   psychologistId: string
 
 }
-export interface FullVisitClient{
 
+export interface UserFull {
+  userId: string;
+  email: string;
+  password: string;
+  role: string;
+  contactId: string;
 }
+
 @Injectable({
   providedIn: 'root'
 })
@@ -42,37 +44,36 @@ export class UserDataService {
   private currentUserData: UserData | undefined;
   private currentUserContact: Contact | undefined;
   private currentUserVisits: Visit[] | undefined;
-  private apiUrl = 'https://localhost:7002/api/CurrentUser';
+  private apiUrl = 'https://localhost:7002/api';
 
   constructor(private http: HttpClient) {
   }
 
-  getUserData(): Observable<UserData> {
-    if (this.currentUserData) {
-      return of(this.currentUserData);
-    } else {
-      return this.loadUserData();
-    }
-  }
+  // getUserData(): Observable<UserData> {
+  //   if (this.currentUserData) {
+  //     return of(this.currentUserData);
+  //   } else {
+  //     return this.loadUserData();
+  //   }
+  // }
+  //
+  // getUserContact(): Observable<Contact> {
+  //   if (this.currentUserContact) {
+  //     return of(this.currentUserContact);
+  //   } else {
+  //     return this.loadUserContact()
+  //   }
+  // }
+  //
+  // getUserVisits(): Observable<Visit[]> {
+  //   if (this.currentUserVisits) {
+  //     return of(this.currentUserVisits);
+  //   }
+  //   return this.loadUserVisits()
+  // }
 
   getUserContact(): Observable<Contact> {
-    if (this.currentUserContact) {
-      return of(this.currentUserContact);
-    } else {
-      return this.loadUserContact()
-    }
-  }
-
-  getUserVisits() : Observable<Visit[]> {
-    if (this.currentUserVisits) {
-      return of(this.currentUserVisits);
-    }
-    return this.loadUserVisits()
-  }
-
-  loadUserContact(): Observable<Contact> {
-    console.log("Getting user data");
-    return this.http.get<IOperationResult<Contact>>(`${this.apiUrl}/GetContact`).pipe(
+    return this.http.get<IOperationResult<Contact>>(`${this.apiUrl}/CurrentUser/GetContact`).pipe(
       map(result => {
         if (result.successful && result.result) {
           this.currentUserContact = result.result;
@@ -81,15 +82,17 @@ export class UserDataService {
           throw new Error(result.errorMessage);
         }
       }),
-      catchError(err => {
-        retry(1)
-        throw new Error(err);
-      })
+      retry(2)
+      // catchError(err => {
+      //   retry(1)
+      //   throw new Error(err);
+      // })
+
     );
   }
 
-  loadUserData(): Observable<UserData> {
-    return this.http.get<IOperationResult<UserData>>(`${this.apiUrl}/GetCurrentUserData`).pipe(
+  getUserData(): Observable<UserData> {
+    return this.http.get<IOperationResult<UserData>>(`${this.apiUrl}/CurrentUser/GetCurrentUserData`).pipe(
       map(result => {
         if (result.successful && result.result) {
           this.currentUserData = result.result;
@@ -98,16 +101,17 @@ export class UserDataService {
           throw new Error(result.errorMessage);
         }
       }),
-      catchError(error => {
-        retry(1)
-        const errorMessage = error.error.errorMessage;
-        throw new Error(errorMessage);
-      })
+      retry(2)
+      // catchError(error => {
+      //   retry(1)
+      //   const errorMessage = error.error.errorMessage;
+      //   throw new Error(errorMessage);
+      // })
     );
   }
 
-  loadUserVisits(): Observable<Visit[]> {
-    return this.http.get<IOperationResult<Visit[]>>(`${this.apiUrl}/GetVisits`).pipe(
+  getUserVisits(): Observable<Visit[]> {
+    return this.http.get<IOperationResult<Visit[]>>(`${this.apiUrl}/CurrentUser/GetVisits`).pipe(
       map(result => {
         if (result.successful && result.result) {
           this.currentUserVisits = result.result;
@@ -116,11 +120,33 @@ export class UserDataService {
         throw new Error(result.errorMessage);
       }),
       catchError(error => {
-        retry(1)
+          retry(1)
           const errorMessage = error.error.errorMessage
           throw new Error(errorMessage)
         }
       )
     );
+  }
+
+  loadFullUserInfo(id : string): Observable<UserFull> {
+    return this.http.get< IOperationResult<UserFull>>(`${this.apiUrl}/User/GetById/${id}`).pipe(
+      map(result => {
+        if (result.successful && result.result) {
+          return result.result;
+        }
+        throw new Error(result.errorMessage);
+      }),
+      catchError(error => {
+          retry(1)
+          const errorMessage = error.error.errorMessage
+          throw new Error(errorMessage)
+        }
+      )
+    );
+
+  }
+
+  updateUser(user: Partial<UserFull>) {
+   return  this.http.post(`${this.apiUrl}/User/Update`, user)
   }
 }

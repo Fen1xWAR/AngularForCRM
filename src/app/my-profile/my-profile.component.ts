@@ -1,11 +1,11 @@
 import {Component} from '@angular/core';
-import {ActivatedRoute, Router, RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
-import {Contact, UserData, UserDataService} from "../services/user-data.service";
+import {Router, RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
+import { UserData, UserDataService} from "../services/user-data.service";
 import {AsyncPipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {LoaderComponent} from "../loader/loader.component";
 import {AuthService} from "../services/auth.service";
 import {HeaderComponent} from "../header/header.component";
-import {LoaderService} from "../services/loaderStuff/loader.service";
+import {Contact} from "../services/contact.service";
 
 @Component({
   selector: 'app-my-profile',
@@ -25,24 +25,24 @@ import {LoaderService} from "../services/loaderStuff/loader.service";
 })
 
 export class MyProfileComponent {
-  UserData: UserData |undefined = undefined;
-  UserContact : Contact | undefined = undefined;
+  UserData: UserData | undefined = undefined;
+  UserContact: Contact | undefined = undefined;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute,private userDataService: UserDataService,protected authService: AuthService,private headerComponent: HeaderComponent,private loaderService: LoaderService) { }
+  constructor(private router: Router, private userDataService: UserDataService, private headerComponent: HeaderComponent) {
+  }
 
-  isActive(path : string){
-    return this.router.url.includes( path);
+  isActive(path: string) {
+    return this.router.url.includes(path);
   }
 
   ngOnInit() {
-   this.userDataService.getUserData().subscribe(data=> this.UserData = data);
-   this.userDataService.getUserContact().subscribe(data=> this.UserContact = data);
+    this.userDataService.getUserData().subscribe(data => this.UserData = data);
+    this.userDataService.getUserContact().subscribe(data => this.UserContact = data);
   }
 
   logout() {
-    this.authService.logout()
-      this.headerComponent.onReinit.emit();
-      location.href="/"
+    this.headerComponent.logout();
+    location.href = "/"
 
 
   }

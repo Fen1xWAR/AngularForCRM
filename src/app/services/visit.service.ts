@@ -4,19 +4,15 @@ import {Observable, retry} from 'rxjs';
 
 import {catchError, map} from "rxjs/operators";
 import {IOperationResult} from "./auth.service";
-import {Contact, Visit} from "./user-data.service";
+import { Visit} from "./user-data.service";
 
 
-export interface Psychologist {
-  id: string;
-  userId: string;
-  // Add other fields if necessary
-}
 
-export interface Service{
+
+export interface Service {
   serviceId: string;
   serviceName: string;
-  servicePrice : string;
+  servicePrice: string;
   serviceDescription: string;
 }
 
@@ -30,35 +26,9 @@ export class VisitService {
   }
 
 
-  getPsychologistById(id: string): Observable<Psychologist> {
-    return this.http.get<IOperationResult<Psychologist>>(`${this.apiUrl}/Psychologist/GetById/${id}`).pipe(
-      map(result => {
-        if (result.successful && result.result) {
-          return result.result;
-        } else {
-          throw new Error(result.errorMessage);
-        }
-      }),
-      catchError(err => {
-        throw new Error(err);
-      })
-    );
-  }
 
-  getPsychologistContactByUserId(id: string): Observable<Contact> {
-    return this.http.get<IOperationResult<Contact>>(`${this.apiUrl}/Contact/GetByUserId/${id}`).pipe(
-      map(result => {
-        if (result.successful && result.result) {
-          return result.result;
-        } else {
-          throw new Error(result.errorMessage);
-        }
-      }),
-      catchError(err => {
-        throw new Error(err)
-      })
-    );
-  }
+
+
   getService(id: string): Observable<Service> {
     return this.http.get<IOperationResult<Service>>(`${this.apiUrl}/Service/GetById/${id}`).pipe(
       map(result => {
@@ -73,7 +43,8 @@ export class VisitService {
       })
     );
   }
+
   updateVisit(visit: Visit): void {
-     this.http.post(`${this.apiUrl}/Visit/Update`, visit).subscribe();
+    this.http.post(`${this.apiUrl}/Visit/Update`, visit).subscribe();
   }
 }

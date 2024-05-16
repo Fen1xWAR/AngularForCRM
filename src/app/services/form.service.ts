@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {EMPTY, Observable, throwError} from "rxjs";
-import {IOperationResult} from "./services/user-data.service";
+import {IOperationResult} from "./user-data.service";
 import {catchError, map} from "rxjs/operators";
 
 

@@ -1,8 +1,10 @@
 import {Component} from '@angular/core';
-import {Contact, UserDataService, Visit} from "../services/user-data.service";
+import {UserDataService, Visit} from "../services/user-data.service";
 import {DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {Service, VisitService} from "../services/visit.service";
+import {PsychologistService} from "../services/psychologist.service";
+import {Contact, ContactService} from "../services/contact.service";
 
 
 @Component({
@@ -23,7 +25,7 @@ export class ClientVisitsComponent {
   protected services: { [id: string]: Service } = {};
   protected psychologists: { [id: string]: Contact } = {};
 
-  constructor(private userDataService: UserDataService, private visitService: VisitService) {
+  constructor(private contactRepository : ContactService, private userDataService: UserDataService, private visitService: VisitService,private psychologistService: PsychologistService) {
   }
 
   ngOnInit(): void {
@@ -34,9 +36,9 @@ export class ClientVisitsComponent {
         // Fetch all psychologists and their contacts
         const psychologistIds = [...new Set(visits.map(visit => visit.psychologistId))];
         psychologistIds.forEach(id => {
-          this.visitService.getPsychologistById(id).subscribe(psychologist => {
+          this.psychologistService.getPsychologistById(id).subscribe(psychologist => {
 
-            this.visitService.getPsychologistContactByUserId(psychologist.userId).subscribe(contact => {
+            this.contactRepository.getContactByUserId(psychologist.userId).subscribe(contact => {
               this.psychologists[id] = contact;
             });
           });

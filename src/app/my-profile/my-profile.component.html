@@ -64,8 +64,8 @@
       </ul>
       <hr>
       <div class="d-flex flex-column align-items-center  justify-content-center">
-        <button disabled class="btn mt-xl-3 btn-secondary  w-50 " style="min-width:  fit-content" [routerLink]="">Настройки</button>
-        <button class="btn mt-xl-3 btn-danger w-50" style="min-width: fit-content" (click)="logout()">Выйти из аккаунта</button>
+        <button  [ngClass]="{'btn-secondary': !isActive('settings'),'btn-primary': isActive('settings')}" class="btn mt-3   w-50 " style="min-width:  fit-content" [routerLink]="['./settings']">Настройки</button>
+        <button class="btn mt-3 btn-danger w-50" style="min-width: fit-content" (click)="logout()">Выйти из аккаунта</button>
       </div>
 
       <!--        <li class="nav-item">-->

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {EMPTY, Observable} from "rxjs";
-import {IOperationResult} from "./services/auth.service";
+import {IOperationResult} from "./auth.service";
 import {catchError, map} from "rxjs/operators";
 export interface Client{
   clientId: string;
@@ -28,5 +28,8 @@ export class ClientService {
         throw new Error(err)
       })
     );
+  }
+  updateClient(client : Client): Observable<any> {
+    return this.http.post(`${this.apiUrl}/Client/Update`, client)
   }
 }

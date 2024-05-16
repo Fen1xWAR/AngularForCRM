@@ -11,10 +11,14 @@ import {UserDataService} from "./services/user-data.service";
 import {RoleGuardService} from "./services/role-guard.service";
 import {LoadingInterceptor} from "./services/loaderStuff/loading.interceptor";
 import {LoaderService} from "./services/loaderStuff/loader.service";
-import {FormService} from "./form.service";
-import {ClientService} from "./client.service";
+import {FormService} from "./services/form.service";
+import {ClientService} from "./services/client.service";
 import {VisitService} from "./services/visit.service";
 import {HeaderComponent} from "./header/header.component";
+import {ContactService} from "./services/contact.service";
+import {MyProfileComponent} from "./my-profile/my-profile.component";
+import {Select2} from "ng-select2-component";
+import {PsychologistService} from "./services/psychologist.service";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -28,6 +32,11 @@ export const appConfig: ApplicationConfig = {
     FormService,
     ClientService,
     HeaderComponent,
+    Select2,
+    ContactService,
+    PsychologistService,
+    MyProfileComponent,
+    PsychologistService,
     {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true},
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ]

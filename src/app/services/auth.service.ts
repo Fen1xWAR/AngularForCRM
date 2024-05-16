@@ -2,6 +2,7 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, EMPTY, Observable, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
+import * as CryptoJS from 'crypto-js';
 import {CookieService, SameSite} from "ngx-cookie-service";
 
 export interface IOperationResult<T> {
@@ -44,10 +45,13 @@ export class AuthService {
   constructor(private http: HttpClient, private cookieService: CookieService) {
 
   }
-
+  public encrypt(password: string): string {
+    return CryptoJS.SHA256(password).toString();
+  }
   login(user: UserAuth): Observable<Tokens> {
 
     user.deviceId = this.getRefreshToken()?.deviceId;
+    user.password = this.encrypt(user.password)
     return this.http.post<IOperationResult<Tokens>>(`${this.apiUrl}/login`, user).pipe(
       map(result => {
         if (result.successful && result.result != undefined) {
@@ -67,6 +71,7 @@ export class AuthService {
   }
 
   refreshTokens(): Observable<Tokens> {
+
     const tokens = this.getTokens();
     if (tokens == null) {
       return EMPTY;
@@ -93,6 +98,8 @@ export class AuthService {
   }
 
   register(user: UserRegModel): Observable<Tokens> {
+    user.password = this.encrypt(user.password)
+
     return this.http.post<IOperationResult<Tokens>>(`${this.apiUrl}/Register`, user).pipe(
       map(result => {
         if (result.successful && result.result != undefined) {
