@@ -113,8 +113,9 @@ export class AuthService {
 
 
   logout(): void {
+    console.log('loggingOut')
     this.cookieService.delete("tokens")
-    // localStorage.removeItem('tokens');
+
   }
 
   private setTokens(tokens: Tokens): void {
@@ -132,7 +133,7 @@ export class AuthService {
   }
   getTokens(): Tokens | null {
     const tokensJson = this.cookieService.get('tokens');
-    console.log(tokensJson);
+    // console.log(tokensJson);
     // const tokensJson = localStorage.getItem('tokens');
     if (tokensJson) {
       return JSON.parse(tokensJson);

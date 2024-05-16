@@ -14,6 +14,7 @@ import {LoaderService} from "./services/loaderStuff/loader.service";
 import {FormService} from "./form.service";
 import {ClientService} from "./client.service";
 import {VisitService} from "./services/visit.service";
+import {HeaderComponent} from "./header/header.component";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -26,6 +27,7 @@ export const appConfig: ApplicationConfig = {
     VisitService,
     FormService,
     ClientService,
+    HeaderComponent,
     {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true},
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ]

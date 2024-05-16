@@ -6,15 +6,16 @@ import
     "@angular/common/http";
 import {AuthService} from "../services/auth.service";
 import {EMPTY, Observable, of, switchMap, tap, throwError} from "rxjs";
-import {catchError} from "rxjs/operators";
+import {catchError, finalize} from "rxjs/operators";
 import {Injectable} from "@angular/core";
+import {LoaderService} from "../services/loaderStuff/loader.service";
 
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private loadingService: LoaderService) {
   }
 
   private isRefreshing: boolean = false;
@@ -43,10 +44,9 @@ export class AuthInterceptor implements HttpInterceptor {
         if (error.status === 401) {
           return this.handle401Error(request, next);
         }
-        if(error.status === 502) {
+        if (error.status === 502) {
           return EMPTY;
-        }
-        else {
+        } else {
           return EMPTY;
         }
       })
@@ -86,7 +86,7 @@ export class AuthInterceptor implements HttpInterceptor {
             location.href = "/login";
 
             return throwError(() => error);
-          })
+          }),
         );
       }
     }

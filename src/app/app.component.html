@@ -1,14 +1,16 @@
 <app-header></app-header>
 
-<ng-container *ngIf="loaderService.isLoading | async else elseBlock">
+<ng-container *ngIf="this.loaderService.isLoading$ | async">
   <app-loader></app-loader>
-
 </ng-container>
-<ng-template #elseBlock>
+
+
+
+<div class="d-flex flex-grow-1" [hidden]="this.loaderService.isLoading$ | async">
   <router-outlet></router-outlet>
-</ng-template>
+</div>
+
+
+
 
 <app-footer></app-footer>
-
-
-

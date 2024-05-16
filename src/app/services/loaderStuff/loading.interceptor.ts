@@ -1,27 +1,33 @@
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {
+  HttpRequest,
+  HttpHandler,
+  HttpInterceptor,
+  HttpResponse
+} from '@angular/common/http';
+import {finalize} from 'rxjs/operators';
+import {of} from 'rxjs';
+import {LoaderService} from "./loader.service";
 
-import {HttpInterceptor, HttpRequest, HttpHandler} from '@angular/common/http';
+@Injectable()
+export class LoadingInterceptor implements HttpInterceptor {
+  private totalRequests = 0;
 
-import {LoaderService} from './loader.service';
-import { finalize } from "rxjs/operators";
-@Injectable({
-  providedIn: 'root'
-})
-export class LoadingInterceptor implements HttpInterceptor  {
-
-  constructor(private loader: LoaderService) {
-
+  constructor(private loadingService: LoaderService) {
   }
 
-  intercept(req: HttpRequest<any>, next: HttpHandler) {
+  intercept(request: HttpRequest<any>, next: HttpHandler) {
+    this.totalRequests++;
+    this.loadingService.setLoading(true);
 
-    console.log(req);
-    return next.handle(req);
-    // this.loader.show()
-    // return next.handle(req).pipe(
-    //   finalize(() => this.loader.hide())
-    // );
+    return next.handle(request).pipe(
+      finalize(() => {
+        this.totalRequests--;
+        if (this.totalRequests === 0) {
+          this.loadingService.setLoading(false)
 
+        }
+      })
+    );
   }
 }

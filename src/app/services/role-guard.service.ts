@@ -19,12 +19,12 @@ export class RoleGuardService implements CanActivate {
 
     this.userDataService.getUserData().subscribe(userData => {
       this.currentRole = userData.role;
-      retry(1)
-    });
-    if (this.currentRole != expectedRole) {
+      if (this.currentRole != expectedRole) {
 
-      this.router.navigate(['/me']);
-    }
+        this.router.navigate(['/me']);
+      }
+    });
+
 
     return true;
   }

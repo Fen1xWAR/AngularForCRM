@@ -75,7 +75,6 @@ export class FormComponent {
             }
           );
         }
-        throw Error;
       },
       (error: any) => {
         console.error('Error fetching form:', error);

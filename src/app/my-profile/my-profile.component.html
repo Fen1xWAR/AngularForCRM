@@ -5,15 +5,18 @@
     <h2 class="pb-1">
       Здравствуйте, {{ this.UserContact?.name + " " + this.UserContact?.lastname }}!</h2>
   </div> <!-- Main content area -->
-  <div class="row  h-100  p-md-2">
+  <div class="row  h-100 gap-2 p-md-2">
 
     <!--        class="nav sticky-top flex-column h-100 mw-50  rounded-4  border border-black border-1">-->
-    <div class="d-flex col-sm-3 flex-column flex-shrink-0 p-3 rounded-4 border border-black border-1" style="m-width: 200px;">
+    <div class="d-flex col-xl-3 col-12  flex-column flex-shrink-0 p-3 rounded-4 border border-black border-1"
+         style="min-width: fit-content">
 
 
       <ul class="nav nav-pills flex-column mb-auto ">
+        <ng-container *ngIf="UserData?.role == 'Client'">
           <li class="nav-item">
-            <a class="nav-link" [ngClass]="{'link-dark': !isActive('visits')}" routerLinkActive="active" [routerLink]="['./visits']">
+            <a class="nav-link" [ngClass]="{'link-dark': !isActive('visits')}" routerLinkActive="active"
+               [routerLink]="['./visits']">
               <div class="d-flex  align-items-center">
                 <i class="bi bi-list-stars" style="font-size: 1.5rem"></i>
                 <h5 class="text-center mx-2 mb-1 ">Визиты</h5>
@@ -21,46 +24,84 @@
 
             </a>
           </li>
-          <li>
-            <a class="nav-link" [ngClass]="{'link-dark': !isActive('form')}" routerLinkActive="active" [routerLink]="['./form']" >
-              Форма
+
+
+          <li class="nav-item">
+            <a class="nav-link" [ngClass]="{'link-dark': !isActive('form')}" routerLinkActive="active"
+               [routerLink]="['./form']">
+              <div class="d-flex  align-items-center">
+                <i class="bi bi-list-stars" style="font-size: 1.5rem"></i>
+                <h5 class="text-center mx-2 mb-1 ">Форма</h5>
+              </div>
+
             </a>
           </li>
-        </ul>
-<!--        <li class="nav-item">-->
-<!--          <a [routerLink]="['./visits']" class="nav-link active" aria-current="page">-->
-<!--            <svg class="bi me-2" width="16" height="16"></svg>-->
-<!--            Визиты-->
-<!--          </a>-->
-<!--        </li>-->
-<!--        <li>-->
-<!--          <a [routerLink]="['./forms']" class="nav-link link-dark">-->
-<!--            <svg class="bi me-2" width="16" height="16"><use xlink:href="./form"></use></svg>-->
-<!--            Форма-->
-<!--          </a>-->
-<!--        </li>-->
-<!--        -->
-<!--        <li>-->
-<!--          <a href="#" class="nav-link link-dark">-->
-<!--            <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>-->
-<!--            Orders-->
-<!--          </a>-->
-<!--        </li>-->
-<!--        <li>-->
-<!--          <a href="#" class="nav-link link-dark">-->
-<!--            <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>-->
-<!--            Products-->
-<!--          </a>-->
-<!--        </li>-->
-<!--        <li>-->
-<!--          <a href="#" class="nav-link link-dark">-->
-<!--            <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>-->
-<!--            Customers-->
-<!--          </a>-->
-<!--        </li>-->
-<!--      </ul>-->
+        </ng-container>
+        <ng-container *ngIf="UserData?.role == 'Psychologist'">
+          <li class="nav-item">
+            <a class="nav-link" [ngClass]="{'link-dark': !isActive('visits')}" routerLinkActive="active"
+               [routerLink]="['./visits']">
+              <div class="d-flex  align-items-center">
+                <i class="bi bi-list-stars" style="font-size: 1.5rem"></i>
+                <h5 class="text-center mx-2 mb-1 ">Мое расписание</h5>
+              </div>
+
+            </a>
+          </li>
+
+
+          <li class="nav-item">
+            <a class="nav-link" [ngClass]="{'link-dark': !isActive('clients')}" routerLinkActive="active"
+               [routerLink]="['./clients']">
+              <div class="d-flex  align-items-center">
+                <i class="bi bi-list-stars" style="font-size: 1.5rem"></i>
+                <h5 class="text-center mx-2 mb-1 ">Мои клиенты</h5>
+              </div>
+
+            </a>
+          </li>
+        </ng-container>
+      </ul>
+      <hr>
+      <div class="d-flex flex-column align-items-center  justify-content-center">
+        <button disabled class="btn mt-xl-3 btn-secondary  w-50 " style="min-width:  fit-content" [routerLink]="">Настройки</button>
+        <button class="btn mt-xl-3 btn-danger w-50" style="min-width: fit-content" (click)="logout()">Выйти из аккаунта</button>
+      </div>
+
+      <!--        <li class="nav-item">-->
+      <!--          <a [routerLink]="['./visits']" class="nav-link active" aria-current="page">-->
+      <!--            <svg class="bi me-2" width="16" height="16"></svg>-->
+      <!--            Визиты-->
+      <!--          </a>-->
+      <!--        </li>-->
+      <!--        <li>-->
+      <!--          <a [routerLink]="['./forms']" class="nav-link link-dark">-->
+      <!--            <svg class="bi me-2" width="16" height="16"><use xlink:href="./form"></use></svg>-->
+      <!--            Форма-->
+      <!--          </a>-->
+      <!--        </li>-->
+      <!--        -->
+      <!--        <li>-->
+      <!--          <a href="#" class="nav-link link-dark">-->
+      <!--            <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>-->
+      <!--            Orders-->
+      <!--          </a>-->
+      <!--        </li>-->
+      <!--        <li>-->
+      <!--          <a href="#" class="nav-link link-dark">-->
+      <!--            <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>-->
+      <!--            Products-->
+      <!--          </a>-->
+      <!--        </li>-->
+      <!--        <li>-->
+      <!--          <a href="#" class="nav-link link-dark">-->
+      <!--            <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>-->
+      <!--            Customers-->
+      <!--          </a>-->
+      <!--        </li>-->
+      <!--      </ul>-->
     </div>
-    <div class="col-sm-9 border pb-md-3 border-black border-1 rounded-4">
+    <div class="col-xl-8 col-12 flex-grow-1 border pb-md-3 border-black border-1 rounded-4">
       <router-outlet></router-outlet>
     </div>
   </div>

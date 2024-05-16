@@ -1,8 +1,7 @@
-import { Component } from '@angular/core';
-import {UserDataService} from "../services/user-data.service";
-import {AuthService} from "../services/auth.service";
-import {NgIf} from "@angular/common";
-import {EMPTY} from "rxjs";
+import {Component, EventEmitter, OnInit} from '@angular/core';
+import { AuthService } from '../services/auth.service';
+import { NgIf } from '@angular/common';
+import { EMPTY } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -13,17 +12,23 @@ import {EMPTY} from "rxjs";
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   protected isLoggedIn: boolean = false;
-    constructor(private  authService: AuthService) {
+  onReinit = new EventEmitter();
 
-    }
-    ngOnInit(){
+  constructor(private authService: AuthService) { }
 
-      this.authService.refreshTokens() == EMPTY ? this.isLoggedIn  = false : this.isLoggedIn = true;
-      console.log(this.isLoggedIn);
-    }
-    logout(): void {
-      this.authService.logout();
-    }
+  ngOnInit() {
+    this.authService.refreshTokens() == EMPTY ? (this.isLoggedIn = false) : (this.isLoggedIn = true);
+    console.log(this.isLoggedIn);
+
+    this.onReinit.subscribe(() => {
+      console.log("reEmited");
+      this.ngOnInit();
+    });
+  }
+
+  logout(): void {
+    this.authService.logout();
+  }
 }
