@@ -1,7 +1,7 @@
 <div class="container-xxl d-flex flex-column">
   <h2 style="align-self: center">Наши психологи</h2>
   <div class="row p-3">
-    <app-psychologist-card class="my-3 col-auto col-sm-6" *ngFor="let psychologist of psychologists"
+    <app-psychologist-card class="my-3 col-auto col-md-6" style="text-align: justify" *ngFor="let psychologist of psychologists"
                            [psychologist]="psychologist"></app-psychologist-card>
   </div>
   <button *ngIf="haseNextPage" class="btn btn-primary mb-2 align-self-center"  style="width: fit-content" (click)="loadMore()">Загрузить еще</button>

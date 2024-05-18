@@ -4,7 +4,7 @@ import {HeaderComponent} from "./header/header.component";
 import {FooterComponent} from "./footer/footer.component";
 import {AsyncPipe, NgClass, NgIf} from "@angular/common";
 import {LoaderComponent} from "./loader/loader.component";
-import {LoaderService} from "./services/loaderStuff/loader.service";
+import {LoaderService} from "./services/loader.service";
 import {RouterOutlet} from "@angular/router";
 
 @Component({

@@ -1,6 +1,6 @@
 import {ApplicationConfig} from '@angular/core';
 import {provideRouter} from '@angular/router';
-import {HttpClientModule, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 
 import {routes} from './app.routes';
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
@@ -9,8 +9,8 @@ import {AuthService} from "./services/auth.service";
 import {UserDataService} from "./services/user-data.service";
 
 import {RoleGuardService} from "./services/role-guard.service";
-import {LoadingInterceptor} from "./services/loaderStuff/loading.interceptor";
-import {LoaderService} from "./services/loaderStuff/loader.service";
+import {LoadingInterceptor} from "./interceptor/loading.interceptor";
+import {LoaderService} from "./services/loader.service";
 import {FormService} from "./services/form.service";
 import {ClientService} from "./services/client.service";
 import {VisitService} from "./services/visit.service";
@@ -21,12 +21,14 @@ import {Select2} from "ng-select2-component";
 import {PsychologistService} from "./services/psychologist.service";
 import {registerLocaleData} from "@angular/common";
 import localeRu from '@angular/common/locales/ru'
+import {ErrorInterceptor} from "./interceptor/error-interceptor";
+
 registerLocaleData(localeRu);
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideHttpClient(withInterceptorsFromDi()), // Add this to provide HttpClient
+    provideHttpClient(withInterceptorsFromDi()),
     AuthService,
     UserDataService,
     RoleGuardService,
@@ -40,7 +42,8 @@ export const appConfig: ApplicationConfig = {
     PsychologistService,
     MyProfileComponent,
     PsychologistService,
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true},
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
   ]
 };

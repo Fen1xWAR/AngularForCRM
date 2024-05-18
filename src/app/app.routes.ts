@@ -5,7 +5,6 @@ import {LoginComponent} from "./login/login.component";
 import {MyProfileComponent} from "./my-profile/my-profile.component";
 import {FormComponent} from "./form/form.component";
 import {VisitsComponent} from "./visits/visits.component";
-import {ClientVisitsComponent} from "./client-visits/client-visits.component";
 import {RoleGuardService} from "./services/role-guard.service";
 import {ClientsComponent} from "./clients/clients.component";
 
@@ -16,24 +15,39 @@ import {PsychologistsComponent} from "./psychologists/psychologists.component";
 import {PsychologistProfileComponent} from "./psychologist-profile/psychologist-profile.component";
 
 export const routes: Routes = [
-  {path: '', component: HomeComponent},
-  {path: 'about', component: AboutComponent},
-  {path: 'login', component: LoginComponent},
+  {path: '', component: HomeComponent, title: "Психология"},
+  {path: 'about', component: AboutComponent, title: 'О нас',},
+  {path: 'login', component: LoginComponent, title: "Войти"},
   {
     path: 'me',
+    title: "Мой профиль",
     component: MyProfileComponent,
     children: [
       {path: '', redirectTo: 'visits', pathMatch: 'full'},
-      {path: 'visits', component: VisitsComponent,},
-      {path: 'form', component: FormComponent, canActivate: [RoleGuardService],data: {expectedRole: "Client"}},
-      {path: 'clients',component: ClientsComponent,canActivate: [RoleGuardService], data : {expectedRole : "Psychologist"}},
+      {path: 'visits', component: VisitsComponent},
+      {path: 'form', component: FormComponent, canActivate: [RoleGuardService], data: {expectedRole: "Client"}},
+      {
+        path: 'clients',
+        component: ClientsComponent,
+        canActivate: [RoleGuardService],
+        data: {expectedRole: "Psychologist"}
+      },
       {path: "settings", component: UserProfileSettingsComponent}
 
     ]
   },
-  {path: 'forclient', component: PsychologistsComponent},
-  { path: 'psychologist/:id', component: PsychologistProfileComponent },
-  {path: 'error', component: ServerErrorComponent},
-  {path: "**", component: Component404}
+  {
+    path: 'forclient', component: PsychologistsComponent,
+    title: "Клиентам",
+  },
+  {
+    path: 'psychologist/:id', component: PsychologistProfileComponent,
+  },
+  {
+    path: 'error', component: ServerErrorComponent,
+    title: "Ошибка",
+  },
+  {path: "**", component: Component404,
+    title: "404 страница не найдена ",}
 
 ];

@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
-import {PsychologistFullData} from "../psychologists/psychologists.component";
 import {RouterLink} from "@angular/router";
+import {PsychologistFullData} from "../services/psychologist.service";
 
 
 
@@ -15,4 +15,11 @@ import {RouterLink} from "@angular/router";
 })
 export class PsychologistCardComponent {
   @Input() psychologist: PsychologistFullData | undefined;
+
+  sliceDescription(desc : string | undefined): string {
+    if(desc != undefined){
+      return  desc.length >300? desc.substring(0, 300) + "...":desc;
+    }
+  return ''
+  }
 }

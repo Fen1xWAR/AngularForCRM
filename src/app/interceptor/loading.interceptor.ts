@@ -7,7 +7,7 @@ import {
 } from '@angular/common/http';
 import {finalize} from 'rxjs/operators';
 import {of} from 'rxjs';
-import {LoaderService} from "./loader.service";
+import {LoaderService} from "../services/loader.service";
 
 @Injectable()
 export class LoadingInterceptor implements HttpInterceptor {

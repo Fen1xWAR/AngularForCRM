@@ -2,19 +2,11 @@ import {Component} from '@angular/core';
 import {PsychologistCardComponent} from "../psychologist-card/psychologist-card.component";
 import {NgForOf, NgIf} from "@angular/common";
 import {Visit} from "../services/user-data.service";
-import {Psychologist, PsychologistService} from "../services/psychologist.service";
+import {Psychologist, PsychologistFullData, PsychologistService} from "../services/psychologist.service";
 import {Contact, ContactService} from "../services/contact.service";
 import {findIndex, forkJoin} from 'rxjs';
 import {map} from "rxjs/operators";
 
-export interface PsychologistFullData {
-  psychologistId: string;
-  name: string;
-  lastName: string;
-  middlename?: string | undefined;
-  about: string;
-  age: number
-}
 
 @Component({
   selector: 'app-psychologists',
@@ -46,7 +38,6 @@ export class PsychologistsComponent {
     const newPsychologists: PsychologistFullData[] = [];
     this.psychologistService.getPsychologists(this.currentPage, this.pageSize).subscribe({
       next: (psychologists: Psychologist[]) => {
-        const psychologistsData: Psychologist[] = psychologists;
         const contactRequests = psychologists.map(psychologist =>
           this.contactService.getContactByUserId(psychologist.userId).pipe(
             map(contact => ({
@@ -54,7 +45,7 @@ export class PsychologistsComponent {
               name: contact.name,
               lastName: contact.lastname,
               middlename: contact.middlename,
-              about: "lorem lorem lorem lorem",
+              about: psychologist.about,
               age: this.contactService.calculateAge(contact.dateOfBirth),
             }))
           )

@@ -6,8 +6,19 @@ import {catchError, map} from "rxjs/operators";
 export interface Psychologist {
   psychologistId: string;
   userId: string;
+  about : string
   // Add other fields if necessary
 }
+
+export interface PsychologistFullData {
+  psychologistId: string;
+  name: string;
+  lastName: string;
+  middlename?: string | undefined;
+  about: string;
+  age: number
+}
+
 @Injectable({
   providedIn: 'root'
 })

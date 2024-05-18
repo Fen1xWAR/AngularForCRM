@@ -13,7 +13,13 @@ export class AuthInterceptor implements HttpInterceptor {
   private isRefreshing: boolean = false;
   private excludedUrls: string[] = ['/login', '/register', '/refreshToken'];
 
+  private excludeRoutes : string[] = ['/forclient', '/psychologist'];
+
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+
+    if(this.isExcludeRoutes( this.router.url)){
+      return next.handle(request);
+    }
     if (this.isExcludedUrl(request.url)) {
       return next.handle(request);
     }
@@ -33,21 +39,13 @@ export class AuthInterceptor implements HttpInterceptor {
 
     return next.handle(request).pipe(
       catchError((error) => {
-        if (error.status === 0) {
-          // Handle CONNECTION REFUSED error
-          console.error('CONNECTION REFUSED');
-          this.router.navigate(['/error']);
-        } else {
           // Handle other errors
           console.error('HTTP ERROR', error);
           if (error.status === 401) {
             return this.handle401Error(request, next);
           }
-          if (error.status === 502) {
-            this.router.navigate(['/']);
-            return EMPTY;
-          }
-        }
+
+
         return throwError(() => error);
       })
     );
@@ -55,6 +53,10 @@ export class AuthInterceptor implements HttpInterceptor {
 
   private isExcludedUrl(url: string): boolean {
     return this.excludedUrls.some((excludedUrl) => url.includes(excludedUrl));
+  }
+  private isExcludeRoutes(url : any): boolean {
+    console.log(url)
+    return this.excludeRoutes.some((excludedUrl) => url.includes(excludedUrl));
   }
 
   private handle401Error(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {

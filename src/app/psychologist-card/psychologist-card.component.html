@@ -1,8 +1,13 @@
-<div class="card ">
-  <div class="card-body">
+<div class="card " style="min-height: 16em; min-width: fit-content">
+
+  <div class="card-body d-flex flex-column">
     <h5 class="card-title">{{ psychologist?.lastName }} {{ psychologist?.name }} {{ psychologist?.middlename }}</h5>
     <h6 class="card-subtitle mb-2 text-muted">{{"Возраст: " +psychologist?.age }} </h6>
-    <p class="card-text">{{ psychologist?.about }}</p>
-    <a routerLink="/psychologist/{{psychologist?.psychologistId}}" class="btn btn-primary">Перейти</a>
+    <div class="card-text d-flex justify-content-center flex-column flex-grow-1">
+      <p  class="overflow-hidden" >{{ this.sliceDescription(psychologist?.about) }}</p>
+    </div>
+
+    <button style="width: fit-content " routerLink="/psychologist/{{psychologist?.psychologistId}}" class="btn btn-primary">Перейти</button>
+    <a routerLink="/psychologist/{{psychologist?.psychologistId}}" class="stretched-link"></a>
   </div>
 </div>

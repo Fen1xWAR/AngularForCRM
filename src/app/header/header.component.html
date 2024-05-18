@@ -13,7 +13,7 @@
           <a class="nav-link" href="/">Главная <span class="sr-only"></span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Клиенту</a>
+          <a class="nav-link" href="/forclient">Клиенту</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Психологу</a>
@@ -24,7 +24,7 @@
         </li>
 
       </ul>
-      <ul class="navbar-nav flex-grow flex-wrap">
+      <ul class="navbar-nav">
 
         <ng-container *ngIf="isLoggedIn; else elseBlock">
           <li class="nav-item dropdown">
@@ -39,9 +39,9 @@
         </ng-container>
         <ng-template #elseBlock>
 
-          <button *ngIf="!isLoggedIn" class="btn btn-primary" onclick="location.href='/login'">Войти</button>
+          <button style="min-width: fit-content; width: 9em" *ngIf="!isLoggedIn" class="btn btn-primary" onclick="location.href='/login'">Войти</button>
         </ng-template>
-<!--        <button *ngIf="isLoggedIn" class="btn btn-primary" onclick="location.href='/me'">Личный кабинет</button>-->
+
       </ul>
     </div>
   </div>
