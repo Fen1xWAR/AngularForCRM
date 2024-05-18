@@ -4,12 +4,7 @@ import {EMPTY, Observable} from "rxjs";
 import {IOperationResult} from "./auth.service";
 import {catchError, map} from "rxjs/operators";
 export interface Psychologist {
-  id: string;
-  userId: string;
-  // Add other fields if necessary
-}
-export interface Psychologist {
-  id: string;
+  psychologistId: string;
   userId: string;
   // Add other fields if necessary
 }
@@ -21,6 +16,20 @@ export class PsychologistService {
   private apiUrl = 'https://localhost:7002/api';
 
   constructor(private http: HttpClient) { }
+
+  getPsychologists(pageNumber: number, pageSize: number): Observable<Psychologist[]> {
+    const url = `${this.apiUrl}/Psychologist/Get?page=${pageNumber}&limit=${pageSize}`;
+    return this.http.get<IOperationResult<Psychologist[]>>(url).pipe(
+      map (result=>{
+        if (result.successful && result.result){
+          return result.result
+        }
+        throw new Error(result.errorMessage);
+      })
+    )
+
+
+  }
 
   getPsychologistById(id: string): Observable<Psychologist> {
     return this.http.get<IOperationResult<Psychologist>>(`${this.apiUrl}/Psychologist/GetById/${id}`).pipe(

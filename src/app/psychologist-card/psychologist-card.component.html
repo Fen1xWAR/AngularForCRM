@@ -1,0 +1,8 @@
+<div class="card ">
+  <div class="card-body">
+    <h5 class="card-title">{{ psychologist?.lastName }} {{ psychologist?.name }} {{ psychologist?.middlename }}</h5>
+    <h6 class="card-subtitle mb-2 text-muted">{{"Возраст: " +psychologist?.age }} </h6>
+    <p class="card-text">{{ psychologist?.about }}</p>
+    <a routerLink="/psychologist/{{psychologist?.psychologistId}}" class="btn btn-primary">Перейти</a>
+  </div>
+</div>

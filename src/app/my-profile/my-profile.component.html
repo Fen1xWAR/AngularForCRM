@@ -3,11 +3,9 @@
 
   <div class="col-auto ms-md-3 border-bottom d-flex  border-gray mb-0  justify-content-between   mh-25">
     <h2 class="pb-1">
-      Здравствуйте, {{ this.UserContact?.name + " " + this.UserContact?.lastname }}!</h2>
-  </div> <!-- Main content area -->
+      Здравствуйте, {{ this.UserContact?.name }}  {{ " " + this.UserContact?.middlename }}!</h2>
+  </div>
   <div class="row  h-100 gap-2 p-md-2">
-
-    <!--        class="nav sticky-top flex-column h-100 mw-50  rounded-4  border border-black border-1">-->
     <div class="d-flex col-xl-3 col-12  flex-column flex-shrink-0 p-3 rounded-4 border border-black border-1"
          style="min-width: fit-content">
 
@@ -64,8 +62,11 @@
       </ul>
       <hr>
       <div class="d-flex flex-column align-items-center  justify-content-center">
-        <button  [ngClass]="{'btn-secondary': !isActive('settings'),'btn-primary': isActive('settings')}" class="btn mt-3   w-50 " style="min-width:  fit-content" [routerLink]="['./settings']">Настройки</button>
-        <button class="btn mt-3 btn-danger w-50" style="min-width: fit-content" (click)="logout()">Выйти из аккаунта</button>
+        <button [ngClass]="{'btn-secondary': !isActive('settings'),'btn-primary': isActive('settings')}"
+                class="btn mt-3   w-50 " style="min-width:  fit-content" [routerLink]="['./settings']">Настройки
+        </button>
+        <button class="btn mt-3 btn-danger w-50" style="min-width: fit-content" (click)="logout()">Выйти из аккаунта
+        </button>
       </div>
 
       <!--        <li class="nav-item">-->

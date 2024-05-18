@@ -12,6 +12,8 @@ import {ClientsComponent} from "./clients/clients.component";
 import {Component404} from "./404/404.component";
 import {UserProfileSettingsComponent} from "./user-profile-settings/user-profile-settings.component";
 import {ServerErrorComponent} from "./server-error/server-error.component";
+import {PsychologistsComponent} from "./psychologists/psychologists.component";
+import {PsychologistProfileComponent} from "./psychologist-profile/psychologist-profile.component";
 
 export const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -29,6 +31,8 @@ export const routes: Routes = [
 
     ]
   },
+  {path: 'forclient', component: PsychologistsComponent},
+  { path: 'psychologist/:id', component: PsychologistProfileComponent },
   {path: 'error', component: ServerErrorComponent},
   {path: "**", component: Component404}
 

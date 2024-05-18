@@ -19,6 +19,9 @@ import {ContactService} from "./services/contact.service";
 import {MyProfileComponent} from "./my-profile/my-profile.component";
 import {Select2} from "ng-select2-component";
 import {PsychologistService} from "./services/psychologist.service";
+import {registerLocaleData} from "@angular/common";
+import localeRu from '@angular/common/locales/ru'
+registerLocaleData(localeRu);
 
 export const appConfig: ApplicationConfig = {
   providers: [

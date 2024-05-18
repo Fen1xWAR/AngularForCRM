@@ -1,5 +1,3 @@
-
-
 <ng-container *ngIf="this.visits.length != 0">
   <h5 class="mt-3 text-center">Ваши визиты:</h5>
 
@@ -9,22 +7,29 @@
         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                 [attr.data-bs-target]="'#'+visit.visitId" aria-expanded="true"
                 [attr.aria-controls]="'colapse'+visit.visitId">
-          {{ psychologists[visit.psychologistId]?.name }} {{ psychologists[visit.psychologistId]?.lastname }}
-          - {{ visit.dateTime | date:'dd MMM, yyyy  HH:mm':'ru' }}
+          {{ psychologists[visit.psychologistId]?.lastname }}
+          {{ psychologists[visit.psychologistId]?.name?.charAt(0)+"."}} {{" "+psychologists[visit.psychologistId]?.middlename?.charAt(0)+"."}}
+           {{ visit.dateTime | date:'dd MMM, yyyy  HH:mm':'ru' : "ru"}}
         </button>
       </h2>
       <div id="{{visit.visitId}}" class="accordion-collapse collapse " data-bs-parent="#visitsAccordion">
         <div class="accordion-body">
           <div class="d-flex flex-column">
+            <h5>Психолог:</h5>
+            <p>{{ psychologists[visit.psychologistId]?.lastname }}
+            {{ psychologists[visit.psychologistId]?.name}} {{" "+psychologists[visit.psychologistId]?.middlename}}
+            </p>
             <h5>Тип услуги:</h5>
             <h6 [attr.title]=services[visit.serviceId]?.serviceDescription>{{ services[visit.serviceId]?.serviceName }}
-              -{{ services[visit.serviceId]?.servicePrice }}р.</h6>
+              - {{ services[visit.serviceId]?.servicePrice }}р.</h6>
 
-            <h5>Заметка вашего психолога о визите:</h5>
+            <h5>Заметка психолога о визите:</h5>
             <p>{{ visit.psychologistDescription }}</p>
             <h5>Оставьте вашу заметку для психолога:</h5>
-            <textarea name="" id="cl-desc" cols="30" [(ngModel)]="visit.clientNote" rows="10"></textarea>
-            <button class="mt-3 btn btn-primary" style="width: fit-content" (click)="UpdateVisit(visit)">Сохранить заметку</button>
+            <textarea style="resize: none" name="" id="cl-desc" cols="30" [(ngModel)]="visit.clientNote" rows="10"></textarea>
+            <button class="mt-3 btn btn-primary" style="width: fit-content" (click)="UpdateVisit(visit)">Сохранить
+              заметку
+            </button>
           </div>
 
         </div>

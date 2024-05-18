@@ -5,6 +5,7 @@ import {FormsModule} from "@angular/forms";
 import {Service, VisitService} from "../services/visit.service";
 import {PsychologistService} from "../services/psychologist.service";
 import {Contact, ContactService} from "../services/contact.service";
+import {NgPipesModule} from "ng-pipes";
 
 
 @Component({
@@ -25,7 +26,7 @@ export class ClientVisitsComponent {
   protected services: { [id: string]: Service } = {};
   protected psychologists: { [id: string]: Contact } = {};
 
-  constructor(private contactRepository : ContactService, private userDataService: UserDataService, private visitService: VisitService,private psychologistService: PsychologistService) {
+  constructor(protected contactRepository : ContactService, private userDataService: UserDataService, private visitService: VisitService, private psychologistService: PsychologistService) {
   }
 
   ngOnInit(): void {
@@ -61,4 +62,6 @@ export class ClientVisitsComponent {
   UpdateVisit(visit: Visit) {
     this.visitService.updateVisit(visit);
   }
+
+  protected readonly Date = Date;
 }
