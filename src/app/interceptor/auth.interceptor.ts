@@ -16,10 +16,10 @@ export class AuthInterceptor implements HttpInterceptor {
   private excludeRoutes : string[] = ['/forclient', '/psychologist'];
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
-    if(this.isExcludeRoutes( this.router.url)){
-      return next.handle(request);
-    }
+    //
+    // if(this.isExcludeRoutes( this.router.url)){
+    //   return next.handle(request);
+    // }
     if (this.isExcludedUrl(request.url)) {
       return next.handle(request);
     }

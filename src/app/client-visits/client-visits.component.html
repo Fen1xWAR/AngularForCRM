@@ -20,7 +20,7 @@
             {{ psychologists[visit.psychologistId]?.name}} {{" "+psychologists[visit.psychologistId]?.middlename}}
             </p>
             <h5>Тип услуги:</h5>
-            <h6 [attr.title]=services[visit.serviceId]?.serviceDescription>{{ services[visit.serviceId]?.serviceName }}
+            <h6>{{ services[visit.serviceId]?.serviceName }}
               - {{ services[visit.serviceId]?.servicePrice }}р.</h6>
 
             <h5>Заметка психолога о визите:</h5>

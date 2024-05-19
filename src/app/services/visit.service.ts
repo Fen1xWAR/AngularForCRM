@@ -4,17 +4,20 @@ import {Observable, retry} from 'rxjs';
 
 import {catchError, map} from "rxjs/operators";
 import {IOperationResult} from "./auth.service";
-import { Visit} from "./user-data.service";
+import {Service} from "./service.service";
 
 
+export interface Visit {
+  visitId: string,
+  clientId: string,
+  dateTime: Date,
+  clientNote: string,
+  psychologistDescription: string,
+  serviceId: string,
+  psychologistId: string
 
-
-export interface Service {
-  serviceId: string;
-  serviceName: string;
-  servicePrice: string;
-  serviceDescription: string;
 }
+
 
 @Injectable({
   providedIn: 'root'
@@ -24,9 +27,6 @@ export class VisitService {
 
   constructor(private http: HttpClient) {
   }
-
-
-
 
 
   getService(id: string): Observable<Service> {
@@ -46,5 +46,20 @@ export class VisitService {
 
   updateVisit(visit: Visit): void {
     this.http.post(`${this.apiUrl}/Visit/Update`, visit).subscribe();
+  }
+
+  createVisit(visit: Partial<Visit>): Observable<string> {
+    return this.http.put<IOperationResult<string>>(`${this.apiUrl}/Visit/Insert`, visit).pipe(
+      map(result => {
+        if (result.successful && result.result) {
+          return result.result;
+        } else {
+          throw new Error(result.errorMessage);
+        }
+      }),
+      catchError(err => {
+        throw new Error(err)
+      })
+    )
   }
 }

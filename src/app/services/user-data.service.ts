@@ -4,6 +4,7 @@ import {EMPTY, from, Observable, of, retry, tap, throwError} from 'rxjs';
 import {map, catchError} from 'rxjs/operators';
 import {error} from "@angular/compiler-cli/src/transformers/util";
 import {Contact} from "./contact.service";
+import {Visit} from "./visit.service";
 
 export interface IOperationResult<T> {
   successful: boolean;
@@ -18,16 +19,7 @@ export interface UserData {
 
 
 
-export interface Visit {
-  visitId: string,
-  clientId: string,
-  dateTime: Date,
-  clientNote: string,
-  psychologistDescription: string,
-  serviceId: string,
-  psychologistId: string
 
-}
 
 export interface UserFull {
   userId: string;
@@ -49,28 +41,7 @@ export class UserDataService {
   constructor(private http: HttpClient) {
   }
 
-  // getUserData(): Observable<UserData> {
-  //   if (this.currentUserData) {
-  //     return of(this.currentUserData);
-  //   } else {
-  //     return this.loadUserData();
-  //   }
-  // }
-  //
-  // getUserContact(): Observable<Contact> {
-  //   if (this.currentUserContact) {
-  //     return of(this.currentUserContact);
-  //   } else {
-  //     return this.loadUserContact()
-  //   }
-  // }
-  //
-  // getUserVisits(): Observable<Visit[]> {
-  //   if (this.currentUserVisits) {
-  //     return of(this.currentUserVisits);
-  //   }
-  //   return this.loadUserVisits()
-  // }
+
 
   getUserContact(): Observable<Contact> {
     return this.http.get<IOperationResult<Contact>>(`${this.apiUrl}/CurrentUser/GetContact`).pipe(

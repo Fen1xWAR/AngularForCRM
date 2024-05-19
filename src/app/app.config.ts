@@ -23,6 +23,7 @@ import {registerLocaleData} from "@angular/common";
 import localeRu from '@angular/common/locales/ru'
 import {ErrorInterceptor} from "./interceptor/error-interceptor";
 import {ScheduleService} from "./services/schedule.service";
+import {ServiceService} from "./services/service.service";
 
 registerLocaleData(localeRu);
 
@@ -39,6 +40,7 @@ export const appConfig: ApplicationConfig = {
     ClientService,
     HeaderComponent,
     Select2,
+    ServiceService,
     ContactService,
     PsychologistService,
     MyProfileComponent,

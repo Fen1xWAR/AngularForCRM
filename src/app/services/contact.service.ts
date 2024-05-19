@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable, retry} from "rxjs";
 import {catchError, map} from "rxjs/operators";
-import {IOperationResult, Visit} from "./user-data.service";
+import {IOperationResult} from "./user-data.service";
 import {HttpClient} from "@angular/common/http";
 
 export interface Contact {

@@ -1,6 +1,5 @@
 import {Component, Input, input} from '@angular/core';
 import {DatePipe, KeyValuePipe, NgClass, NgForOf, NgIf} from "@angular/common";
-import {UserData} from "../services/user-data.service";
 import {Schedule, ScheduleService} from "../services/schedule.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {ModalComponent} from "../modal/modal.component";
@@ -48,6 +47,7 @@ export class ScheduleComponent {
       size: 'lg'
     });
     modalRef.componentInstance.slot = slot;
+    modalRef.componentInstance.psychologist = this.psychologist;
   }
 
   selectScheduleDay(day: Date) {

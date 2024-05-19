@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {PsychologistCardComponent} from "../psychologist-card/psychologist-card.component";
 import {NgForOf, NgIf} from "@angular/common";
-import {Visit} from "../services/user-data.service";
 import {Psychologist, PsychologistFullData, PsychologistService} from "../services/psychologist.service";
 import {Contact, ContactService} from "../services/contact.service";
 import {findIndex, forkJoin} from 'rxjs';

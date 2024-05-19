@@ -1,11 +1,11 @@
 import {Component} from '@angular/core';
-import {UserDataService, Visit} from "../services/user-data.service";
+import {UserDataService} from "../services/user-data.service";
 import {DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
-import {Service, VisitService} from "../services/visit.service";
+import {Visit, VisitService} from "../services/visit.service";
 import {PsychologistService} from "../services/psychologist.service";
 import {Contact, ContactService} from "../services/contact.service";
-import {NgPipesModule} from "ng-pipes";
+import {Service} from "../services/service.service";
 
 
 @Component({
