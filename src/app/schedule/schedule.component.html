@@ -23,7 +23,7 @@
     <h4 class="text-center">Выберите удобное время:</h4>
     <div class="d-flex justify-content-center">
       <div class="row w-100  flex-grow-0 p-2 ">
-        <ng-container *ngIf="this.slots.length != 0">
+        <ng-container *ngIf="this.slots.length != 0 else elseBlock">
           <div *ngFor="let slot of this.slots"
                class="col-md-3 text-center  my-3 flex-grow-0 justify-content-center d-flex">
             <button
@@ -39,6 +39,10 @@
             </button>
           </div>
         </ng-container>
+        <ng-template #elseBlock>
+<!--          TODO Переписать текст-->
+          <h5 class="text-center">Нет свободного времени на выбранный день</h5>
+        </ng-template>
 
       </div>
     </div>

@@ -4,6 +4,7 @@ import {UserData} from "../services/user-data.service";
 import {Schedule, ScheduleService} from "../services/schedule.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {ModalComponent} from "../modal/modal.component";
+import {PsychologistFullData} from "../services/psychologist.service";
 
 @Component({
   selector: 'app-schedule',
@@ -20,14 +21,14 @@ import {ModalComponent} from "../modal/modal.component";
 })
 
 export class ScheduleComponent {
-  @Input() id: string | undefined = '';
+  @Input() psychologist: PsychologistFullData | undefined = undefined;
   dates: Date[] = []
   slots: Schedule[] = [];
   protected selectedDate: Date = new Date()
   protected currentDate: Date = new Date(Date.now())
   protected currentOffset = 0
 
-  constructor(private scheduleService: ScheduleService, private modalService : NgbModal) {
+  constructor(private scheduleService: ScheduleService, private modalService: NgbModal) {
 
   }
 
@@ -36,12 +37,16 @@ export class ScheduleComponent {
       this.getWeekDays(0)
       this.selectedDate = new Date(Date.now());
       this.getDaySlots(this.selectedDate);
-    },0)
+    }, 0)
 
   }
 
   openModal(slot: Schedule): void {
-    const modalRef = this.modalService.open(ModalComponent,{backdrop : "static",modalDialogClass: 'modal-dialog-centered',size: 'lg'});
+    const modalRef = this.modalService.open(ModalComponent, {
+      backdrop: "static",
+      modalDialogClass: 'modal-dialog-centered',
+      size: 'lg'
+    });
     modalRef.componentInstance.slot = slot;
   }
 
@@ -53,17 +58,15 @@ export class ScheduleComponent {
 
   getDaySlots(date: Date) {
 
-    if (this.id != null) {
+    if (this.psychologist?.psychologistId != null) {
       console.log("GettingSlots")
       const month: number = date.getMonth() + 1
-      const day : number = date.getDate();
-      const dateToUpload = date.getFullYear() + '-' + (month > 9 ? month : "0" + month) + '-' + (day >9 ? day : "0" + day);
-      this.scheduleService.getByPsychologistIdAndDay(this.id, dateToUpload).subscribe(schedules =>{
+      const day: number = date.getDate();
+      const dateToUpload = date.getFullYear() + '-' + (month > 9 ? month : "0" + month) + '-' + (day > 9 ? day : "0" + day);
+      this.scheduleService.getByPsychologistIdAndDay(this.psychologist.psychologistId, dateToUpload).subscribe(schedules => {
           this.slots = schedules;
-          this.slots.sort((a,b)=>a.startTime>b.startTime? 1: -1)
-      }
-
-
+          this.slots.sort((a, b) => a.startTime > b.startTime ? 1 : -1)
+        }
       )
     }
   }
@@ -85,12 +88,11 @@ export class ScheduleComponent {
 
     const now = new Date(Date.now());
     now.setMilliseconds(0)
-    let selectedIndex = this.dates.findIndex(date => date>=now)
+    let selectedIndex = this.dates.findIndex(date => date >= now)
     if (selectedIndex >= 0) {
       this.selectedDate = this.dates[selectedIndex]
       this.getDaySlots(this.selectedDate)
-    }
-    else{
+    } else {
       this.slots = []
     }
 

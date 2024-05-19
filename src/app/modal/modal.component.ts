@@ -20,13 +20,13 @@ export interface  Service{
 })
 export class ModalComponent {
     slot : Schedule | undefined = undefined;
-    protected selectedService: Service | undefined = undefined
+    protected selectedServicePrice: string  = ''
     services : Service[]  = [{label : "Первая услуга ", value : "3000"},{label : "Вторая услуга ", value : "9000"}];
   constructor(public activeModal: NgbActiveModal) {
-    this.selectedService = this.services[0]
+    this.selectedServicePrice = this.services[0].value
   }
 
-  selectChange(){
-    // this.selectedService = value
+  onServiceSelectChange(event: Event) {
+    this.selectedServicePrice = (event.target as HTMLSelectElement).value;
   }
 }

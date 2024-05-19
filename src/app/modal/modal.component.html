@@ -16,7 +16,7 @@
               </div>
               <div>
                 <p class="text-muted text-center">Стоимость</p>
-                <h4 class="text-center">{{this.selectedService?.value}} р.</h4>
+                <h4 class="text-center">{{this.selectedServicePrice}} р.</h4>
               </div>
               <div class="d-flex flex-column justify-content-center align-items-center">
                 <i class="bi bi-calendar-check" style="font-size: 1.4em"></i>
@@ -27,7 +27,7 @@
             <form class="p-4">
               <div class="mb-3">
                 <label for="serviceType" class="form-label">Тип услуги</label>
-                <select (change)="this" id="serviceType" class="form-select">
+                <select  (change)="onServiceSelectChange($event)" id="serviceType" class="form-select">
                   <option *ngFor="let service of services" [selected]="services.indexOf(service) == 0" [value]="service.value" >{{service.label}}</option>
                 </select>
               </div>
