@@ -24,7 +24,7 @@
         </li>
 
       </ul>
-      <ul class="navbar-nav">
+      <ul class="navbar-nav flex-grow flex-wrap">
 
         <ng-container *ngIf="isLoggedIn; else elseBlock">
           <li class="nav-item dropdown">
@@ -39,9 +39,9 @@
         </ng-container>
         <ng-template #elseBlock>
 
-          <button style="min-width: fit-content; width: 9em" *ngIf="!isLoggedIn" class="btn btn-primary" onclick="location.href='/login'">Войти</button>
+          <button *ngIf="!isLoggedIn" class="btn btn-primary" onclick="location.href='/login'">Войти</button>
         </ng-template>
-
+<!--        <button *ngIf="isLoggedIn" class="btn btn-primary" onclick="location.href='/me'">Личный кабинет</button>-->
       </ul>
     </div>
   </div>

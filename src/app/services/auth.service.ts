@@ -41,6 +41,7 @@ interface RefreshToken {
 })
 export class AuthService {
   private apiUrl = 'https://localhost:7002/api/User';
+  protected isLoginIn: boolean = false;
 
   constructor(private http: HttpClient, private cookieService: CookieService) {
 
@@ -57,7 +58,7 @@ export class AuthService {
         if (result.successful && result.result != undefined) {
           const tokens = result.result;
           this.setTokens(tokens);
-
+          this.isLoginIn = true;
           return tokens;
         } else {
           throw new Error(result.errorMessage);
@@ -74,7 +75,7 @@ export class AuthService {
 
     const tokens = this.getTokens();
     if (tokens == null) {
-      return EMPTY;
+        return EMPTY;
     }
     return this.http.post<IOperationResult<Tokens>>(`${this.apiUrl}/RefreshToken`, tokens).pipe(
       map(result => {
@@ -82,7 +83,7 @@ export class AuthService {
           const tokens = result.result;
           console.log(tokens)
           this.setTokens(tokens);
-
+          this.isLoginIn = true;
           return tokens;
         } else {
           this.logout();

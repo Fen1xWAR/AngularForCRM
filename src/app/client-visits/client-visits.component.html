@@ -9,7 +9,7 @@
                 [attr.aria-controls]="'colapse'+visit.visitId">
           {{ psychologists[visit.psychologistId]?.lastname }}
           {{ psychologists[visit.psychologistId]?.name?.charAt(0)+"."}} {{" "+psychologists[visit.psychologistId]?.middlename?.charAt(0)+"."}}
-           {{ visit.dateTime | date:'dd MMM, yyyy  HH:mm':'ru' : "ru"}}
+          {{ visit.dateTime | date:'dd MMM, yyyy  HH:mm':'ru' : "ru"}}
         </button>
       </h2>
       <div id="{{visit.visitId}}" class="accordion-collapse collapse " data-bs-parent="#visitsAccordion">
@@ -17,7 +17,7 @@
           <div class="d-flex flex-column">
             <h5>Психолог:</h5>
             <p>{{ psychologists[visit.psychologistId]?.lastname }}
-            {{ psychologists[visit.psychologistId]?.name}} {{" "+psychologists[visit.psychologistId]?.middlename}}
+              {{ psychologists[visit.psychologistId]?.name}} {{" "+psychologists[visit.psychologistId]?.middlename}}
             </p>
             <h5>Тип услуги:</h5>
             <h6>{{ services[visit.serviceId]?.serviceName }}
@@ -26,7 +26,7 @@
             <h5>Заметка психолога о визите:</h5>
             <p>{{ visit.psychologistDescription }}</p>
             <h5>Оставьте вашу заметку для психолога:</h5>
-            <textarea style="resize: none" name="" id="cl-desc" cols="30" [(ngModel)]="visit.clientNote" rows="10"></textarea>
+            <textarea class="form-control" style="resize: none" name="" id="cl-desc" cols="30" rows="2" [(ngModel)]="visit.clientNote" ></textarea>
             <button class="mt-3 btn btn-primary" style="width: fit-content" (click)="UpdateVisit(visit)">Сохранить
               заметку
             </button>
