@@ -22,6 +22,7 @@ import {PsychologistService} from "./services/psychologist.service";
 import {registerLocaleData} from "@angular/common";
 import localeRu from '@angular/common/locales/ru'
 import {ErrorInterceptor} from "./interceptor/error-interceptor";
+import {ScheduleService} from "./services/schedule.service";
 
 registerLocaleData(localeRu);
 
@@ -42,6 +43,7 @@ export const appConfig: ApplicationConfig = {
     PsychologistService,
     MyProfileComponent,
     PsychologistService,
+    ScheduleService,
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},

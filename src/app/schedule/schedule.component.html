@@ -1,27 +1,42 @@
-<div class="mt-3 rounded-4 p-0 border container">
-<div  class="d-flex overflow-x-auto p-md-3 border bg-light rounded-4">
-  <button (click)="previousWeek()"  style="max-height: fit-content" class="btn col-1 btn-light"><i class="bi bi-chevron-left"></i></button>
-  <div class="overflow-md-x-auto col-10">
-    <div class="row  justify-content-center flex-nowrap">
-      <button style="max-width: fit-content; min-width: 2em " [title]="day |date:'dd MMM':'ru' : 'ru' "   class="btn col-1 "
-              (click)="selectScheduleDay(day)"
-              [disabled]="day<this.currentDate"
-              [ngClass]="{'btn-light': !(day.getDate() == this.selectedDate?.getDate() && day.getMonth() == this.selectedDate.getMonth()),'btn-primary': day.getDate() == this.selectedDate?.getDate() && day.getMonth() == this.selectedDate.getMonth()}"
-              *ngFor="let day of this.dates">
-        {{ day |date:'dd MMM': 'ru' : "ru" }}
-      </button>
-    </div>
-  </div>
-  <button (click)="nextWeek()" style="max-height: fit-content" class="btn col-1 btn-light" ><i class="bi bi-chevron-right"></i></button>
-</div>
+<div class="mt-3 rounded-md-4 rounded-1 p-0 border container">
+  <div class="d-flex  p-1 p-md-3 border bg-light rounded-md-4 rounded-1">
+    <button (click)="previousWeek()" style="max-height: fit-content; min-width: fit-content" class="btn   col-1 btn-light"><i
+      class="bi bi-chevron-left"></i></button>
+      <div class="overflow-x-auto  row   my-1 overflow-md-x-hidden flex-grow-1">
+        <div style="min-width: fit-content" class="row col-12 mw-4  my-md-3 m-1  justify-content-md-around  flex-grow-1   flex-shrink-1 flex-nowrap">
+          <button style=" max-width: fit-content; min-width: 3.5em " [title]="day |date:'dd MMM':'ru' : 'ru' "
+                  class="btn col-md-2  col mw-4"
+                  (click)="selectScheduleDay(day)"
+                  [disabled]="day<this.currentDate"
+                  [ngClass]="{'btn-light': !(day.getDate() == this.selectedDate?.getDate() && day.getMonth() == this.selectedDate.getMonth()),'btn-primary': day.getDate() == this.selectedDate?.getDate() && day.getMonth() == this.selectedDate.getMonth()}"
+                  *ngFor="let day of this.dates">
+            {{ day |date:'dd MMM': 'ru' : "ru" }}
+          </button>
+        </div>
+      </div>
 
-  <div class="d-flex flex-column jus flex-grow-1 mt-md-3">
+    <button (click)="nextWeek()" style="max-height: fit-content; min-width: fit-content" class="btn   col-1 btn-light"><i
+      class="bi bi-chevron-right"></i></button>
+  </div>
+
+  <div class="d-flex flex-column jus mt-md-3 flex-grow-1">
     <h4 class="text-center">Выберите удобное время:</h4>
     <div class="d-flex justify-content-center">
-      <div class="row w-100  flex-grow-0 p-2   mt-md-3">
-        <ng-container *ngIf="getDaySlots(selectedDate).length != 0">
-          <div *ngFor="let slot of getDaySlots(selectedDate)" class="col-md-3 my-3 flex-grow-0 justify-content-center d-flex">
-            <button  [disabled]="slot.booked" class=" btn btn-success">{{slot.start}}-{{slot.end}}</button>
+      <div class="row w-100  flex-grow-0 p-2 ">
+        <ng-container *ngIf="this.slots.length != 0">
+          <div *ngFor="let slot of this.slots"
+               class="col-md-3 text-center  my-3 flex-grow-0 justify-content-center d-flex">
+            <button
+              (click)="openModal(slot)"
+              data-toggle="modal"
+              data-target="#exampleModal"
+              [ngClass]="{'btn-success':slot.visitId==undefined,'btn-secondary':slot.visitId!=undefined}"
+              [disabled]="slot.visitId != undefined"
+                    class=" btn">
+              {{ slot.startTime.toString().slice(0, 5) }}
+              -
+              {{ slot.endTime.toString().slice(0, 5) }}
+            </button>
           </div>
         </ng-container>
 

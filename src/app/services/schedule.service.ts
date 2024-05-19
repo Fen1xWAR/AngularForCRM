@@ -1,0 +1,47 @@
+import { Injectable } from '@angular/core';
+import {HttpClient} from "@angular/common/http";
+import {Observable} from "rxjs";
+import {IOperationResult} from "./auth.service";
+import {Time} from "@angular/common";
+import {catchError, map} from "rxjs/operators";
+
+
+export interface Schedule {
+  scheduleId: string;
+  psychologistId: string;
+  workDay: Date;
+  startTime: Time;
+  endTime: Time                           ;
+  visitId: string
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ScheduleService {
+
+  constructor(private http: HttpClient) { }
+
+
+  private apiUrl = 'https://localhost:7002/api/Schedule';
+
+
+
+  getByPsychologistIdAndDay( id: string,day: string): Observable<Schedule[]> {
+      return   this.http.post<IOperationResult<Schedule[]>>(`${this.apiUrl}/GetByPsychologistIdAndTime`,{
+          psychologistId:id,
+          day:day,
+        }).pipe(
+          map(result => {
+            if (result.successful && result.result) {
+              return result.result;
+            } else {
+              throw  new Error(result.errorMessage);
+            }
+          }),
+          catchError(err => {
+            throw new Error(err)
+          })
+        )
+  }
+}
