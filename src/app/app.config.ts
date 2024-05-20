@@ -25,7 +25,7 @@ import {ErrorInterceptor} from "./interceptor/error-interceptor";
 import {ScheduleService} from "./services/schedule.service";
 import {ServiceService} from "./services/service.service";
 import {NgbDateParserFormatter} from "@ng-bootstrap/ng-bootstrap";
-import {NgbDateCustomParserFormatter} from "./ngb-date-custom-parser-formatter.service";
+import {NgbDateCustomParserFormatter} from "./services/ngb-date-custom-parser-formatter.service";
 
 registerLocaleData(localeRu);
 
