@@ -39,16 +39,16 @@ export class UserProfileSettingsComponent {
   protected userDataFull: UserFull | null = null;
   data: Select2Data = [
     {
-      value: 'Я огурец',
-      label: 'Я огурец',
+      value: 'Отношения в семье',
+      label: 'Отношения в семье',
     },
     {
-      value: 'Я банан',
-      label: 'Я банан',
+      value: 'Проблемы в отношениях  с ребенком ',
+      label: 'Проблемы в отношениях  с ребенком ',
     },
     {
-      value: 'Я еблан',
-      label: 'Я еблан',
+      value: 'Проблемы в коллективе',
+      label: 'Проблемы в коллективе',
     },
   ];
   currentRoleObj: Client | Psychologist | null = null;

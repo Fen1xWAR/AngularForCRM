@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {EMPTY, Observable} from "rxjs";
 import {IOperationResult} from "./auth.service";
 import {catchError, map} from "rxjs/operators";
+import {Psychologist} from "./psychologist.service";
 export interface Client{
   clientId: string;
   formId : string;
@@ -26,6 +27,20 @@ export class ClientService {
       }),
       catchError(err => {
         throw new Error(err)
+      })
+    );
+  }
+  getClientById(id: string): Observable<Client> {
+    return this.http.get<IOperationResult<Client>>(`${this.apiUrl}/Client/GetById/${id}`).pipe(
+      map(result => {
+        if (result.successful && result.result) {
+          return result.result;
+        } else {
+          throw new Error(result.errorMessage);
+        }
+      }),
+      catchError(err => {
+        throw new Error(err);
       })
     );
   }
