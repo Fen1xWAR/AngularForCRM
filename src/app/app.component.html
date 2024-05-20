@@ -1,12 +1,12 @@
 <app-header></app-header>
 
 <ng-container *ngIf="this.loaderService.isLoading$ | async">
-  <app-loader></app-loader>
+  <app-loader class="d-flex flex-grow-1 justify-content-center align-items-center"></app-loader>
 </ng-container>
 
 
 
-<div class="d-flex justify-content-center flex-grow-1" [hidden]="this.loaderService.isLoading$ | async">
+<div  [class.visually-hidden]="this.loaderService.isLoading$ | async" class=" d-flex justify-content-center flex-grow-1">
   <router-outlet></router-outlet>
 </div>
 

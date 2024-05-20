@@ -5,6 +5,7 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {ModalComponent} from "../modal/modal.component";
 import {PsychologistFullData} from "../services/psychologist.service";
 import {AuthService} from "../services/auth.service";
+import {UserDataService} from "../services/user-data.service";
 
 @Component({
   selector: 'app-schedule',
@@ -26,15 +27,28 @@ export class ScheduleComponent {
   @Input() psychologist: PsychologistFullData | undefined = undefined;
   dates: Date[] = []
   slots: Schedule[] = [];
+  protected currentUserRole : string | undefined;
   protected selectedDate: Date = new Date()
   protected currentDate: Date = new Date(Date.now())
   protected currentOffset = 0
+  private IsLoggedIn: boolean = false;
 
-  constructor(private scheduleService: ScheduleService, protected authService : AuthService, private modalService: NgbModal) {
+  constructor(private scheduleService: ScheduleService, protected authService : AuthService, private modalService: NgbModal, protected currentUserdataService : UserDataService) {
 
   }
-
+  ngOnInit(): void {
+    this.authService.isLoginIn$.subscribe(data=>this.IsLoggedIn = data);
+  }
+  redirectToLogin(){
+    this.authService.setLoginIn(false)
+    location.href = "/login"
+  }
   ngAfterViewInit(): void {
+
+    if(this.IsLoggedIn)
+      this.currentUserdataService.getUserData().subscribe(data => this.currentUserRole = data.role)
+
+
     setTimeout(() => {
       this.getWeekDays(0)
       this.selectedDate = new Date(Date.now());
@@ -62,7 +76,6 @@ export class ScheduleComponent {
   getDaySlots(date: Date) {
 
     if (this.psychologist?.psychologistId != null) {
-      console.log("GettingSlots")
       const month: number = date.getMonth() + 1
       const day: number = date.getDate();
       const dateToUpload = date.getFullYear() + '-' + (month > 9 ? month : "0" + month) + '-' + (day > 9 ? day : "0" + day);

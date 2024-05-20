@@ -4,7 +4,7 @@ import { UserData, UserDataService} from "../services/user-data.service";
 import {AsyncPipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {LoaderComponent} from "../loader/loader.component";
 import {AuthService} from "../services/auth.service";
-import {HeaderComponent} from "../header/header.component";
+
 import {Contact} from "../services/contact.service";
 
 @Component({
@@ -28,6 +28,7 @@ export class MyProfileComponent {
   UserData: UserData | undefined = undefined;
   UserContact: Contact | undefined = undefined;
 
+
   constructor(private router: Router, private userDataService: UserDataService, private authService: AuthService) {
   }
 
@@ -41,8 +42,7 @@ export class MyProfileComponent {
   }
 
   logout() {
-    this.authService.logout()
-    location.href = "/"
+  this.authService.logout()
 
 
   }

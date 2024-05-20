@@ -6,6 +6,11 @@ import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 import {PsychologistFullData} from "../services/psychologist.service";
 import {Service, ServiceService} from "../services/service.service";
 import {Visit, VisitService} from "../services/visit.service";
+import {UserDataService} from "../services/user-data.service";
+import {ClientService} from "../services/client.service";
+import {catchError} from "rxjs/operators";
+import {error} from "@angular/compiler-cli/src/transformers/util";
+import {switchMap} from "rxjs";
 
 
 @Component({
@@ -29,7 +34,7 @@ export class ModalComponent {
   protected readonly Object = Object;
   visitCreationForm: FormGroup = new FormGroup({});
 
-  constructor(public activeModal: NgbActiveModal, private serviceRepository: ServiceService, private scheduleService: ScheduleService, private visitService: VisitService) {
+  constructor(public activeModal: NgbActiveModal,private clientService : ClientService, private userDataService : UserDataService, private serviceRepository: ServiceService, private scheduleService: ScheduleService, private visitService: VisitService) {
 
   }
 
@@ -57,32 +62,53 @@ export class ModalComponent {
   }
 
   createVisit() {
-    console.log("!!!")
-    if (this.slot) {
-      this.scheduleService.getById(this.slot.scheduleId).subscribe(schedule =>{
-        if(schedule.visitId != undefined){
-          console.error("ALREADY BOOKED!")
-          return
-        }
-        const visit : Partial<Visit> = {
-            clientId : "9fbfd5a9-45fc-4281-ad2d-593af3a87bfc",
-            dateTime : this.slot?.workDay,
-            clientNote : this.visitCreationForm.value[0],
-            serviceId : this.selectedService?.serviceId,
-            psychologistId : this.psychologist?.psychologistId
-        }
-
-        this.visitService.createVisit(visit).subscribe(visitId=> {
-          if(this.slot){
-
-            this.slot.visitId = visitId
-            this.scheduleService.updateSchedule(this.slot).subscribe();
-          }
-
-        });
-        }
-      )
+    console.log("!!!");
+    if (!this.slot) {
+      console.error("No slot found!");
+      return;
     }
+
+    this.scheduleService.getById(this.slot.scheduleId)
+      .pipe(
+        switchMap(schedule => {
+          console.log(schedule)
+          if (schedule.visitId !== null) {
+            console.error("ALREADY BOOKED!");
+            throw new Error("Schedule already booked");
+          }
+          return this.userDataService.getUserData();
+        }),
+        switchMap(userData => {
+          if (!userData.userId) {
+            console.error("No user data found!");
+            throw new Error("No user data found");
+          }
+          return this.clientService.getClientByUserId(userData.userId);
+        }),
+        switchMap(client => {
+          const visit: Partial<Visit> = {
+            clientId: client.clientId,
+            dateTime: this.slot?.workDay,
+            clientNote: this.visitCreationForm.value[0],
+            serviceId: this.selectedService?.serviceId,
+            psychologistId: this.psychologist?.psychologistId
+          };
+
+          return this.visitService.createVisit(visit).pipe(
+            switchMap(visitId => {
+              if (this.slot) {
+                this.slot.visitId = visitId;
+                return this.scheduleService.updateSchedule(this.slot);
+              }
+              throw new Error("No slot found");
+            })
+          );
+        })
+      )
+      .subscribe(
+        () => {console.log("Visit created and schedule updated successfully"); this.activeModal.close();},
+        error => console.error("Error:", error.message)
+      );
   }
 
 

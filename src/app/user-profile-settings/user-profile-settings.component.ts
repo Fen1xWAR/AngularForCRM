@@ -1,8 +1,8 @@
-import {Component} from '@angular/core';
+import {Component, Injectable} from '@angular/core';
 import {FormGroup, FormControl, Validators, ReactiveFormsModule} from '@angular/forms';
 import {NgClass, NgIf} from "@angular/common";
-import { UserData, UserDataService, UserFull} from "../services/user-data.service";
-import {EMPTY, Observable, switchMap, tap, throwError} from "rxjs";
+import {UserData, UserDataService, UserFull} from "../services/user-data.service";
+import {config, EMPTY, Observable, switchMap, tap, throwError} from "rxjs";
 import {map} from "rxjs/operators";
 import {Contact, ContactService} from "../services/contact.service";
 import {AuthService} from "../services/auth.service";
@@ -10,6 +10,13 @@ import {MyProfileComponent} from "../my-profile/my-profile.component";
 import {Select2Data, Select2Module} from "ng-select2-component";
 import {Client, ClientService} from "../services/client.service";
 import {Psychologist, PsychologistService} from "../services/psychologist.service";
+import {
+  NgbDate,
+  NgbDateParserFormatter,
+  NgbDatepickerConfig,
+  NgbDateStruct,
+  NgbInputDatepicker
+} from "@ng-bootstrap/ng-bootstrap";
 
 class UserTemplate {
   userDataFull: UserFull;
@@ -31,13 +38,14 @@ class UserTemplate {
     ReactiveFormsModule,
     NgClass,
     NgIf,
-    Select2Module
+    Select2Module,
+    NgbInputDatepicker
   ],
   styleUrls: ['./user-profile-settings.component.scss']
 })
 export class UserProfileSettingsComponent {
   protected userDataFull: UserFull | null = null;
-  data: Select2Data = [
+  clientsProblemVariants: Select2Data = [
     {
       value: 'Отношения в семье',
       label: 'Отношения в семье',
@@ -54,11 +62,16 @@ export class UserProfileSettingsComponent {
   currentRoleObj: Client | Psychologist | null = null;
   userContact: Contact | null = null;
   settingsForm: FormGroup = new FormGroup({});
+  protected current = new Date()
 
-  constructor(private userdataService: UserDataService, private profile: MyProfileComponent, private contactService: ContactService, private authService: AuthService, private clientService: ClientService, private psychologistService: PsychologistService) {
+  constructor(private userdataService: UserDataService, private config: NgbDatepickerConfig, private profile: MyProfileComponent, private contactService: ContactService, private authService: AuthService, private clientService: ClientService, private psychologistService: PsychologistService) {
+
   }
 
+
   ngOnInit(): void {
+
+
     this.formCreate();
     this.loadUserData();
   }
@@ -106,24 +119,38 @@ export class UserProfileSettingsComponent {
     this.userDataFull = userData.userDataFull;
     this.userContact = userData.contact;
     this.currentRoleObj = userData.clientOrPsychologist;
-    let currentProblem : [] = [];
-    if(this.userDataFull.role === 'Client') {
-      const client = this.currentRoleObj as Client;
-      try{
-        currentProblem  = JSON.parse(<string>client.currentProblem);
-      }
-        catch(error){
-        currentProblem = []
-        }
+    const currentDateOfBirthData = new Date(this.userContact.dateOfBirth);
+    const currentDateOfBirthObj = new NgbDate(currentDateOfBirthData.getFullYear(), currentDateOfBirthData.getMonth() + 1, currentDateOfBirthData.getDate());
+    let currentProblem: [] = [];
 
+
+    if (this.userDataFull.role === 'Client') {
+      const client = this.currentRoleObj as Client;
+      try {
+        currentProblem = JSON.parse(<string>client.currentProblem);
+      } catch (error) {
+        currentProblem = []
+      }
+
+
+    }
+    let about: string = ''
+    if (this.userDataFull.role === 'Psychologist') {
+
+      const psychologist = this.currentRoleObj as Psychologist;
+      console.log(psychologist);
+      about = psychologist.about;
 
     }
     this.settingsForm.patchValue({
       name: userData.contact.name ?? '',
       lastname: userData.contact.lastname ?? '',
+      middlename: userData.contact.middlename ?? '',
       phoneNumber: userData.contact.phoneNumber ?? '',
+      dateOfBirth: currentDateOfBirthObj,
       email: userData.userDataFull.email ?? '',
       currentProblem: currentProblem,
+      about: about
     });
   }
 
@@ -139,9 +166,10 @@ export class UserProfileSettingsComponent {
     const contact: Partial<Contact> = {
       contactId: this.userDataFull?.contactId,
       phoneNumber: formData.phoneNumber,
+      dateOfBirth: `${formData.dateOfBirth.year}-${formData.dateOfBirth.month>9?  formData.dateOfBirth.month : "0"+ formData.dateOfBirth.month }-${formData.dateOfBirth.day>9?  formData.dateOfBirth.day : "0"+ formData.dateOfBirth.day}`,
       name: formData.name,
       lastname: formData.lastname,
-      middlename: ""
+      middlename: formData.middlename
     }
     if (this.currentRoleObj != null) {
       if (this.userDataFull?.role === 'Client') {
@@ -156,15 +184,14 @@ export class UserProfileSettingsComponent {
 
       } else if (this.userDataFull?.role === 'Psychologist') {
         const currentObj = this.currentRoleObj as Psychologist;
-        // currentObj = JSON.parse(formData.currentProblem);
+        currentObj.about = formData.about;
         this.psychologistService.updatePsychologist(currentObj).subscribe((response) => {
             console.log("Psychologist updated successfully");
           },
           (error) => {
             console.error("Error updating psychologist")
           });
-      }
-      else throw Error("Сюда дойти не должно было!")
+      } else throw Error("Сюда дойти не должно было!")
     }
     this.contactService.updateContact(contact).subscribe((response) => {
         console.log('Contact updated successfully', response);
@@ -196,10 +223,13 @@ export class UserProfileSettingsComponent {
     this.settingsForm = new FormGroup({
       name: new FormControl('', [Validators.required, Validators.pattern("^[A-zА-яЁё]+$")]),
       lastname: new FormControl('', [Validators.required, Validators.pattern("^[A-zА-яЁё]+$")]),
+      middlename: new FormControl('', Validators.pattern("^[A-zА-яЁё]+$")),
+      dateOfBirth: new FormControl([Validators.required]),
       phoneNumber: new FormControl('', [Validators.pattern('^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$')]),
       email: new FormControl('', [Validators.required]),
-      password: new FormControl(''),
+      password: new FormControl('',),
       currentProblem: new FormControl(''),
+      about: new FormControl('')
 
     });
   }

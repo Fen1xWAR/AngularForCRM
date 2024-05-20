@@ -1,7 +1,7 @@
 <div  class="container position-relative mt-3 rounded-md-4 rounded-1 p-0 border ">
 
 
-<div [ngClass]="{'blurred-component' : !(this.authService.isLoginIn$ | async)}">
+<div [ngClass]="{'blurred-component' : (!(this.authService.isLoginIn$ | async) || this.currentUserRole != 'Client'  ) }">
   <div class="d-flex  p-1 p-md-3 border bg-light rounded-md-4 rounded-1">
     <button (click)="previousWeek()" style="max-height: fit-content; min-width: fit-content"
             class="btn   col-1 btn-light"><i
@@ -57,4 +57,6 @@
   </div>
 </div>
   <button *ngIf="!(this.authService.isLoginIn$ | async)" class="btn btn-primary position-absolute translate-middle top-50 start-50" (click)="location.href='/login'" >Войдите чтобы записаться</button>
+  <button *ngIf="((this.authService.isLoginIn$ | async)&& this.currentUserRole != 'Client')" class="btn btn-primary position-absolute translate-middle top-50 start-50" (click)="redirectToLogin()" >Для записи войдите под учетной записью клиента</button>
+
 </div>

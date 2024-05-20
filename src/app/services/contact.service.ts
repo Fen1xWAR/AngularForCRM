@@ -10,7 +10,7 @@ export interface Contact {
   name: string;
   lastname: string;
   middlename?: string | undefined;
-  dateOfBirth: Date;
+  dateOfBirth: Date | string;
 }
 
 @Injectable({

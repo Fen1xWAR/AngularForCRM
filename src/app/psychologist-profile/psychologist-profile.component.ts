@@ -48,7 +48,7 @@ export class PsychologistProfileComponent {
                 lastName: contact.lastname,
                 middlename: contact.middlename,
                 about: psychologist.about,
-                age: this.contactService.calculateAge(contact.dateOfBirth),
+                age: this.contactService.calculateAge(contact.dateOfBirth as Date),
               }
             }
           )

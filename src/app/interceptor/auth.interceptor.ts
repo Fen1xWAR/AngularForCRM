@@ -17,9 +17,10 @@ export class AuthInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    if(this.isExcludeRoutes( this.router.url)){
-      return next.handle(request);
-    }
+    // if(this.isExcludeRoutes( this.router.url)){
+    //   if(this.authService.getJwtToken())
+    //   return next.handle(request);
+    // }
     if (this.isExcludedUrl(request.url)) {
       return next.handle(request);
     }
@@ -34,7 +35,10 @@ export class AuthInterceptor implements HttpInterceptor {
       });
     } else {
       this.authService.refreshTokens();
-      location.href = '/login';
+      if(!this.isExcludeRoutes(this.router.url)){
+        return next.handle(request);
+      }
+
     }
 
     return next.handle(request).pipe(
@@ -42,7 +46,10 @@ export class AuthInterceptor implements HttpInterceptor {
           // Handle other errors
           console.error('HTTP ERROR', error);
           if (error.status === 401) {
-            return this.handle401Error(request, next);
+            if(!(this.isExcludeRoutes(this.router.url))){
+              return this.handle401Error(request, next);
+            }
+            return next.handle(request);
           }
 
 
@@ -88,6 +95,7 @@ export class AuthInterceptor implements HttpInterceptor {
           }),
           finalize(() => {
             this.isRefreshing = false;
+            location.reload()
           }),
         );
       }

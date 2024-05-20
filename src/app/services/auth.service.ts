@@ -129,6 +129,7 @@ export class AuthService {
     console.log('loggingOut')
     this.setLoginIn(false)
     this.cookieService.delete("tokens")
+    location.href='/';
 
   }
 

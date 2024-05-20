@@ -21,6 +21,36 @@
     </div>
   </div>
   <div class="form-group mb-3">
+    <label class="form-label" for="middleName">Отчество:</label>
+    <input
+      [ngClass]="{'is-invalid': settingsForm.controls['lastname'].touched && settingsForm.controls['middleName'].invalid}"
+      type="text" formControlName="middlename" id="middleName" class="form-control">
+
+  </div>
+  <label class="form-label" for="dateOfBirth">Дата рождения:</label>
+  <div class=" form-group mb-3 input-group">
+    <input
+      [maxDate]="{ year: current.getFullYear(), month: current.getMonth() + 1, day: current.getDate() }"
+      [minDate]="{
+      year: current.getFullYear()-100, month:
+        current.getMonth() + 1, day: current.getDate()
+    }"
+      [ngClass]="{'is-invalid': settingsForm.controls['dateOfBirth'].touched && settingsForm.controls['dateOfBirth'].invalid}"
+      formControlName="dateOfBirth"
+      [minlength]="6"
+      class="form-control"
+      placeholder="дд.мм.гггг"
+      name="dp"
+      ngbDatepicker
+      #d="ngbDatepicker"
+      id="dateOfBirth"
+    />
+    <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
+    <div class="invalid-feedback">
+      Введите корректную дату рождения
+    </div>
+  </div>
+  <div class="form-group mb-3">
     <label class="form-label" for="phoneNumber">Номер телефона (+7):</label>
     <input
       [ngClass]="{'is-invalid': settingsForm.controls['phoneNumber'].touched && settingsForm.controls['phoneNumber'].invalid}"
@@ -52,7 +82,13 @@
   <ng-container *ngIf="this.userDataFull?.role == 'Client'">
     <h5>Текущая проблема:</h5>
     <select2 style="width: 100% " formControlName="currentProblem"
-             [placeholder]="'Выберите из списка:'" [multiple]="true" [styleMode]="'material'" [data]="data"></select2>
+             [placeholder]="'Выберите из списка:'" [multiple]="true" [styleMode]="'material'"
+             [data]="clientsProblemVariants"></select2>
+  </ng-container>
+  <ng-container *ngIf="this.userDataFull?.role == 'Psychologist'">
+    <h5>О себе:</h5>
+    <textarea style="resize: none" formControlName="about" class="mt-3 form-control" rows="10"
+              placeholder="Расскажите о себе"></textarea>
   </ng-container>
   <br>
 

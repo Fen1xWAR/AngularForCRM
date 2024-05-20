@@ -1,4 +1,4 @@
-import {ApplicationConfig} from '@angular/core';
+import {ApplicationConfig, LOCALE_ID} from '@angular/core';
 import {provideRouter} from '@angular/router';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 
@@ -24,6 +24,8 @@ import localeRu from '@angular/common/locales/ru'
 import {ErrorInterceptor} from "./interceptor/error-interceptor";
 import {ScheduleService} from "./services/schedule.service";
 import {ServiceService} from "./services/service.service";
+import {NgbDateParserFormatter} from "@ng-bootstrap/ng-bootstrap";
+import {NgbDateCustomParserFormatter} from "./ngb-date-custom-parser-formatter.service";
 
 registerLocaleData(localeRu);
 
@@ -46,6 +48,8 @@ export const appConfig: ApplicationConfig = {
     MyProfileComponent,
     PsychologistService,
     ScheduleService,
+    { provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter },
+    { provide: LOCALE_ID, useValue: 'ru' },
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
