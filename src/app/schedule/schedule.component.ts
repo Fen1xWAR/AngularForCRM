@@ -1,9 +1,10 @@
 import {Component, Input, input} from '@angular/core';
-import {DatePipe, KeyValuePipe, NgClass, NgForOf, NgIf} from "@angular/common";
+import {AsyncPipe, DatePipe, KeyValuePipe, NgClass, NgForOf, NgIf, NgStyle} from "@angular/common";
 import {Schedule, ScheduleService} from "../services/schedule.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {ModalComponent} from "../modal/modal.component";
 import {PsychologistFullData} from "../services/psychologist.service";
+import {AuthService} from "../services/auth.service";
 
 @Component({
   selector: 'app-schedule',
@@ -13,7 +14,9 @@ import {PsychologistFullData} from "../services/psychologist.service";
     NgForOf,
     KeyValuePipe,
     NgClass,
-    NgIf
+    NgIf,
+    AsyncPipe,
+    NgStyle
   ],
   templateUrl: './schedule.component.html',
   styleUrl: './schedule.component.scss'
@@ -27,7 +30,7 @@ export class ScheduleComponent {
   protected currentDate: Date = new Date(Date.now())
   protected currentOffset = 0
 
-  constructor(private scheduleService: ScheduleService, private modalService: NgbModal) {
+  constructor(private scheduleService: ScheduleService, protected authService : AuthService, private modalService: NgbModal) {
 
   }
 
@@ -109,4 +112,6 @@ export class ScheduleComponent {
     this.getWeekDays(this.currentOffset);
   }
 
+  protected readonly blur = blur;
+  protected readonly location = location;
 }

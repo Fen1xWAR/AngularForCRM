@@ -26,20 +26,23 @@
       </ul>
       <ul class="navbar-nav">
 
-        <ng-container *ngIf="isLoggedIn; else elseBlock">
+        <ng-container *ngIf="this.authService.isLoginIn$  | async; else elseBlock">
           <li class="nav-item dropdown">
-            <a class="nav-link bg-primary p-2 text-white rounded-2 dropdown-toggle" href="#" role="button" style="max-width: 180px" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link bg-primary p-2 text-white rounded-2 dropdown-toggle" href="#" role="button"
+               style="max-width: 180px" data-bs-toggle="dropdown" aria-expanded="false">
               Личный кабинет
             </a>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="/me">Мой профиль</a></li>
-              <li><a class="dropdown-item" (click)="logout()" href="">Выйти</a></li>
+              <li><a class="dropdown-item" (click)="this.authService.logout()" href="">Выйти</a></li>
             </ul>
           </li>
         </ng-container>
         <ng-template #elseBlock>
 
-          <button style="min-width: fit-content; width: 9em" *ngIf="!isLoggedIn" class="btn btn-primary" onclick="location.href='/login'">Войти</button>
+          <button style="min-width: fit-content; width: 9em"
+                  class="btn btn-primary" onclick="location.href='/login'">Войти
+          </button>
         </ng-template>
 
       </ul>

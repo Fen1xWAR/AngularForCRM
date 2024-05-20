@@ -2,11 +2,11 @@ import {Component} from '@angular/core';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {AuthService} from "../services/auth.service";
 import {Psychologist, PsychologistFullData, PsychologistService} from "../services/psychologist.service";
-import {NgIf} from "@angular/common";
+import {AsyncPipe, NgIf} from "@angular/common";
 import {back, router} from "ngx-bootstrap-icons";
 import {Title} from "@angular/platform-browser";
 import {ContactService} from "../services/contact.service";
-import {EMPTY, Observable, switchMap} from "rxjs";
+
 import {map} from "rxjs/operators";
 import {ScheduleComponent} from "../schedule/schedule.component";
 
@@ -16,7 +16,8 @@ import {ScheduleComponent} from "../schedule/schedule.component";
   imports: [
     RouterLink,
     NgIf,
-    ScheduleComponent
+    ScheduleComponent,
+    AsyncPipe,
   ],
   templateUrl: './psychologist-profile.component.html',
   styleUrl: './psychologist-profile.component.scss'
@@ -28,7 +29,7 @@ export class PsychologistProfileComponent {
   protected isLoggedIn: boolean = false;
   protected isRecordPanelOpen: boolean = false;
 
-  constructor(private route: ActivatedRoute, private contactService: ContactService, private authService: AuthService, private titleService: Title, private psychologistService: PsychologistService) {
+  constructor(private route: ActivatedRoute, private contactService: ContactService, protected authService: AuthService, private titleService: Title, private psychologistService: PsychologistService) {
     this.isLoggedIn = this.authService.getJwtToken() != null;
   }
 

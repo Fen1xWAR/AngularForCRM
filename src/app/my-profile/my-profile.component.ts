@@ -28,7 +28,7 @@ export class MyProfileComponent {
   UserData: UserData | undefined = undefined;
   UserContact: Contact | undefined = undefined;
 
-  constructor(private router: Router, private userDataService: UserDataService, private headerComponent: HeaderComponent) {
+  constructor(private router: Router, private userDataService: UserDataService, private authService: AuthService) {
   }
 
   isActive(path: string) {
@@ -41,7 +41,7 @@ export class MyProfileComponent {
   }
 
   logout() {
-    this.headerComponent.logout();
+    this.authService.logout()
     location.href = "/"
 
 

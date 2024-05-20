@@ -41,10 +41,15 @@ interface RefreshToken {
 })
 export class AuthService {
   private apiUrl = 'https://localhost:7002/api/User';
-
+  private isLoginIn$$ = new BehaviorSubject<boolean>(false);
+  isLoginIn$ = this.isLoginIn$$.asObservable();
   constructor(private http: HttpClient, private cookieService: CookieService) {
-
+    this.setLoginIn(!!this.getJwtToken());
   }
+  public setLoginIn(value: boolean){
+    this.isLoginIn$$.next(value);
+  }
+
   public encrypt(password: string): string {
     return CryptoJS.SHA256(password).toString();
   }
@@ -57,7 +62,8 @@ export class AuthService {
         if (result.successful && result.result != undefined) {
           const tokens = result.result;
           this.setTokens(tokens);
-
+          this.setLoginIn(true)
+          console.log( this.isLoginIn$)
           return tokens;
         } else {
           throw new Error(result.errorMessage);
@@ -82,7 +88,7 @@ export class AuthService {
           const tokens = result.result;
           console.log(tokens)
           this.setTokens(tokens);
-
+          this.setLoginIn(true)
           return tokens;
         } else {
           this.logout();
@@ -105,7 +111,7 @@ export class AuthService {
         if (result.successful && result.result != undefined) {
           const tokens = result.result;
           this.setTokens(tokens);
-
+          this.setLoginIn(true)
           return tokens;
         } else {
           throw new Error(result.errorMessage);
@@ -121,6 +127,7 @@ export class AuthService {
 
   logout(): void {
     console.log('loggingOut')
+    this.setLoginIn(false)
     this.cookieService.delete("tokens")
 
   }
