@@ -26,7 +26,7 @@ export class ClientVisitsComponent {
   protected services: { [id: string]: Service } = {};
   protected psychologists: { [id: string]: Contact } = {};
 
-  constructor(protected contactRepository : ContactService, private userDataService: UserDataService, private visitService: VisitService, private psychologistService: PsychologistService) {
+  constructor(protected contactService : ContactService, private userDataService: UserDataService, private visitService: VisitService, private psychologistService: PsychologistService) {
   }
 
   ngOnInit(): void {
@@ -39,7 +39,7 @@ export class ClientVisitsComponent {
         psychologistIds.forEach(id => {
           this.psychologistService.getPsychologistById(id).subscribe(psychologist => {
 
-            this.contactRepository.getContactByUserId(psychologist.userId).subscribe(contact => {
+            this.contactService.getContactByUserId(psychologist.userId).subscribe(contact => {
               this.psychologists[id] = contact;
             });
           });

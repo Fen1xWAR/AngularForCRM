@@ -5,8 +5,9 @@ import {UserDataService} from "../services/user-data.service";
 import {Visit, VisitService} from "../services/visit.service";
 import {Contact, ContactService} from "../services/contact.service";
 import {PsychologistService} from "../services/psychologist.service";
-import {ClientService} from "../services/client.service";
+import {Client, ClientService} from "../services/client.service";
 import {Service} from "../services/service.service";
+import {visit} from "@angular/compiler-cli/src/ngtsc/util/src/visitor";
 
 @Component({
   selector: 'app-psychologist-visits',
@@ -23,10 +24,13 @@ import {Service} from "../services/service.service";
 export class PsychologistVisitsComponent {
   protected visits: Visit[] = [];
   protected services: { [id: string]: Service } = {};
-  protected clients: { [id: string]: Contact } = {};
+  protected clientsContact: { [id: string]: Contact } = {};
+  protected clients: { [id: string]: Client } = {};
+  protected age?: Contact;
 
 
-constructor(protected contactRepository : ContactService, private userDataService: UserDataService, private visitService: VisitService, private clientService: ClientService) {
+
+constructor(protected contactService : ContactService, private userDataService: UserDataService, private visitService: VisitService, private clientService: ClientService) {
 }
 
 ngOnInit(): void {
@@ -35,12 +39,16 @@ ngOnInit(): void {
       this.visits = visits;
 
       // Fetch all psychologists and their contacts
+
       const clientsIds = [...new Set(visits.map(visit => visit.clientId))];
       clientsIds.forEach(id => {
         this.clientService.getClientById(id).subscribe(client => {
+          this.clientService.getClientById(client.clientId).subscribe(currentProblem => {
+            this.clients[id]=currentProblem;
+          })
 
-          this.contactRepository.getContactByUserId(client.userId).subscribe(contact => {
-            this.clients[id] = contact;
+          this.contactService.getContactByUserId(client.userId).subscribe(contact => {
+            this.clientsContact[id] = contact;
           });
         });
       });
