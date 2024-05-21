@@ -1,7 +1,7 @@
-<!-- client-feature-login.component.html -->
 <div class="container align-self-center">
   <div class="row  justify-content-center">
-    <div class="col-md-4 ">
+    <div class="col-md-5 ">
+      <h1 class="text-center mb-4">Войти</h1>
       <form [formGroup]="loginForm" (ngSubmit)="submitForm()">
         <div class="form-group mb-3">
           <label class="form-label" for="email">Email</label>
@@ -13,18 +13,32 @@
             Введите корректный email
           </div>
         </div>
-        <div class="form-group mb-3">
-          <label class="form-label" for="password">Password</label>
-          <input type="password"
-                 [ngClass]="{'is-invalid': loginForm.controls['password'].touched && loginForm.controls['password'].invalid}"
-                 formControlName="password" class="form-control" id="password"
-          >
-          <div class="invalid-feedback">
-            Введите пароль
+        <div class="form-group mb-3 position-relative">
+          <label class="form-label" for="password">Пароль</label>
+          <div class="input-group">
+            <input type="password"
+                   [ngClass]="{'is-invalid': loginForm.controls['password'].touched && loginForm.controls['password'].invalid}"
+                   [type]="hidePassword ? 'password' : 'text'"
+                   formControlName="password" class="form-control" id="password"
+            >
+            <button type="button"  (click)="togglePasswordVisibility()" class="btn-light rounded-end-2 border btn">
+              <i class="bi bi-eye-slash" *ngIf="hidePassword"></i>
+              <i class="bi bi-eye" *ngIf="!hidePassword"></i>
+            </button>
+            <div class="invalid-feedback">
+              Введите пароль
+            </div>
+
           </div>
+
         </div>
-        <button type="submit" [disabled]="!loginForm.valid" class="btn btn-primary">Login</button>
-        <a href="/register" class="float-right">Register</a>
+        <p class="text-center">
+          Нет аккаунта? <a href="/register" class="link-underline-primary">Зарегистрироваться</a>
+        </p>
+        <div class="d-flex flex-column justify-content-center">
+          <button  type="submit" [disabled]="!loginForm.valid" class="btn btn-primary">Войти</button>
+        </div>
+
       </form>
     </div>
   </div>

@@ -28,7 +28,6 @@ export class MyProfileComponent {
   UserData: UserData | undefined = undefined;
   UserContact: Contact | undefined = undefined;
 
-
   constructor(private router: Router, private userDataService: UserDataService, private authService: AuthService) {
   }
 

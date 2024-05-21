@@ -1,16 +1,16 @@
 <app-header></app-header>
 
-<ng-container *ngIf="this.loaderService.isLoading$ | async">
-  <app-loader class="d-flex flex-grow-1 justify-content-center align-items-center"></app-loader>
+<ng-container *ngIf="loaderService.isLoading$ | async">
+  <app-loader class="position-absolute top-50 start-50 translate-middle z-3 d-flex flex-grow-1 justify-content-center align-items-center"></app-loader>
 </ng-container>
 
 
 
-<div  [class.visually-hidden]="this.loaderService.isLoading$ | async" class=" d-flex justify-content-center flex-grow-1">
+<div  [class.hidden]="loaderService.isLoading$ | async" class=" d-flex justify-content-center flex-grow-1">
   <router-outlet></router-outlet>
 </div>
 
 
-
+<app-toast-alerts></app-toast-alerts>
 
 <app-footer></app-footer>

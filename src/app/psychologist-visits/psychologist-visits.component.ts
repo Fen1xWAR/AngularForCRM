@@ -1,13 +1,11 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {UserDataService} from "../services/user-data.service";
 import {Visit, VisitService} from "../services/visit.service";
 import {Contact, ContactService} from "../services/contact.service";
-import {PsychologistService} from "../services/psychologist.service";
 import {Client, ClientService} from "../services/client.service";
 import {Service} from "../services/service.service";
-import {visit} from "@angular/compiler-cli/src/ngtsc/util/src/visitor";
 
 @Component({
   selector: 'app-psychologist-visits',
@@ -29,49 +27,43 @@ export class PsychologistVisitsComponent {
   protected age?: Contact;
 
 
+  constructor(protected contactService: ContactService, private userDataService: UserDataService, private visitService: VisitService, private clientService: ClientService) {
+  }
 
-constructor(protected contactService : ContactService, private userDataService: UserDataService, private visitService: VisitService, private clientService: ClientService) {
-}
+  ngOnInit(): void {
+    this.userDataService.getUserVisits().subscribe(
+      (visits: Visit[]) => {
+        this.visits = visits;
 
-ngOnInit(): void {
-  this.userDataService.getUserVisits().subscribe(
-    (visits: Visit[]) => {
-      this.visits = visits;
 
-      // Fetch all psychologists and their contacts
+        const clientsIds = [...new Set(visits.map(visit => visit.clientId))];
+        clientsIds.forEach(id => {
+          this.clientService.getClientById(id).subscribe(client => {
+            this.clientService.getClientById(client.clientId).subscribe(currentProblem => {
+              this.clients[id] = currentProblem;
+            })
 
-      const clientsIds = [...new Set(visits.map(visit => visit.clientId))];
-      clientsIds.forEach(id => {
-        this.clientService.getClientById(id).subscribe(client => {
-          this.clientService.getClientById(client.clientId).subscribe(currentProblem => {
-            this.clients[id]=currentProblem;
-          })
-
-          this.contactService.getContactByUserId(client.userId).subscribe(contact => {
-            this.clientsContact[id] = contact;
+            this.contactService.getContactByUserId(client.userId).subscribe(contact => {
+              this.clientsContact[id] = contact;
+            });
           });
         });
-      });
-      const services = [...new Set(visits.map(visit => visit.serviceId))];
-      services.forEach(serviceId => {
-        this.visitService.getService(serviceId).subscribe(service => {
-          this.services[serviceId] = service;
+        const services = [...new Set(visits.map(visit => visit.serviceId))];
+        services.forEach(serviceId => {
+          this.visitService.getService(serviceId).subscribe(service => {
+            this.services[serviceId] = service;
+          })
         })
-      })
-    },
-    (error: any) => {
-      console.error('Error fetching visits:', error);
-    }
-  );
+      }
+    );
 
-}
+  }
 
 
-UpdateVisit(visit: Visit) {
-  this.visitService.updateVisit(visit);
-}
+  UpdateVisit(visit: Visit) {
+    this.visitService.updateVisit(visit);
+  }
 
-protected readonly Date = Date;
 }
 
 

@@ -18,8 +18,6 @@ interface UserAuth {
 }
 
 interface UserRegModel {
-  name: string;
-  lastName: string;
   email: string;
   password: string;
   role: string;
@@ -118,6 +116,7 @@ export class AuthService {
         }
       }),
       catchError(error => {
+        console.error(error)
         const errorMessage = error.error.errorMessage;
         throw new Error(errorMessage);
       })

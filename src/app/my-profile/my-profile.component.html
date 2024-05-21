@@ -1,78 +1,79 @@
 <div class="w-100 container container-xxl  d-flex my-md-4 flex-column">
+  <ng-container *ngIf="this.UserContact != undefined">
+
+    <div class="col-auto ms-md-3 border-bottom d-flex  border-gray mb-0  justify-content-between   mh-25">
+      <h2 class="pb-1">
+        Здравствуйте, {{ this.UserContact?.name }}  {{ " " + this.UserContact?.middlename }}!</h2>
+    </div>
+    <div class="row  h-100 gap-2 p-md-2">
+      <div  class="d-flex  col-xl-3 col-12  flex-column flex-shrink-0 p-3 rounded-4 border border-black border-1"
+            style="min-width: fit-content">
 
 
-  <div class="col-auto ms-md-3 border-bottom d-flex  border-gray mb-0  justify-content-between   mh-25">
-    <h2 class="pb-1">
-      Здравствуйте, {{ this.UserContact?.name }}  {{ " " + this.UserContact?.middlename }}!</h2>
-  </div>
-  <div class="row  h-100 gap-2 p-md-2">
-    <div  class="d-flex  col-xl-3 col-12  flex-column flex-shrink-0 p-3 rounded-4 border border-black border-1"
-         style="min-width: fit-content">
+        <ul class="nav nav-pills flex-column mb-auto ">
+          <ng-container *ngIf="UserData?.role == 'Client'">
+            <li class="nav-item">
+              <a class="nav-link" [ngClass]="{'link-dark': !isActive('visits')}" routerLinkActive="active"
+                 [routerLink]="['./visits']">
+                <div class="d-flex  align-items-center">
+                  <i class="bi bi-list-stars" style="font-size: 1.5rem"></i>
+                  <h5 class="text-center mx-2 mb-1 ">Визиты</h5>
+                </div>
+
+              </a>
+            </li>
 
 
-      <ul class="nav nav-pills flex-column mb-auto ">
-        <ng-container *ngIf="UserData?.role == 'Client'">
-          <li class="nav-item">
-            <a class="nav-link" [ngClass]="{'link-dark': !isActive('visits')}" routerLinkActive="active"
-               [routerLink]="['./visits']">
-              <div class="d-flex  align-items-center">
-                <i class="bi bi-list-stars" style="font-size: 1.5rem"></i>
-                <h5 class="text-center mx-2 mb-1 ">Визиты</h5>
-              </div>
+            <li class="nav-item">
+              <a class="nav-link" [ngClass]="{'link-dark': !isActive('form')}" routerLinkActive="active"
+                 [routerLink]="['./form']">
+                <div class="d-flex  align-items-center">
+                  <i class="bi bi-list-stars" style="font-size: 1.5rem"></i>
+                  <h5 class="text-center mx-2 mb-1 ">Форма</h5>
+                </div>
 
-            </a>
-          </li>
+              </a>
+            </li>
+          </ng-container>
+          <ng-container *ngIf="UserData?.role == 'Psychologist'">
+            <li class="nav-item">
+              <a class="nav-link" [ngClass]="{'link-dark': !isActive('visits')}" routerLinkActive="active"
+                 [routerLink]="['./visits']">
+                <div class="d-flex  align-items-center">
+                  <i class="bi bi-list-stars" style="font-size: 1.5rem"></i>
+                  <h5 class="text-center mx-2 mb-1 ">Мое расписание</h5>
+                </div>
 
-
-          <li class="nav-item">
-            <a class="nav-link" [ngClass]="{'link-dark': !isActive('form')}" routerLinkActive="active"
-               [routerLink]="['./form']">
-              <div class="d-flex  align-items-center">
-                <i class="bi bi-list-stars" style="font-size: 1.5rem"></i>
-                <h5 class="text-center mx-2 mb-1 ">Форма</h5>
-              </div>
-
-            </a>
-          </li>
-        </ng-container>
-        <ng-container *ngIf="UserData?.role == 'Psychologist'">
-          <li class="nav-item">
-            <a class="nav-link" [ngClass]="{'link-dark': !isActive('visits')}" routerLinkActive="active"
-               [routerLink]="['./visits']">
-              <div class="d-flex  align-items-center">
-                <i class="bi bi-list-stars" style="font-size: 1.5rem"></i>
-                <h5 class="text-center mx-2 mb-1 ">Мое расписание</h5>
-              </div>
-
-            </a>
-          </li>
+              </a>
+            </li>
 
 
-          <li class="nav-item">
-            <a class="nav-link" [ngClass]="{'link-dark': !isActive('clients')}" routerLinkActive="active"
-               [routerLink]="['./clients']">
-              <div class="d-flex  align-items-center">
-                <i class="bi bi-list-stars" style="font-size: 1.5rem"></i>
-                <h5 class="text-center mx-2 mb-1 ">Мои клиенты</h5>
-              </div>
+            <li class="nav-item">
+              <a class="nav-link" [ngClass]="{'link-dark': !isActive('clients')}" routerLinkActive="active"
+                 [routerLink]="['./clients']">
+                <div class="d-flex  align-items-center">
+                  <i class="bi bi-list-stars" style="font-size: 1.5rem"></i>
+                  <h5 class="text-center mx-2 mb-1 ">Мои клиенты</h5>
+                </div>
 
-            </a>
-          </li>
-        </ng-container>
-      </ul>
-      <hr>
-      <div class="d-flex flex-column align-items-center  justify-content-center">
-        <button [ngClass]="{'btn-secondary': !isActive('settings'),'btn-primary': isActive('settings')}"
-                class="btn mt-3   w-50 " style="min-width:  fit-content" [routerLink]="['./settings']">Настройки
-        </button>
-        <button class="btn mt-3 btn-danger w-50" style="min-width: fit-content" (click)="logout()">Выйти из аккаунта
-        </button>
+              </a>
+            </li>
+          </ng-container>
+        </ul>
+        <hr>
+        <div class="d-flex flex-column align-items-center  justify-content-center">
+          <button [ngClass]="{'btn-secondary': !isActive('settings'),'btn-primary': isActive('settings')}"
+                  class="btn mt-3   w-50 " style="min-width:  fit-content" [routerLink]="['./settings']">Настройки
+          </button>
+          <button class="btn mt-3 btn-danger w-50" style="min-width: fit-content" (click)="logout()">Выйти из аккаунта
+          </button>
+        </div>
+
       </div>
-
+      <div class="col-xl-8 col-12 flex-grow-1 border pb-md-3 border-black border-1 rounded-4">
+        <router-outlet></router-outlet>
+      </div>
     </div>
-    <div class="col-xl-8 col-12 flex-grow-1 border pb-md-3 border-black border-1 rounded-4">
-      <router-outlet></router-outlet>
-    </div>
-  </div>
+  </ng-container>
 
 </div>

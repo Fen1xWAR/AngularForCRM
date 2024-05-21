@@ -1,4 +1,4 @@
-<ng-container *ngIf="this.visits.length != 0">
+<ng-container *ngIf="this.visits.length != 0 else elseBlock">
   <h5 class="mt-3 text-center">Ваши визиты:</h5>
 
   <div class="accordion" id="visitsAccordion">
@@ -37,3 +37,10 @@
     </div>
   </div>
 </ng-container>
+<ng-template #elseBlock>
+  <div  class="d-flex mt-3 flex-column justify-content-center align-items-center">
+
+    <h4 class="text-center">У вас еще нет ни одного визита</h4>
+    <button class="btn mt-3  btn-primary" (click)="location.href='/forclient'">Запишитесь сейчас</button>
+  </div>
+</ng-template>

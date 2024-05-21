@@ -1,0 +1,51 @@
+<div class="container align-self-center">
+  <div class="row justify-content-center">
+    <div class="col-md-5">
+      <h1 class="text-center mb-3">Регистрация</h1>
+      <form [formGroup]="registrationForm" (ngSubmit)="register()">
+        <div class="form-group mb-3">
+          <label for="email">Email</label>
+          <input [ngClass]="{'is-invalid': registrationForm.controls['email'].touched && registrationForm.controls['email'].invalid}" type="email" class="form-control" id="email" formControlName="email" required>
+          <div class="invalid-feedback">
+            Введите корректный email
+          </div>
+        </div>
+        <div class="form-group mb-3">
+          <label for="password">Пароль</label>
+          <input
+            type="password"
+            [ngClass]="{'is-invalid': registrationForm.controls['password'].touched && registrationForm.controls['password'].invalid}"
+
+            class="form-control" id="password" formControlName="password" required>
+          <div class="invalid-feedback">
+            Введите пароль
+          </div>
+        </div>
+        <div class="form-group mb-3">
+          <label for="confirmPassword">Повторите пароль</label>
+          <input type="password"
+                 [ngClass]="{'is-invalid': registrationForm.controls['confirmPassword'].touched && (registrationForm.controls['confirmPassword'].invalid || registrationForm.errors?.['PasswordNoMatch'])}"
+                 class="form-control" id="confirmPassword" formControlName="confirmPassword">
+          <div *ngIf="registrationForm.get('confirmPassword')?.errors" class="invalid-feedback">
+            Повторите пароль
+          </div>
+          <div *ngIf="registrationForm.errors?.['PasswordNoMatch']" class="invalid-feedback">
+            Пароли не совпадают
+          </div>
+        </div>
+        <div class="form-group mb-3">
+          <label for="role">Кто вы?</label>
+          <select class="form-select" id="role" formControlName="role" required>
+            <option value="Client">Клиент</option>
+            <option value="Psychologist">Психолог</option>
+          </select>
+        </div>
+
+        <div class="d-flex flex-column  justify-content-center">
+
+          <button  [disabled]="!registrationForm.valid"  type="submit" class="btn btn-primary">Зарегистрироваться</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

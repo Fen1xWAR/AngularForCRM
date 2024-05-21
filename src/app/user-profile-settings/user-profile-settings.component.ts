@@ -145,7 +145,7 @@ export class UserProfileSettingsComponent {
     this.settingsForm.patchValue({
       name: userData.contact.name ?? '',
       lastname: userData.contact.lastname ?? '',
-      middlename: userData.contact.middlename ?? '',
+      middleName: userData.contact.middlename ?? '',
       phoneNumber: userData.contact.phoneNumber ?? '',
       dateOfBirth: currentDateOfBirthObj,
       email: userData.userDataFull.email ?? '',
@@ -166,10 +166,10 @@ export class UserProfileSettingsComponent {
     const contact: Partial<Contact> = {
       contactId: this.userDataFull?.contactId,
       phoneNumber: formData.phoneNumber,
-      dateOfBirth: `${formData.dateOfBirth.year}-${formData.dateOfBirth.month>9?  formData.dateOfBirth.month : "0"+ formData.dateOfBirth.month }-${formData.dateOfBirth.day>9?  formData.dateOfBirth.day : "0"+ formData.dateOfBirth.day}`,
+      dateOfBirth: `${formData.dateOfBirth.year}-${formData.dateOfBirth.month > 9 ? formData.dateOfBirth.month : "0" + formData.dateOfBirth.month}-${formData.dateOfBirth.day > 9 ? formData.dateOfBirth.day : "0" + formData.dateOfBirth.day}`,
       name: formData.name,
       lastname: formData.lastname,
-      middlename: formData.middlename
+      middlename: formData.middleName
     }
     if (this.currentRoleObj != null) {
       if (this.userDataFull?.role === 'Client') {
@@ -194,28 +194,18 @@ export class UserProfileSettingsComponent {
       } else throw Error("Сюда дойти не должно было!")
     }
     this.contactService.updateContact(contact).subscribe((response) => {
-        console.log('Contact updated successfully', response);
+
         this.profile.ngOnInit()
       },
-      (error) => {
-        console.error('Error updating user data', error.errorMessage);
-      })
+    )
     this.userdataService.updateUser(user).subscribe(
-      (response) => {
-        console.log('RoleBased data updated successfully', response);
-      },
-      (error) => {
-        console.error('Error updating roleBasedData data', error.errorMessage);
-      }
+
+
     );
 
     this.userdataService.updateUser(user).subscribe(
-      (response) => {
-        console.log('User data updated successfully', response);
-      },
-      (error) => {
-        console.error('Error updating user data', error.errorMessage);
-      }
+
+
     );
   }
 
@@ -223,7 +213,7 @@ export class UserProfileSettingsComponent {
     this.settingsForm = new FormGroup({
       name: new FormControl('', [Validators.required, Validators.pattern("^[A-zА-яЁё]+$")]),
       lastname: new FormControl('', [Validators.required, Validators.pattern("^[A-zА-яЁё]+$")]),
-      middlename: new FormControl('', Validators.pattern("^[A-zА-яЁё]+$")),
+      middleName: new FormControl('', Validators.pattern("^[A-zА-яЁё]+$")),
       dateOfBirth: new FormControl([Validators.required]),
       phoneNumber: new FormControl('', [Validators.pattern('^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$')]),
       email: new FormControl('', [Validators.required]),

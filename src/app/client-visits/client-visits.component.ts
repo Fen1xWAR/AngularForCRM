@@ -64,4 +64,5 @@ export class ClientVisitsComponent {
   }
 
   protected readonly Date = Date;
+  protected readonly location = location;
 }

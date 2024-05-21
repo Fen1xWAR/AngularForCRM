@@ -26,6 +26,8 @@ import {ScheduleService} from "./services/schedule.service";
 import {ServiceService} from "./services/service.service";
 import {NgbDateParserFormatter} from "@ng-bootstrap/ng-bootstrap";
 import {NgbDateCustomParserFormatter} from "./services/ngb-date-custom-parser-formatter.service";
+import {ToastAlertsComponent} from "./toast-alerts/toast-alerts.component";
+import {ToastService} from "./services/Toast/toast-service";
 
 registerLocaleData(localeRu);
 
@@ -48,6 +50,7 @@ export const appConfig: ApplicationConfig = {
     MyProfileComponent,
     PsychologistService,
     ScheduleService,
+    ToastService,
     { provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter },
     { provide: LOCALE_ID, useValue: 'ru' },
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},

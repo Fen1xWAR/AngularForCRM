@@ -4,3 +4,6 @@ router-outlet + ::ng-deep * {
   flex-grow: 1;
   display: flex;
 }
+.hidden{
+    visibility: hidden;
+}

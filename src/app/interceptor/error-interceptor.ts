@@ -3,10 +3,12 @@ import {catchError} from "rxjs/operators";
 import {EMPTY, Observable} from "rxjs";
 import {Injectable} from "@angular/core";
 import {Router} from "@angular/router";
+import {ToastAlertsComponent} from "../toast-alerts/toast-alerts.component";
+import {ToastService} from "../services/Toast/toast-service";
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(private router: Router) {
+  constructor(private router: Router,private toastService: ToastService) {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -17,6 +19,11 @@ export class ErrorInterceptor implements HttpInterceptor {
           console.error('CONNECTION REFUSED');
           this.router.navigate(['/error']);
           return EMPTY;
+        }
+        if(error.status === 400) {
+          console.error('BAD REQUEST');
+          this.toastService.show(error.error.errorMessage, {classname: 'bg-danger text-light'});
+          return EMPTY
         }
         return EMPTY;
       })

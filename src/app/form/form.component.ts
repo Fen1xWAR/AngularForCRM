@@ -42,7 +42,12 @@ export class FormComponent {
       ).subscribe(form => {
         if (form != undefined) {
           this.userForm = form;
-          this.userFormContent = JSON.parse(this.userForm?.formContent);
+          try {
+            this.userFormContent = JSON.parse(this.userForm?.formContent);
+          }
+          catch{
+            this.userFormContent = undefined;
+          }
           if (this.userFormContent)
             this.formGroup.patchValue(this.userFormContent);
         }
@@ -69,7 +74,12 @@ export class FormComponent {
 
 
                   this.userForm = form;
+                try {
                   this.userFormContent = JSON.parse(this.userForm?.formContent);
+                }
+                catch{
+                  this.userFormContent = undefined;
+                }
                 }
               )
             }

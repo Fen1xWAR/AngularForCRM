@@ -6,11 +6,13 @@ import {AsyncPipe, NgClass, NgIf} from "@angular/common";
 import {LoaderComponent} from "./loader/loader.component";
 import {LoaderService} from "./services/loader.service";
 import {RouterOutlet} from "@angular/router";
+import {ToastAlertsComponent} from "./toast-alerts/toast-alerts.component";
+
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent, FooterComponent, AsyncPipe, LoaderComponent, NgIf, NgClass],
+  imports: [RouterOutlet, HeaderComponent, FooterComponent, AsyncPipe, LoaderComponent, NgIf, NgClass, ToastAlertsComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

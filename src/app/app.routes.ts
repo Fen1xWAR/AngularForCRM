@@ -13,11 +13,13 @@ import {UserProfileSettingsComponent} from "./user-profile-settings/user-profile
 import {ServerErrorComponent} from "./server-error/server-error.component";
 import {PsychologistsComponent} from "./psychologists/psychologists.component";
 import {PsychologistProfileComponent} from "./psychologist-profile/psychologist-profile.component";
+import {RegistrationComponent} from "./registration/registration.component";
 
 export const routes: Routes = [
-  {path: '', component: HomeComponent, title: "Психология"},
+  {path: '', component: HomeComponent, title: "Главная"},
   {path: 'about', component: AboutComponent, title: 'О нас',},
   {path: 'login', component: LoginComponent, title: "Войти"},
+  {path: 'register', component: RegistrationComponent, title : "Регистрация"},
   {
     path: 'me',
     title: "Мой профиль",

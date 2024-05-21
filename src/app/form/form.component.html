@@ -1,8 +1,8 @@
-<ng-container *ngIf="this.userForm?.formContent == '' &&showForm == false">
+<ng-container *ngIf="this.userForm?.formContent == '' &&!showForm">
   <h5 class="mt-3 text-center">Вы еще не заполняли свою форму, хотите сделать это сейчас?</h5>
-  <button (click)="showForm = true" class="btn btn-primary">Show Form</button>
+  <button (click)="showForm = true" class="btn btn-primary">Заполнить форму</button>
 </ng-container>
-<ng-container *ngIf="this.userForm?.formContent != '' && showForm == false">
+<ng-container *ngIf="this.userForm?.formContent != '' && !showForm">
   <h5 class=" mt-3 text-center">Ваша форма:</h5>
   <form>
     <div class=" form-group">

@@ -23,7 +23,7 @@ export class ContactService {
   constructor(private http: HttpClient) {
   }
 
-  calculateAge(dateOfBirth: Date| undefined) {
+  calculateAge(dateOfBirth: Date| string) {
 
     if(dateOfBirth){
       const convertAge = new Date(dateOfBirth);
