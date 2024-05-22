@@ -127,7 +127,7 @@ export class UserProfileSettingsComponent {
     if (this.userDataFull.role === 'Client') {
       const client = this.currentRoleObj as Client;
       try {
-        currentProblem = JSON.parse(<string>client.currentProblem);
+        currentProblem = JSON.parse(client.currentProblem);
       } catch (error) {
         currentProblem = []
       }
@@ -176,11 +176,8 @@ export class UserProfileSettingsComponent {
         const currentObj = this.currentRoleObj as Client;
         currentObj.currentProblem = JSON.stringify(formData.currentProblem);
         this.clientService.updateClient(currentObj).subscribe((response) => {
-            console.log("Client updated successfully");
-          },
-          (error) => {
-            console.error("Error updating client")
-          });
+          console.log("Client updated successfully");
+        });
 
       } else if (this.userDataFull?.role === 'Psychologist') {
         const currentObj = this.currentRoleObj as Psychologist;

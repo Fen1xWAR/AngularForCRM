@@ -7,7 +7,7 @@ import {Psychologist} from "./psychologist.service";
 export interface Client{
   clientId: string;
   formId : string;
-  currentProblem? : string;
+  currentProblem : string;
   userId : string;
 }
 @Injectable({

@@ -82,6 +82,7 @@ export class AuthService {
     }
     return this.http.post<IOperationResult<Tokens>>(`${this.apiUrl}/RefreshToken`, tokens).pipe(
       map(result => {
+        console.log(result);
         if (result.successful && result.result != undefined) {
           const tokens = result.result;
           console.log(tokens)
@@ -94,6 +95,7 @@ export class AuthService {
         }
       }),
       catchError(error => {
+        console.log("АШИБКА ДИСКОВОДА Б")
         this.logout()
         const errorMessage = error.error.errorMessage;
         throw new Error(error);

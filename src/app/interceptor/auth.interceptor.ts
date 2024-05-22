@@ -10,10 +10,10 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private authService: AuthService, private router: Router) {
   }
 
-  private isRefreshing: boolean = false;
+
   private excludedUrls: string[] = ['/login', '/register', '/refreshToken'];
 
-  private excludeRoutes : string[] = ['/forclient', '/psychologist'];
+  private excludeRoutes: string[] = ['/forclient', '/psychologist'];
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
@@ -35,72 +35,22 @@ export class AuthInterceptor implements HttpInterceptor {
       });
     } else {
       this.authService.refreshTokens();
-      if(!this.isExcludeRoutes(this.router.url)){
+      if (!this.isExcludeRoutes(this.router.url)) {
         return next.handle(request);
       }
 
     }
 
-    return next.handle(request).pipe(
-      catchError((error) => {
-          // Handle other errors
-          console.error('HTTP ERROR', error);
-          if (error.status === 401) {
-            if(!(this.isExcludeRoutes(this.router.url))){
-              return this.handle401Error(request, next);
-            }
-            return next.handle(request);
-          }
-
-
-        return throwError(() => error);
-      })
-    );
+    return next.handle(request);
   }
 
   private isExcludedUrl(url: string): boolean {
     return this.excludedUrls.some((excludedUrl) => url.includes(excludedUrl));
   }
-  private isExcludeRoutes(url : any): boolean {
-    console.log(url)
+
+  private isExcludeRoutes(url: any): boolean {
     return this.excludeRoutes.some((excludedUrl) => url.includes(excludedUrl));
   }
 
-  private handle401Error(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (!this.isRefreshing) {
-      this.isRefreshing = true;
 
-      if (this.authService.getTokens()) {
-        return this.authService.refreshTokens().pipe(
-          switchMap(() => {
-            const newJwtToken = this.authService.getJwtToken();
-
-            if (newJwtToken) {
-              request = request.clone({
-                setHeaders: {
-                  Authorization: `Bearer ${newJwtToken}`,
-                },
-              });
-            } else {
-              this.router.navigate(['/login']);
-            }
-
-            return next.handle(request);
-          }),
-          catchError((error) => {
-            this.isRefreshing = false;
-            this.router.navigate(['/login']);
-
-            return throwError(() => error);
-          }),
-          finalize(() => {
-            this.isRefreshing = false;
-            location.reload()
-          }),
-        );
-      }
-    }
-
-    return next.handle(request);
-  }
 }

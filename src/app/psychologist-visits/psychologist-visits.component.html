@@ -58,16 +58,16 @@
                 [attr.aria-controls]="'colapse'+visit.visitId">
           {{ clientsContact[visit. clientId]?.lastname }}
           {{ clientsContact[visit. clientId]?.name}} {{" "+ clientsContact[visit. clientId]?.middlename}}
-          {{ visit.dateTime | date:'dd MMM, yyyy  HH:mm':'ru' : "ru"}}
         </button>
       </h2>
       <div id="{{visit.visitId}}" class="accordion-collapse collapse " data-bs-parent="#visitsAccordion">
         <div class="accordion-body">
           <div class="d-flex flex-column">
             <h5>Проблема:</h5>
-            <p>{{ clients[visit. clientId]?.currentProblem?.replace("["," ")?.replace("]"," ")?.replace("\"", '') }}</p>
+            <p *ngIf="clients[visit.clientId].currentProblem != ''">{{ JSON.parse(clients[visit. clientId].currentProblem).join(', ') }}</p>
             <h5>Заметка клиента:</h5>
-            <p>{{ visit.clientNote }}</p>
+            <p *ngIf="visit.clientNote != '' ">{{ visit.clientNote }}</p>
+            <p *ngIf="visit.clientNote == ''" class="text-muted fst-italic">не указано</p>
             <h5>Возраст:</h5>
             <p>{{ this.contactService.calculateAge( this.clientsContact[visit.clientId].dateOfBirth) }}</p>
             <h5>Телефон:</h5>

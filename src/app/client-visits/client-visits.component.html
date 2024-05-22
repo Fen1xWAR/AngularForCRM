@@ -9,7 +9,6 @@
                 [attr.aria-controls]="'colapse'+visit.visitId">
           {{ psychologists[visit.psychologistId]?.lastname }}
           {{ psychologists[visit.psychologistId]?.name?.charAt(0)+"."}} {{" "+psychologists[visit.psychologistId]?.middlename?.charAt(0)+"."}}
-          {{ visit.dateTime | date:'dd MMM, yyyy  HH:mm':'ru' : "ru"}}
         </button>
       </h2>
       <div id="{{visit.visitId}}" class="accordion-collapse collapse " data-bs-parent="#visitsAccordion">

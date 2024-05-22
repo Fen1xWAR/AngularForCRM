@@ -88,7 +88,7 @@ export class ModalComponent {
         switchMap(client => {
           const visit: Partial<Visit> = {
             clientId: client.clientId,
-            dateTime: this.slot?.workDay,
+            scheduleId: this.slot?.scheduleId,
             clientNote: this.visitCreationForm.value[0],
             serviceId: this.selectedService?.serviceId,
             psychologistId: this.psychologist?.psychologistId

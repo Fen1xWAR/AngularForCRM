@@ -10,7 +10,7 @@ import {Service} from "./service.service";
 export interface Visit {
   visitId: string,
   clientId: string,
-  dateTime: Date,
+  scheduleId : string,
   clientNote: string,
   psychologistDescription: string,
   serviceId: string,
@@ -28,6 +28,20 @@ export class VisitService {
   constructor(private http: HttpClient) {
   }
 
+  getVisitById(id: string): Observable<Visit> {
+    return this.http.get<IOperationResult<Visit>>(`${this.apiUrl}/Visit/GetById/${id}`).pipe(
+      map(result => {
+        if (result.successful && result.result) {
+          return result.result;
+        } else {
+          throw new Error(result.errorMessage);
+        }
+      }),
+      catchError(err => {
+        throw new Error(err)
+      })
+    )
+  }
 
   getService(id: string): Observable<Service> {
     return this.http.get<IOperationResult<Service>>(`${this.apiUrl}/Service/GetById/${id}`).pipe(

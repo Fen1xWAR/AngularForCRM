@@ -26,7 +26,7 @@ export class ClientVisitsComponent {
   protected services: { [id: string]: Service } = {};
   protected psychologists: { [id: string]: Contact } = {};
 
-  constructor(protected contactService : ContactService, private userDataService: UserDataService, private visitService: VisitService, private psychologistService: PsychologistService) {
+  constructor(protected contactService: ContactService, private userDataService: UserDataService, private visitService: VisitService, private psychologistService: PsychologistService) {
   }
 
   ngOnInit(): void {
@@ -34,7 +34,6 @@ export class ClientVisitsComponent {
       (visits: Visit[]) => {
         this.visits = visits;
 
-        // Fetch all psychologists and their contacts
         const psychologistIds = [...new Set(visits.map(visit => visit.psychologistId))];
         psychologistIds.forEach(id => {
           this.psychologistService.getPsychologistById(id).subscribe(psychologist => {
