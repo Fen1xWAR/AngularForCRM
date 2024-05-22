@@ -12,7 +12,7 @@ export interface Schedule {
   workDay: Date;
   startTime: Time;
   endTime: Time;
-  visitId?: string
+  isBooked: boolean;
 }
 
 @Injectable({

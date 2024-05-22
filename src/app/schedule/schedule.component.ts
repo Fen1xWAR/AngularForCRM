@@ -2,7 +2,7 @@ import {Component, Input, input} from '@angular/core';
 import {AsyncPipe, DatePipe, KeyValuePipe, NgClass, NgForOf, NgIf, NgStyle} from "@angular/common";
 import {Schedule, ScheduleService} from "../services/schedule.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {ModalComponent} from "../modal/modal.component";
+import {BookingModalComponent} from "../bookingModal/booking-modal.component";
 import {PsychologistFullData} from "../services/psychologist.service";
 import {AuthService} from "../services/auth.service";
 import {UserDataService} from "../services/user-data.service";
@@ -58,7 +58,7 @@ export class ScheduleComponent {
   }
 
   openModal(slot: Schedule): void {
-    const modalRef = this.modalService.open(ModalComponent, {
+    const modalRef = this.modalService.open(BookingModalComponent, {
       backdrop: "static",
       modalDialogClass: 'modal-dialog-centered',
       size: 'lg'

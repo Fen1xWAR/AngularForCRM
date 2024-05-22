@@ -14,7 +14,7 @@ import {switchMap} from "rxjs";
 
 
 @Component({
-  selector: 'app-modal',
+  selector: 'app-bookingModal',
   standalone: true,
   imports: [
     DatePipe,
@@ -23,10 +23,10 @@ import {switchMap} from "rxjs";
     KeyValuePipe,
     FormsModule
   ],
-  templateUrl: './modal.component.html',
-  styleUrl: './modal.component.scss'
+  templateUrl: './booking-modal.component.html',
+  styleUrl: './booking-modal.component.scss'
 })
-export class ModalComponent {
+export class BookingModalComponent {
   slot?: Schedule;
   psychologist?: PsychologistFullData;
   protected selectedService?: Service;
@@ -72,7 +72,7 @@ export class ModalComponent {
       .pipe(
         switchMap(schedule => {
           console.log(schedule)
-          if (schedule.visitId !== null) {
+          if (schedule.isBooked) {
             console.error("ALREADY BOOKED!");
             throw new Error("Schedule already booked");
           }
@@ -97,7 +97,7 @@ export class ModalComponent {
           return this.visitService.createVisit(visit).pipe(
             switchMap(visitId => {
               if (this.slot) {
-                this.slot.visitId = visitId;
+                this.slot.isBooked = true;
                 return this.scheduleService.updateSchedule(this.slot);
               }
               throw new Error("No slot found");

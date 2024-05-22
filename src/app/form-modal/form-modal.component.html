@@ -1,0 +1,19 @@
+<div class="modal-content">
+
+  <div class="modal-body p-3">
+
+        <form class="p-4">
+          <h4 class="text-center">Форма клиента</h4>
+          <ng-container *ngFor="let formQ of this.formContent | keyvalue">
+            <div class="form-group mb-3">
+              <label class="form-label"  [for]="formQ.key">{{formQ.key}}</label>
+              <input disabled class="form-control" [value]="formQ.value"  [id]="formQ.key" type="text">
+            </div>
+          </ng-container>
+
+        </form>
+    <div class="modal-footer d-flex justify-content-center align-items-center">
+      <button type="button" class="btn btn-primary" (click)="activeModal.close()">Закрыть</button>
+    </div>
+  </div>
+</div>

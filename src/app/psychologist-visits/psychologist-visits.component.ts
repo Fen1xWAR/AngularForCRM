@@ -5,9 +5,12 @@ import {UserDataService} from "../services/user-data.service";
 import {Visit, VisitService} from "../services/visit.service";
 import {Contact, ContactService} from "../services/contact.service";
 import {Client, ClientService} from "../services/client.service";
-import {Service} from "../services/service.service";
+import {Service, ServiceService} from "../services/service.service";
 import {Schedule, ScheduleService} from "../services/schedule.service";
-import {Psychologist, PsychologistFullData, PsychologistService} from "../services/psychologist.service";
+import {Psychologist, PsychologistService} from "../services/psychologist.service";
+import {BookingModalComponent} from "../bookingModal/booking-modal.component";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {FormModalComponent} from "../form-modal/form-modal.component";
 
 
 @Component({
@@ -24,14 +27,16 @@ import {Psychologist, PsychologistFullData, PsychologistService} from "../servic
 })
 export class PsychologistVisitsComponent {
   protected visits: Visit[] = [];
+  protected schedules: { [id: string]: Schedule } = {};
   protected services: { [id: string]: Service } = {};
   protected clientsContact: { [id: string]: Contact } = {};
   protected clients: { [id: string]: Client } = {};
   protected currentPsychologist?: Psychologist;
-  protected age?: Contact;
+  protected currentDay: Date = new Date()
 
 
-  constructor(protected contactService: ContactService, private psychologistService: PsychologistService, private scheduleService: ScheduleService, private userDataService: UserDataService, private visitService: VisitService, private clientService: ClientService) {
+  constructor(protected contactService: ContactService, private modalService: NgbModal, private serviceService: ServiceService, private psychologistService: PsychologistService, private scheduleService: ScheduleService, private userDataService: UserDataService, private visitService: VisitService, private clientService: ClientService) {
+
   }
 
   ngOnInit(): void {
@@ -39,35 +44,10 @@ export class PsychologistVisitsComponent {
       if (user.userId != undefined)
         this.psychologistService.getPsychologistByUserId(user.userId).subscribe(psychologist => {
           this.currentPsychologist = psychologist;
-          this.getVisits(new Date())
+          this.getVisits(this.currentDay)
         })
 
     })
-    // this.userDataService.getUserVisits().subscribe(
-    //   (visits: Visit[]) => {
-    //     this.visits = visits;
-    //
-    //
-    //     const clientsIds = [...new Set(visits.map(visit => visit.clientId))];
-    //     clientsIds.forEach(id => {
-    //       this.clientService.getClientById(id).subscribe(client => {
-    //         this.clientService.getClientById(client.clientId).subscribe(currentProblem => {
-    //           this.clients[id] = currentProblem;
-    //         })
-    //
-    //         this.contactService.getContactByUserId(client.userId).subscribe(contact => {
-    //           this.clientsContact[id] = contact;
-    //         });
-    //       });
-    //     });
-    //     const services = [...new Set(visits.map(visit => visit.serviceId))];
-    //     services.forEach(serviceId => {
-    //       this.visitService.getService(serviceId).subscribe(service => {
-    //         this.services[serviceId] = service;
-    //       })
-    //     })
-    //   }
-    // );
 
   }
 
@@ -76,57 +56,87 @@ export class PsychologistVisitsComponent {
     this.visitService.updateVisit(visit);
   }
 
+  getNextDay() {
+    this.currentDay = new Date(this.currentDay.getTime() + 24 * 60 * 60 * 1000);
+    this.getVisits(this.currentDay)
+  }
 
-  getVisits(date: Date): void {
+  getPreviousDay() {
+    this.currentDay = new Date(this.currentDay.getTime() - 24 * 60 * 60 * 1000);
+    this.getVisits(this.currentDay)
+    this.getVisits(this.currentDay)
+  }
+
+  private getVisits(date: Date): void {
+    this.visits = []
+
+
     const month = date.getMonth() + 1;
     const day = date.getDate();
     const dateToUpload = date.getFullYear() + '-' + (month > 9 ? month : "0" + month) + '-' + (day > 9 ? day : "0" + day);
 
     if (this.currentPsychologist) {
-      const visits : Visit[] = []
       this.scheduleService.getByPsychologistIdAndDay(this.currentPsychologist.psychologistId, dateToUpload)
         .subscribe({
           next: schedules => {
 
+            const visits: Visit[] = [];
             schedules.sort((a, b) => a.startTime > b.startTime ? 1 : -1);
-            schedules.map(schedule => {
-              if (schedule.visitId)
-                this.visitService.getVisitById(schedule.visitId).subscribe({
-                    next: visit => {
-                      visits.push(visit);
-                    },
-                    complete:()=>{
-                      const clientsIds = [...new Set(this.visits.map(visit => visit.clientId))];
-                      clientsIds.forEach(id => {
-                              this.clientService.getClientById(id).subscribe(client => {
-                                this.clientService.getClientById(client.clientId).subscribe(currentProblem => {
-                                  this.clients[id] = currentProblem;
-                                })
+            schedules.forEach(schedule => {
+              console.log(schedule)
+              if (schedule.isBooked) {
+                this.schedules[schedule.scheduleId] = schedule;
 
-                                this.contactService.getContactByUserId(client.userId).subscribe(contact => {
-                                  this.clientsContact[id] = contact;
-                                });
-                              });
-                            });
-                      const services = [...new Set(this.visits.map(visit => visit.serviceId))];
-                      services.forEach(serviceId => {
-                              this.visitService.getService(serviceId).subscribe(service => {
-                                this.services[serviceId] = service;
-                              })
-                            })
-                      this.visits = visits;
-                    }
+                this.visitService.getVisitByScheduleId(schedule.scheduleId).subscribe({
+                  next: visit => {
+                    visits.push(visit);
+                  },
+                  complete: () => {
+                    this.createClientsAndServicesDictionaries(visits);
                   }
-                )
-            })
+                });
+              }
+            });
           }
-
-        })
-
+        });
     }
   }
 
+  private createClientsAndServicesDictionaries(visits: Visit[]): void {
+    const clientsIds = [...new Set(visits.map(visit => visit.clientId))];
+    const servicesIds = [...new Set(visits.map(visit => visit.serviceId))];
+
+    clientsIds.forEach(id => {
+      this.clientService.getClientById(id).subscribe(client => {
+        this.clientService.getClientById(client.clientId).subscribe(currentProblem => {
+          this.clients[id] = currentProblem;
+        });
+
+        this.contactService.getContactByUserId(client.userId).subscribe(contact => {
+          this.clientsContact[id] = contact;
+        });
+      });
+    });
+
+    servicesIds.forEach(serviceId => {
+      this.serviceService.getService(serviceId).subscribe(service => {
+        this.services[serviceId] = service;
+      });
+    });
+
+    this.visits = visits;
+  }
+
   protected readonly JSON = JSON;
+  protected readonly Object = Object;
+
+  openModal(formId: string) {
+    const modalRef = this.modalService.open(FormModalComponent, {
+      modalDialogClass: 'modal-dialog-centered',
+      size: 'md'
+    });
+    modalRef.componentInstance.formId = formId;
+  }
 }
 
 

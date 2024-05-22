@@ -5,7 +5,8 @@ import {FormsModule} from "@angular/forms";
 import {Visit, VisitService} from "../services/visit.service";
 import {PsychologistService} from "../services/psychologist.service";
 import {Contact, ContactService} from "../services/contact.service";
-import {Service} from "../services/service.service";
+import {Service, ServiceService} from "../services/service.service";
+import {Schedule, ScheduleService} from "../services/schedule.service";
 
 
 @Component({
@@ -25,8 +26,9 @@ export class ClientVisitsComponent {
   protected visits: Visit[] = [];
   protected services: { [id: string]: Service } = {};
   protected psychologists: { [id: string]: Contact } = {};
+  protected schedules : {[id: string]: Schedule } = {};
 
-  constructor(protected contactService: ContactService, private userDataService: UserDataService, private visitService: VisitService, private psychologistService: PsychologistService) {
+  constructor(protected contactService: ContactService, private scheduleService : ScheduleService, private serviceService: ServiceService, private userDataService: UserDataService, private visitService: VisitService, private psychologistService: PsychologistService) {
   }
 
   ngOnInit(): void {
@@ -45,13 +47,27 @@ export class ClientVisitsComponent {
         });
         const services = [...new Set(visits.map(visit => visit.serviceId))];
         services.forEach(serviceId => {
-          this.visitService.getService(serviceId).subscribe(service => {
+          this.serviceService.getService(serviceId).subscribe(service => {
             this.services[serviceId] = service;
           })
         })
+
+        visits.forEach(visit => {
+          this.scheduleService.getById(visit.scheduleId).subscribe(schedule => {
+                this.schedules[schedule.scheduleId] = schedule;
+          })
+
+        })
+
       },
       (error: any) => {
-        console.error('Error fetching visits:', error);
+      },
+      ()=>{
+        this.visits.sort((a, b) => {
+          const aStartTime = this.schedules[a.scheduleId]?.workDay;
+          const bStartTime = this.schedules[b.scheduleId]?.workDay;
+          return aStartTime?.getDate() > bStartTime?.getDate() ? -1: 1;
+        });
       }
     );
 

@@ -1,7 +1,7 @@
 <ng-container *ngIf="this.visits.length != 0 else elseBlock">
-  <h5 class="mt-3 text-center">Ваши визиты:</h5>
+  <h4 class="mt-3 text-center">Ваши визиты:</h4>
 
-  <div class="accordion" id="visitsAccordion">
+  <div class="mt-3 accordion" id="visitsAccordion">
     <div *ngFor="let visit of this.visits" class="accordion-item">
       <h2 class="accordion-header">
         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -9,6 +9,8 @@
                 [attr.aria-controls]="'colapse'+visit.visitId">
           {{ psychologists[visit.psychologistId]?.lastname }}
           {{ psychologists[visit.psychologistId]?.name?.charAt(0)+"."}} {{" "+psychologists[visit.psychologistId]?.middlename?.charAt(0)+"."}}
+          {{schedules[visit.scheduleId]?.startTime?.toString()?.slice(0,5)}}
+          {{schedules[visit.scheduleId]?.workDay | date : "d MMMM":"ru": "ru"}}
         </button>
       </h2>
       <div id="{{visit.visitId}}" class="accordion-collapse collapse " data-bs-parent="#visitsAccordion">

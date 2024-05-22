@@ -36,8 +36,8 @@
               (click)="openModal(slot)"
               data-toggle="modal"
               data-target="#exampleModal"
-              [ngClass]="{'btn-success':slot.visitId==undefined,'btn-secondary':slot.visitId!=undefined}"
-              [disabled]="slot.visitId != undefined"
+              [ngClass]="{'btn-success':!slot.isBooked,'btn-secondary':slot.isBooked}"
+              [disabled]="slot.isBooked"
               class=" btn">
               {{ slot.startTime.toString().slice(0, 5) }}
               -

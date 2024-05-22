@@ -42,9 +42,8 @@ export class VisitService {
       })
     )
   }
-
-  getService(id: string): Observable<Service> {
-    return this.http.get<IOperationResult<Service>>(`${this.apiUrl}/Service/GetById/${id}`).pipe(
+  getVisitByScheduleId(id: string): Observable<Visit> {
+    return this.http.get<IOperationResult<Visit>>(`${this.apiUrl}/Visit/GetByScheduleId/${id}`).pipe(
       map(result => {
         if (result.successful && result.result) {
           return result.result;
@@ -55,8 +54,9 @@ export class VisitService {
       catchError(err => {
         throw new Error(err)
       })
-    );
+    )
   }
+
 
   updateVisit(visit: Visit): void {
     this.http.post(`${this.apiUrl}/Visit/Update`, visit).subscribe();

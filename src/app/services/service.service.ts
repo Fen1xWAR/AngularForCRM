@@ -35,5 +35,19 @@ export class ServiceService {
       })
     );
   }
+  getService(id: string): Observable<Service> {
+    return this.http.get<IOperationResult<Service>>(`${this.apiUrl}/Service/GetById/${id}`).pipe(
+      map(result => {
+        if (result.successful && result.result) {
+          return result.result;
+        } else {
+          throw new Error(result.errorMessage);
+        }
+      }),
+      catchError(err => {
+        throw new Error(err)
+      })
+    );
+  }
 
 }

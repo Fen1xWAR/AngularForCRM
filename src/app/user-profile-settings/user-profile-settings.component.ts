@@ -17,6 +17,7 @@ import {
   NgbDateStruct,
   NgbInputDatepicker
 } from "@ng-bootstrap/ng-bootstrap";
+import {clientsProblemVariants} from "../variables";
 
 class UserTemplate {
   userDataFull: UserFull;
@@ -45,20 +46,7 @@ class UserTemplate {
 })
 export class UserProfileSettingsComponent {
   protected userDataFull: UserFull | null = null;
-  clientsProblemVariants: Select2Data = [
-    {
-      value: 'Отношения в семье',
-      label: 'Отношения в семье',
-    },
-    {
-      value: 'Проблемы в отношениях  с ребенком ',
-      label: 'Проблемы в отношениях  с ребенком ',
-    },
-    {
-      value: 'Проблемы в коллективе',
-      label: 'Проблемы в коллективе',
-    },
-  ];
+
   currentRoleObj: Client | Psychologist | null = null;
   userContact: Contact | null = null;
   settingsForm: FormGroup = new FormGroup({});
@@ -195,15 +183,8 @@ export class UserProfileSettingsComponent {
         this.profile.ngOnInit()
       },
     )
-    this.userdataService.updateUser(user).subscribe(
+    this.userdataService.updateUser(user).subscribe();
 
-
-    );
-
-    this.userdataService.updateUser(user).subscribe(
-
-
-    );
   }
 
   formCreate(): void {
@@ -220,4 +201,6 @@ export class UserProfileSettingsComponent {
 
     });
   }
+
+  protected readonly clientsProblemVariants = clientsProblemVariants;
 }

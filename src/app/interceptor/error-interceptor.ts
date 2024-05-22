@@ -29,14 +29,7 @@ export class ErrorInterceptor implements HttpInterceptor {
           return EMPTY
         }
         if (error.status === 401) {
-          if (!this.isRefreshing) {
-
-            this.handle401Error(req, next)
-          }
-          this.authService.logout()
-          location.href = '/login'
-          return EMPTY;
-
+            this.handle401Error(req, next).subscribe()
         }
         return EMPTY;
       })
@@ -44,7 +37,6 @@ export class ErrorInterceptor implements HttpInterceptor {
   }
 
   private handle401Error(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    this.isRefreshing = true;
 
     if (this.authService.getTokens()) {
 
@@ -68,10 +60,10 @@ export class ErrorInterceptor implements HttpInterceptor {
           return next.handle(request);
         }),
         finalize(() => {
-          this.isRefreshing = false;
+          location.reload()
 
         }),
-      );
+      )
     }
 
 

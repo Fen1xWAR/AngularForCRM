@@ -1,13 +1,13 @@
 <div class="w-100 container container-xxl  d-flex my-md-4 flex-column">
-  <ng-container *ngIf="this.UserContact != undefined">
+  <ng-container *ngIf="this.UserContact?.name != '' else elseBlock">
 
     <div class="col-auto ms-md-3 border-bottom d-flex  border-gray mb-0  justify-content-between   mh-25">
       <h2 class="pb-1">
         Здравствуйте, {{ this.UserContact?.name }}  {{ " " + this.UserContact?.middlename }}!</h2>
     </div>
     <div class="row  h-100 gap-2 p-md-2">
-      <div  class="d-flex  col-xl-3 col-12  flex-column flex-shrink-0 p-3 rounded-4 border border-black border-1"
-            style="min-width: fit-content">
+      <div class="d-flex  col-xl-3 col-12  flex-column flex-shrink-0 p-3 rounded-4 border border-black border-1"
+           style="min-width: fit-content">
 
 
         <ul class="nav nav-pills flex-column mb-auto ">
@@ -41,7 +41,7 @@
                  [routerLink]="['./visits']">
                 <div class="d-flex  align-items-center">
                   <i class="bi bi-list-stars" style="font-size: 1.5rem"></i>
-                  <h5 class="text-center mx-2 mb-1 ">Мое расписание</h5>
+                  <h5 class="text-center mx-2 mb-1 ">Ваши расписание</h5>
                 </div>
 
               </a>
@@ -53,7 +53,17 @@
                  [routerLink]="['./clients']">
                 <div class="d-flex  align-items-center">
                   <i class="bi bi-list-stars" style="font-size: 1.5rem"></i>
-                  <h5 class="text-center mx-2 mb-1 ">Мои клиенты</h5>
+                  <h5 class="text-center mx-2 mb-1 ">Ваши клиенты</h5>
+                </div>
+
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [ngClass]="{'link-dark': !isActive('clients')}" routerLinkActive="active"
+                 [routerLink]="['./clients']">
+                <div class="d-flex  align-items-center">
+                  <i class="bi bi-list-stars" style="font-size: 1.5rem"></i>
+                  <h5 class="text-center mx-2 mb-1 ">Настроить расписание</h5>
                 </div>
 
               </a>
@@ -75,5 +85,94 @@
       </div>
     </div>
   </ng-container>
+  <ng-template #elseBlock>
+    <div class="align-self-center row align-items-center justify-content-center w-100 h-100">
+      <div class="col-6">
 
+
+        <form class="d-flex flex-column" [formGroup]="startForm" (submit)="upload()">
+          <h4 class="text-center">Давайте познакомимся:</h4>
+          <div class="form-group mb-3">
+            <label class="form-label" for="name">Имя:</label>
+            <input
+              [ngClass]="{'is-invalid': startForm.controls['name'].touched && startForm.controls['name'].invalid}"
+              type="text" formControlName="name" id="name" class="form-control">
+            <div class="invalid-feedback">
+              Введите имя
+            </div>
+          </div>
+          <div class="form-group mb-3">
+            <label class="form-label" for="lastname">Фамилия:</label>
+            <input
+              [ngClass]="{'is-invalid': startForm.controls['lastname'].touched && startForm.controls['lastname'].invalid}"
+              type="text" formControlName="lastname" id="lastname" class="form-control">
+            <div class="invalid-feedback">
+              Введите фамилию
+            </div>
+          </div>
+          <div class="form-group mb-3">
+            <label class="form-label" for="middleName">Отчество:</label>
+            <input
+              [ngClass]="{'is-invalid': startForm.controls['middleName'].touched && startForm.controls['middleName'].invalid}"
+              type="text" formControlName="middleName" id="middleName" class="form-control">
+
+          </div>
+          <div class="form-group mb-3">
+            <label class="form-label" for="dateOfBirth">Дата рождения:</label>
+            <div class="input-group">
+
+              <input
+                [maxDate]="{ year: current.getFullYear(), month: current.getMonth() + 1, day: current.getDate() }"
+                [minDate]="{
+      year: current.getFullYear()-100, month:
+        current.getMonth() + 1, day: current.getDate()
+    }"
+                [ngClass]="{'is-invalid': startForm.controls['dateOfBirth'].touched && startForm.controls['dateOfBirth'].invalid}"
+                formControlName="dateOfBirth"
+                [minlength]="6"
+                class="form-control"
+                placeholder="дд.мм.гггг"
+                name="dp"
+                ngbDatepicker
+                #d="ngbDatepicker"
+                id="dateOfBirth"
+              />
+              <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
+              <div class="invalid-feedback">
+                Введите корректную дату рождения
+              </div>
+            </div>
+          </div>
+          <div class="form-group mb-3">
+            <label class="form-label" for="phoneNumber">Номер телефона (+7):</label>
+            <input
+              [ngClass]="{'is-invalid': startForm.controls['phoneNumber'].touched && startForm.controls['phoneNumber'].invalid}"
+              type="tel" formControlName="phoneNumber" id="phoneNumber" class="form-control">
+            <div class="invalid-feedback">
+              Введите номер телефона
+            </div>
+          </div>
+          <ng-container *ngIf="this.UserData?.role == 'Client'">
+            <div class="form-group mb-3">
+              <label for="currentProblem" class="form-label">Текущая проблема:</label>
+              <select2 style="width: 100% " formControlName="currentProblem"
+                       [placeholder]="'Выберите из списка:'" [multiple]="true" [styleMode]="'material'"
+                       [data]="clientsProblemVariants" id="currentProblem"></select2>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="this.UserData?.role == 'Psychologist'">
+            <div class="form-group mb-3">
+              <label for="about" class="form-label">О вас:</label>
+              <textarea id="about" style="resize: none" formControlName="about" class=" form-control" rows="10"
+                        placeholder="Расскажите о себе"></textarea>
+            </div>
+
+          </ng-container>
+          <button class="btn btn-primary align-self-center mt-3" style="width: fit-content" type="submit"
+                  [disabled]="!startForm.valid">Продолжить
+          </button>
+        </form>
+      </div>
+    </div>
+  </ng-template>
 </div>
