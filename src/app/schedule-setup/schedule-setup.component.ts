@@ -124,7 +124,7 @@ export class ScheduleSetupComponent {
     console.log("copyToNextWeek");
     const currentWeek = this.dates
     const nextWeek = this.calendarService.getWeekDays(this.currentOffset + 1)
-    for (let i = 0; i < nextWeek.length; i++) {
+    for (let i = 0; i < nextWeek.length-2; i++) {
       console.log(nextWeek[i])
       const slots = this.loadSlots(currentWeek[i]).subscribe(slots=>{
         slots.forEach(slot => {
@@ -144,7 +144,7 @@ export class ScheduleSetupComponent {
     const slots = this.slots
     const dates = this.calendarService.getWeekDays(this.currentOffset)
     console.log(dates)
-    for (let i = 0; i < dates.length; i++) {
+    for (let i = 0; i < dates.length-2; i++) {
       if (this.selectedDate != dates[i]) {
         slots.forEach((slot: Schedule) => {
           this.scheduleService.createSchedule({

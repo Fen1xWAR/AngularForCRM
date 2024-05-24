@@ -29,7 +29,7 @@ export class AuthInterceptor implements HttpInterceptor {
         },
       });
     } else {
-      this.authService.refreshTokens();
+      // location.hash = '/login';
       if (!this.isExcludeRoutes(this.router.url)) {
         return next.handle(request);
       }

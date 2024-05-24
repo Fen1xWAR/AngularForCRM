@@ -139,19 +139,16 @@ export class AuthService {
   }
 
   public setTokens(tokens: Tokens): void {
-    const expiryJWT = new Date(Date.now());
-    expiryJWT.setMinutes(expiryJWT.getMinutes() + 30);
-    console.log(expiryJWT)
+    const expiry = new Date(Date.now());
+    expiry.setDate(expiry.getDate() + 7);
     const options = {
-      expires: expiryJWT,
+      expires: expiry,
       path: '/',
       httpOnly: true,
       sameSite: 'Strict' as SameSite,
     }
+
     this.cookieService.set("jwtToken", tokens.jwtToken, options);
-    const expiryRefresh = new Date(Date.now());
-    expiryRefresh.setDate(expiryRefresh.getDate() + 7);
-    options.expires = expiryRefresh
     this.cookieService.set('refreshToken', JSON.stringify(tokens.refreshToken), options);
     // const expiryDate = new Date();
     // expiryDate.setDate(expiryDate.getDate() + 7); // Set expiration to 7 days from now

@@ -32,7 +32,7 @@ export class ErrorInterceptor implements HttpInterceptor {
             this.handle401Error(req, next).subscribe()
           else
             return EMPTY
-          location.href = '/login'
+          // location.href = '/login'
         }
         return EMPTY;
       })
@@ -41,11 +41,12 @@ export class ErrorInterceptor implements HttpInterceptor {
 
   private handle401Error(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.isRefreshing = true
+    console.log("REFRESH TOKEN");
     if (this.authService.getTokens()) {
       this.authService.refreshTokens().subscribe(
         tokens => {
           this.authService.setTokens(tokens);
-          console.log("REFRESH TOKEN");
+
           console.log(tokens);
           request = request.clone({
             setHeaders: {
@@ -81,8 +82,7 @@ export class ErrorInterceptor implements HttpInterceptor {
       //   }),
       // ).subscribe()
     }
-
-
+    this.router.navigate(['/login']);
     return EMPTY
 
   }
