@@ -51,6 +51,7 @@ export class AuthService {
   }
 
   public encrypt(password: string): string {
+    console.log(CryptoJS.SHA256(password).toString());
     return CryptoJS.SHA256(password).toString();
   }
 
@@ -100,7 +101,6 @@ export class AuthService {
   }
 
   register(user: UserRegModel): Observable<Tokens> {
-    user.password = this.encrypt(user.password)
 
     return this.http.post<IOperationResult<Tokens>>(`${this.apiUrl}/Register`, user).pipe(
       map(result => {

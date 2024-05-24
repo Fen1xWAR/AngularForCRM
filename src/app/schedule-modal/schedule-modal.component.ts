@@ -38,9 +38,11 @@ export class ScheduleModalComponent {
         startTime: formData.startTime + ':00',
         endTime: formData.endTime+':00',
         isBooked: false
+      }).subscribe(()=>{
+        this.activeModal.close()
+        location.reload()
       })
-      this.activeModal.close()
-      location.reload()
+
     }
 
   }

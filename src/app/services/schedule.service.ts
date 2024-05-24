@@ -63,6 +63,6 @@ export class ScheduleService {
   }
 
   createSchedule(schedule: Partial<Schedule>) {
-    return this.http.put(`${this.apiUrl}/Insert`, schedule).subscribe()
+    return this.http.put(`${this.apiUrl}/Insert`, schedule)
   }
 }

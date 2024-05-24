@@ -89,7 +89,7 @@ export class BookingModalComponent {
           const visit: Partial<Visit> = {
             clientId: client.clientId,
             scheduleId: this.slot?.scheduleId,
-            clientNote: this.visitCreationForm.value[0],
+            clientNote: this.visitCreationForm.value.clientDescription,
             serviceId: this.selectedService?.serviceId,
             psychologistId: this.psychologist?.psychologistId
           };
