@@ -1,6 +1,6 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, EMPTY, Observable, throwError} from 'rxjs';
+import {BehaviorSubject, EMPTY, Observable} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 import * as CryptoJS from 'crypto-js';
 import {CookieService, SameSite} from "ngx-cookie-service";
@@ -41,16 +41,19 @@ export class AuthService {
   private apiUrl = 'https://localhost:7002/api/User';
   private isLoginIn$$ = new BehaviorSubject<boolean>(false);
   isLoginIn$ = this.isLoginIn$$.asObservable();
+
   constructor(private http: HttpClient, private cookieService: CookieService) {
     this.setLoginIn(!!this.getJwtToken());
   }
-  public setLoginIn(value: boolean){
+
+  public setLoginIn(value: boolean) {
     this.isLoginIn$$.next(value);
   }
 
   public encrypt(password: string): string {
     return CryptoJS.SHA256(password).toString();
   }
+
   login(user: UserAuth): Observable<Tokens> {
 
     user.deviceId = this.getRefreshToken()?.deviceId;
@@ -61,7 +64,7 @@ export class AuthService {
           const tokens = result.result;
           this.setTokens(tokens);
           this.setLoginIn(true)
-          console.log( this.isLoginIn$)
+          console.log(this.isLoginIn$)
           return tokens;
         } else {
           throw new Error(result.errorMessage);
@@ -129,48 +132,69 @@ export class AuthService {
   logout(): void {
     console.log('loggingOut')
     this.setLoginIn(false)
-    this.cookieService.delete("tokens")
-    location.href='/';
+    this.cookieService.delete("jwtToken")
+    setTimeout(()=>location.href='/', 200)
+
 
   }
 
-  private setTokens(tokens: Tokens): void {
-    const expiryDate = new Date();
-    expiryDate.setDate(expiryDate.getDate() + 7); // Set expiration to 7 days from now
-
+  public setTokens(tokens: Tokens): void {
+    const expiryJWT = new Date(Date.now());
+    expiryJWT.setMinutes(expiryJWT.getMinutes() + 30);
+    console.log(expiryJWT)
     const options = {
-      expires: expiryDate,
+      expires: expiryJWT,
       path: '/',
       httpOnly: true,
       sameSite: 'Strict' as SameSite,
-    };
-    this.cookieService.set('tokens', JSON.stringify(tokens), options);
-    // localStorage.setItem('tokens', JSON.stringify(tokens));
-  }
-  getTokens(): Tokens | null {
-    const tokensJson = this.cookieService.get('tokens');
-    // console.log(tokensJson);
-    // const tokensJson = localStorage.getItem('tokens');
-    if (tokensJson) {
-      return JSON.parse(tokensJson);
-    } else {
-      return null;
     }
+    this.cookieService.set("jwtToken", tokens.jwtToken, options);
+    const expiryRefresh = new Date(Date.now());
+    expiryRefresh.setDate(expiryRefresh.getDate() + 7);
+    options.expires = expiryRefresh
+    this.cookieService.set('refreshToken', JSON.stringify(tokens.refreshToken), options);
+    // const expiryDate = new Date();
+    // expiryDate.setDate(expiryDate.getDate() + 7); // Set expiration to 7 days from now
+    //
+    // const options = {
+    //   expires: expiryDate,
+    //   path: '/',
+    //   httpOnly: true,
+    //   sameSite: 'Strict' as SameSite,
+    // };
+    // this.cookieService.set('tokens', JSON.stringify(tokens), options);
+    // // localStorage.setItem('tokens', JSON.stringify(tokens));
+  }
+
+  getTokens(): Tokens | null {
+    const jwt = this.getJwtToken()
+    const refreshToken = this.getRefreshToken()
+    if (jwt != null && refreshToken != null)
+      return {
+        jwtToken: jwt,
+        refreshToken: refreshToken,
+      }
+    return null
   }
 
   getJwtToken(): string | null {
-    const tokens = this.getTokens();
-    if (tokens) {
-      return tokens.jwtToken;
+    const token = this.cookieService.get('jwtToken');
+    // const tokens = this.getTokens();
+    if (token) {
+      return token
     } else {
       return null;
     }
   }
 
   getRefreshToken(): RefreshToken | null {
-    const tokens = this.getTokens();
-    if (tokens) {
-      return tokens.refreshToken;
+    const token = this.cookieService.get('refreshToken');
+    if (token) {
+      try {
+        return JSON.parse(token)
+      } catch {
+        return null;
+      }
     } else {
       return null;
     }

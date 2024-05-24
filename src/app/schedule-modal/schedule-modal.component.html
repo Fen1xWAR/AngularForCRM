@@ -1,0 +1,47 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title">Создание слота</h4>
+  </div>
+  <div class="modal-body p-3">
+
+    <form [formGroup]="scheduleForm"  class="p-4">
+      <div class="form-group mb-3">
+        <label class="form-label" for="dateOfBirth">Дата:</label>
+        <div class="input-group">
+
+          <input
+            [maxDate]="{ year: current.year+10, month: current.month, day: current.day }"
+            [minDate]="{
+      year: current.year-10, month: current.month, day: current.day
+    }"
+
+
+            class="form-control"
+            formControlName="workDay"
+            placeholder="дд.мм.гггг"
+            name="dp"
+            ngbDatepicker
+            #d="ngbDatepicker"
+            id="dateOfBirth"
+          />
+          <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
+          <div class="invalid-feedback">
+            Введите корректную дату рождения
+          </div>
+        </div>
+      </div>
+      <div class="form-group mb-3">
+        <label class="form-label">Дата начала:</label>
+        <input class="form-control" formControlName="startTime" type="time">
+      </div>
+      <div class="form-group mb-3">
+        <label class="form-label">Дата окончания:</label>
+        <input class="form-control"  formControlName="endTime" type="time">
+      </div>
+    </form>
+    <div class="modal-footer d-flex justify-content-center align-items-center">
+      <button type="button" class="btn btn-secondary" (click)="activeModal.close()">Закрыть</button>
+      <button type="button" class="btn btn-primary" (click)="createSlot()">Сохранить</button>
+    </div>
+  </div>
+</div>

@@ -64,9 +64,11 @@ export class ClientVisitsComponent {
       },
       ()=>{
         this.visits.sort((a, b) => {
-          const aStartTime = this.schedules[a.scheduleId]?.workDay;
-          const bStartTime = this.schedules[b.scheduleId]?.workDay;
-          return aStartTime?.getDate() > bStartTime?.getDate() ? -1: 1;
+          let aStartTime = this.schedules[a.scheduleId]?.workDay;
+          let bStartTime = this.schedules[b.scheduleId]?.workDay;
+          aStartTime = aStartTime as Date
+          bStartTime = bStartTime as Date
+          return aStartTime?.getDate()  > bStartTime?.getDate() ? -1: 1;
         });
       }
     );

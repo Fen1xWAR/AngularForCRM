@@ -8,8 +8,7 @@ import {Client, ClientService} from "../services/client.service";
 import {Service, ServiceService} from "../services/service.service";
 import {Schedule, ScheduleService} from "../services/schedule.service";
 import {Psychologist, PsychologistService} from "../services/psychologist.service";
-import {BookingModalComponent} from "../bookingModal/booking-modal.component";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbDatepicker, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {FormModalComponent} from "../form-modal/form-modal.component";
 
 
@@ -20,7 +19,8 @@ import {FormModalComponent} from "../form-modal/form-modal.component";
     DatePipe,
     FormsModule,
     NgForOf,
-    NgIf
+    NgIf,
+    NgbDatepicker
   ],
   templateUrl: './psychologist-visits.component.html',
   styleUrl: './psychologist-visits.component.scss'
@@ -69,7 +69,8 @@ export class PsychologistVisitsComponent {
 
   private getVisits(date: Date): void {
     this.visits = []
-
+    this.clients = {}
+    this.services = {}
 
     const month = date.getMonth() + 1;
     const day = date.getDate();

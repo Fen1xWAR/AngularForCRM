@@ -9,7 +9,7 @@ import {catchError, map} from "rxjs/operators";
 export interface Schedule {
   scheduleId: string;
   psychologistId: string;
-  workDay: Date;
+  workDay: Date | string;
   startTime: Time | string;
   endTime: Time | string;
   isBooked: boolean;
@@ -28,7 +28,9 @@ export class ScheduleService {
   updateSchedule(Schedule: Schedule) {
     return this.http.post(`${this.apiUrl}/Update`, Schedule)
   }
-
+  remove(id : string) {
+    return this.http.delete(`${this.apiUrl}/Delete/${id}`);
+  }
   getById(id: string) : Observable<Schedule>{
     return this.http.get<IOperationResult<Schedule>>(`${this.apiUrl}/GetById/${id}`).pipe(
       map(result=>{
@@ -58,5 +60,9 @@ export class ScheduleService {
             throw new Error(err)
           })
         )
+  }
+
+  createSchedule(schedule: Partial<Schedule>) {
+    return this.http.put(`${this.apiUrl}/Insert`, schedule).subscribe()
   }
 }

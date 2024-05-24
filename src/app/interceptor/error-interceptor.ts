@@ -1,9 +1,8 @@
-import {HttpEvent, HttpHandler, HttpInterceptor, HttpInterceptorFn, HttpRequest} from '@angular/common/http';
+import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import {catchError, finalize} from "rxjs/operators";
 import {EMPTY, Observable, switchMap, throwError} from "rxjs";
 import {Injectable} from "@angular/core";
 import {Router} from "@angular/router";
-import {ToastAlertsComponent} from "../toast-alerts/toast-alerts.component";
 import {ToastService} from "../services/Toast/toast-service";
 import {AuthService} from "../services/auth.service";
 
@@ -32,7 +31,8 @@ export class ErrorInterceptor implements HttpInterceptor {
           if (!this.isRefreshing)
             this.handle401Error(req, next).subscribe()
           else
-            location.href = '/login'
+            return EMPTY
+          location.href = '/login'
         }
         return EMPTY;
       })
@@ -42,36 +42,48 @@ export class ErrorInterceptor implements HttpInterceptor {
   private handle401Error(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.isRefreshing = true
     if (this.authService.getTokens()) {
-
-
-      return this.authService.refreshTokens().pipe(
-        switchMap(() => {
-
-          const newJwtToken = this.authService.getJwtToken();
-          // console.log(newJwtToken)
-          if (newJwtToken) {
-            request = request.clone({
-              setHeaders: {
-                Authorization: `Bearer ${newJwtToken}`,
-              },
-            });
-            this.isRefreshing = false
-          } else {
-            this.authService.logout();
-            this.router.navigate(['/login']);
-          }
-
+      this.authService.refreshTokens().subscribe(
+        tokens => {
+          this.authService.setTokens(tokens);
+          console.log("REFRESH TOKEN");
+          console.log(tokens);
+          request = request.clone({
+            setHeaders: {
+              Authorization: `Bearer ${tokens.jwtToken}`,
+            },
+          });
+          this.isRefreshing = false
           return next.handle(request);
-        }),
-        finalize(() => {
-          location.reload()
 
-        }),
-      )
+        })
+      //  this.authService.refreshTokens().pipe(
+      //   switchMap(() => {
+      //
+      //     const newJwtToken = this.authService.getJwtToken();
+      //     console.log(newJwtToken)
+      //     if (newJwtToken) {
+      //       request = request.clone({
+      //         setHeaders: {
+      //           Authorization: `Bearer ${newJwtToken}`,
+      //         },
+      //       });
+      //       this.isRefreshing = false
+      //     } else {
+      //       // this.authService.logout();
+      //       // this.router.navigate(['/login']);
+      //     }
+      //
+      //     return next.handle(request);
+      //   }),
+      //   finalize(() => {
+      //     location.reload()
+      //
+      //   }),
+      // ).subscribe()
     }
 
 
-    return next.handle(request);
+    return EMPTY
 
   }
 

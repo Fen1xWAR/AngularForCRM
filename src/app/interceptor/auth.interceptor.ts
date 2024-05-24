@@ -17,16 +17,11 @@ export class AuthInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    // if(this.isExcludeRoutes( this.router.url)){
-    //   if(this.authService.getJwtToken())
-    //   return next.handle(request);
-    // }
     if (this.isExcludedUrl(request.url)) {
       return next.handle(request);
     }
 
     const jwtToken = this.authService.getJwtToken();
-
     if (jwtToken) {
       request = request.clone({
         setHeaders: {
