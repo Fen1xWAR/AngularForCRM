@@ -93,15 +93,8 @@ export class AuthService {
           this.setLoginIn(true)
           return tokens;
         } else {
-          this.logout();
           throw new Error(result.errorMessage);
         }
-      }),
-      catchError(error => {
-        console.log("АШИБКА ДИСКОВОДА Б")
-        this.logout()
-        const errorMessage = error.error.errorMessage;
-        throw new Error(error);
       })
     );
   }

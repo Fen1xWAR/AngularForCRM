@@ -17,7 +17,6 @@ export class ErrorInterceptor implements HttpInterceptor {
     return next.handle(req).pipe(
       catchError((error) => {
         if (error.status === 0 || error.status === 500) {
-          // Handle CONNECTION REFUSED error
           console.error('CONNECTION REFUSED');
           this.router.navigate(['/error']);
           return EMPTY;
@@ -54,9 +53,13 @@ export class ErrorInterceptor implements HttpInterceptor {
             },
           });
           this.isRefreshing = false
+          location.reload()
           return next.handle(request);
 
-        })
+        },
+        finalize(()=>{
+          location.reload()
+        }))
       //  this.authService.refreshTokens().pipe(
       //   switchMap(() => {
       //
@@ -82,7 +85,7 @@ export class ErrorInterceptor implements HttpInterceptor {
       //   }),
       // ).subscribe()
     }
-    this.router.navigate(['/login']);
+
     return EMPTY
 
   }
