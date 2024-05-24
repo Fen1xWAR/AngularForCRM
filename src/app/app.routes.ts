@@ -14,6 +14,8 @@ import {ServerErrorComponent} from "./server-error/server-error.component";
 import {PsychologistsComponent} from "./psychologists/psychologists.component";
 import {PsychologistProfileComponent} from "./psychologist-profile/psychologist-profile.component";
 import {RegistrationComponent} from "./registration/registration.component";
+import {ScheduleComponent} from "./schedule/schedule.component";
+import {ScheduleSetupComponent} from "./schedule-setup/schedule-setup.component";
 
 export const routes: Routes = [
   {path: '', component: HomeComponent, title: "Главная"},
@@ -34,6 +36,7 @@ export const routes: Routes = [
         canActivate: [RoleGuardService],
         data: {expectedRole: "Psychologist"}
       },
+      {path: 'schedule', component: ScheduleSetupComponent, canActivate: [RoleGuardService],data: {expectedRole: "Psychologist"}},
       {path: "settings", component: UserProfileSettingsComponent}
 
     ]

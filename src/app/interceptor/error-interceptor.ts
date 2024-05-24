@@ -29,7 +29,10 @@ export class ErrorInterceptor implements HttpInterceptor {
           return EMPTY
         }
         if (error.status === 401) {
+          if (!this.isRefreshing)
             this.handle401Error(req, next).subscribe()
+          else
+            location.href = '/login'
         }
         return EMPTY;
       })
@@ -37,7 +40,7 @@ export class ErrorInterceptor implements HttpInterceptor {
   }
 
   private handle401Error(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
+    this.isRefreshing = true
     if (this.authService.getTokens()) {
 
 
@@ -45,13 +48,14 @@ export class ErrorInterceptor implements HttpInterceptor {
         switchMap(() => {
 
           const newJwtToken = this.authService.getJwtToken();
-          console.log(newJwtToken)
+          // console.log(newJwtToken)
           if (newJwtToken) {
             request = request.clone({
               setHeaders: {
                 Authorization: `Bearer ${newJwtToken}`,
               },
             });
+            this.isRefreshing = false
           } else {
             this.authService.logout();
             this.router.navigate(['/login']);

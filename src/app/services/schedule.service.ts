@@ -10,8 +10,8 @@ export interface Schedule {
   scheduleId: string;
   psychologistId: string;
   workDay: Date;
-  startTime: Time;
-  endTime: Time;
+  startTime: Time | string;
+  endTime: Time | string;
   isBooked: boolean;
 }
 

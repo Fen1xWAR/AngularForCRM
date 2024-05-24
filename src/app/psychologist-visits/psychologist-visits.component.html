@@ -2,13 +2,13 @@
   <div class="row text-white   justify-content-between align-items-center ">
     <div class="col-1 d-flex align-items-center justify-content-center bg-primary rounded-3">
       <button (click)="getPreviousDay()" class="btn bg-primary"><i
-        style="color:white; font-size: 1.1em; font-weight: bold" class="bi bi-chevron-left"></i></button>
+        style="color:black; font-size: 1.1em; font-weight: bold" class="bi bi-chevron-left"></i></button>
     </div>
     <div class="col-9 text-center bg-primary rounded-3   ">
       <h4>{{ this.currentDay | date : 'd MMMM': "ru": "ru" }}</h4>
     </div>
     <div class="col-1 d-flex align-items-center justify-content-center  bg-primary rounded-3">
-      <button (click)="getNextDay()" class="btn "><i style="color:white; font-size: 1.1em;  font-weight: bold"
+      <button (click)="getNextDay()" class="btn "><i style="color:black; font-size: 1.1em;  font-weight: bold"
                                                      class="bi bi-chevron-right"></i></button>
     </div>
   </div>
