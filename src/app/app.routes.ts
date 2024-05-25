@@ -16,6 +16,7 @@ import {PsychologistProfileComponent} from "./psychologist-profile/psychologist-
 import {RegistrationComponent} from "./registration/registration.component";
 import {ScheduleComponent} from "./schedule/schedule.component";
 import {ScheduleSetupComponent} from "./schedule-setup/schedule-setup.component";
+import {ForPsychologistComponent} from "./for-psychologist/for-psychologist.component";
 
 export const routes: Routes = [
   {path: '', component: HomeComponent, title: "Главная"},
@@ -44,6 +45,11 @@ export const routes: Routes = [
   {
     path: 'forclient', component: PsychologistsComponent,
     title: "Клиентам",
+  },
+  {
+    path: 'forpsychologist', component: ForPsychologistComponent,
+    title:"Психологу"
+
   },
   {
     path: 'psychologist/:id', component: PsychologistProfileComponent,

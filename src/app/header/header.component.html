@@ -2,7 +2,7 @@
 <nav   class="fs-5 navbar rounded-3 p-3   navbar-light  navbar-expand-lg   " [ngClass]="{'navbar-dark': router.url=='/' && !IsBg,'bg-light': IsBg} ">
   <div class="container-fluid flex-lg-nowrap jus flex-wrap text-white">
 
-    <a class="navbar-brand fs-4" href="/">Psychologist</a>
+    <a class="navbar-brand fs-2 text-primary fst-italic" href="/">Psychologist</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon" (click)="toggleBg()"></span>
@@ -16,7 +16,7 @@
           <a class="nav-link" href="/forclient">Клиенту</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Психологу</a>
+          <a class="nav-link" href="/forpsychologist">Психологу</a>
         </li>
 
         <li class="nav-item">
