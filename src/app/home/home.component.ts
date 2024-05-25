@@ -12,4 +12,5 @@ import {NgOptimizedImage} from "@angular/common";
 })
 export class HomeComponent {
 
+  protected readonly location = location;
 }

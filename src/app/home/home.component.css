@@ -1,3 +1,15 @@
+#banner {
+  background: url("/assets/home_bg.png") no-repeat center center;
+  background-size: cover;
+}
+#banner p:first-child {
+  font-size: calc(2em + 20px) !important;
+}
 
+@media (max-width: 768px) {
+  #banner {
+    background-size: auto;
+  }
+}
 
 /*# sourceMappingURL=home.component.css.map */

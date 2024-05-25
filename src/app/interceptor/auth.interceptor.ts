@@ -22,6 +22,7 @@ export class AuthInterceptor implements HttpInterceptor {
     }
 
     const jwtToken = this.authService.getJwtToken();
+
     if (jwtToken) {
       request = request.clone({
         setHeaders: {
@@ -29,10 +30,11 @@ export class AuthInterceptor implements HttpInterceptor {
         },
       });
     } else {
-      // location.hash = '/login';
+
       if (!this.isExcludeRoutes(this.router.url)) {
         return next.handle(request);
       }
+      location.hash = '/login';
 
     }
 

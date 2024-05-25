@@ -5,7 +5,7 @@ import {FooterComponent} from "./footer/footer.component";
 import {AsyncPipe, NgClass, NgIf} from "@angular/common";
 import {LoaderComponent} from "./loader/loader.component";
 import {LoaderService} from "./services/loader.service";
-import {RouterOutlet} from "@angular/router";
+import {Router, RouterOutlet} from "@angular/router";
 import {ToastAlertsComponent} from "./toast-alerts/toast-alerts.component";
 
 
@@ -17,6 +17,6 @@ import {ToastAlertsComponent} from "./toast-alerts/toast-alerts.component";
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  constructor(protected loaderService: LoaderService) {}
+  constructor(protected loaderService: LoaderService,protected router: Router) {}
 
 }

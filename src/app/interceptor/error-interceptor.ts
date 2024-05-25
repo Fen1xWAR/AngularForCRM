@@ -85,6 +85,9 @@ export class ErrorInterceptor implements HttpInterceptor {
       //   }),
       // ).subscribe()
     }
+    else{
+      location.href='/login'
+    }
 
     return EMPTY
 

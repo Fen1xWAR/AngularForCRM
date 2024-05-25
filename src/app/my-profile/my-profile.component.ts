@@ -47,7 +47,12 @@ export class MyProfileComponent {
   }
 
   ngOnInit() {
-    this.userDataService.getUserData().subscribe(data => this.UserData = data);
+    this.userDataService.getUserData().subscribe(data => {
+      if(data == undefined){
+        location.href='/'
+      }
+      this.UserData = data });
+
     this.userDataService.getUserContact().subscribe(data => this.UserContact = data);
     this.startForm = new FormGroup({
       name: new FormControl('', [Validators.required, Validators.pattern("^[A-zА-яЁё]+$")]),

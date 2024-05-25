@@ -4,7 +4,7 @@
     <h5 style="text-align: start" class="card-title">{{ psychologist?.lastName }} {{ psychologist?.name }} {{ psychologist?.middlename }}</h5>
     <h6 class="card-subtitle mb-2 text-muted">{{"Возраст: " +psychologist?.age }} </h6>
     <div class="card-text d-flex justify-content-center flex-column flex-grow-1">
-      <p  class="overflow-hidden" >{{ this.sliceDescription(psychologist?.about) }}</p>
+      <p  class="text-start overflow-hidden" >{{ this.sliceDescription(psychologist?.about) }}</p>
     </div>
 
     <button style="width: fit-content " routerLink="/psychologist/{{psychologist?.psychologistId}}" class="btn btn-primary">Перейти</button>

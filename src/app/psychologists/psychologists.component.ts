@@ -33,7 +33,6 @@ export class PsychologistsComponent {
   }
 
   loadPsychologists(): void {
-    console.log("getting list")
     const newPsychologists: PsychologistFullData[] = [];
     this.psychologistService.getPsychologists(this.currentPage, this.pageSize).subscribe({
       next: (psychologists: Psychologist[]) => {

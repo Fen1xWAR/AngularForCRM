@@ -1,13 +1,13 @@
-<!-- Header -->
-<nav class="navbar navbar-expand-lg bd-navbar navbar-light">
-  <div class="container-xxl flex-lg-nowrap flex-wrap">
 
-    <a class="navbar-brand" href="/">Psychologist</a>
+<nav   class="fs-5 navbar rounded-3 p-3   navbar-light  navbar-expand-lg   " [ngClass]="{'navbar-dark': router.url=='/' && !IsBg,'bg-light': IsBg} ">
+  <div class="container-fluid flex-lg-nowrap jus flex-wrap text-white">
+
+    <a class="navbar-brand fs-4" href="/">Psychologist</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+      <span class="navbar-toggler-icon" (click)="toggleBg()"></span>
     </button>
-    <div class="collapse px-sm-4 navbar-collapse justify-content-between" id="navbarSupportedContent">
+    <div class="collapse  navbar-collapse rounded-3  justify-content-between"  id="navbarSupportedContent">
       <ul class="navbar-nav mx-auto">
         <li class="nav-item">
           <a class="nav-link" href="/">Главная <span class="sr-only"></span></a>
@@ -28,8 +28,8 @@
 
         <ng-container *ngIf="this.authService.isLoginIn$  | async; else elseBlock">
           <li class="nav-item dropdown">
-            <a class="nav-link bg-primary p-2 text-white rounded-2 dropdown-toggle" href="#" role="button"
-               style="max-width: 180px" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link bg-primary p-2 text-white rounded-2 dropdown-toggle fs-6" href="#" role="button"
+               style="max-width: 10em" data-bs-toggle="dropdown" aria-expanded="false">
               Личный кабинет
             </a>
             <ul class="dropdown-menu">
