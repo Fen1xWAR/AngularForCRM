@@ -134,7 +134,7 @@ export class ScheduleSetupComponent {
             startTime: slot.startTime,
             endTime: slot.endTime,
             isBooked: false
-          })
+          }).subscribe()
         })
       })
     }
@@ -145,15 +145,18 @@ export class ScheduleSetupComponent {
     const dates = this.calendarService.getWeekDays(this.currentOffset)
     console.log(dates)
     for (let i = 0; i < dates.length; i++) {
+
       if (this.selectedDate != dates[i]) {
+
         slots.forEach((slot: Schedule) => {
+
           this.scheduleService.createSchedule({
             psychologistId: slot.psychologistId,
             workDay: `${this.dates[i].getFullYear()}-${dates[i].getMonth() > 9 ? dates[i].getMonth() + 1 : "0" + (dates[i].getMonth() + 1)}-${dates[i].getDate() > 9 ? dates[i].getDate() : "0" + dates[i].getDate()}`,
             startTime: slot.startTime,
             endTime: slot.endTime,
             isBooked: false
-          })
+          }).subscribe()
         })
       }
 
