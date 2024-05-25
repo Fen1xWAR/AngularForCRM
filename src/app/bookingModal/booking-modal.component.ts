@@ -44,7 +44,7 @@ export class BookingModalComponent {
         clientDescription: new FormControl('')
       });
       this.serviceRepository.getServicesByPsychologistId(this.psychologist?.psychologistId).subscribe(services => {
-        services.sort((a: Service, b: Service) => a.serviceName.localeCompare(b.serviceName));
+        services.sort((a: Service, b: Service) => a.servicePrice > b.servicePrice ? 1: -1);
         services.forEach(service => {
           this.services[service.serviceId] = service;
         })
