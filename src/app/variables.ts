@@ -13,4 +13,4 @@ export const  clientsProblemVariants: Select2Data = [
     label: 'Проблемы в коллективе',
   },
 ];
-export const apiUrl = 'https://localhost:7002/api'
+export const apiUrl = 'http://94.143.46.65:5001/api'
