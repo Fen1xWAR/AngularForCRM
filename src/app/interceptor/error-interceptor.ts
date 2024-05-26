@@ -29,9 +29,12 @@ export class ErrorInterceptor implements HttpInterceptor {
         if (error.status === 401) {
           if (!this.isRefreshing)
             this.handle401Error(req, next).subscribe()
-          else
+          else {
+            location.href = '/login'
             return EMPTY
-          location.href = '/login'
+
+          }
+
         }
         return EMPTY;
       })
@@ -54,10 +57,7 @@ export class ErrorInterceptor implements HttpInterceptor {
           location.reload()
           return next.handle(request);
 
-        },
-        finalize(() => {
-          location.reload()
-        }))
+        })
 
     } else {
       location.href = '/login'

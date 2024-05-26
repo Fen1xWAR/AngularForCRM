@@ -57,8 +57,8 @@ export const routes: Routes = [
 
   },
   {
-    path: 'psychologist/:id', component: PsychologistProfileComponent,
-  },
+    path: 'psychologist/:id', component: PsychologistProfileComponent, title: "Профиль психолога"
+  } ,
   {
     path: 'error', component: ServerErrorComponent,
     title: "Ошибка",

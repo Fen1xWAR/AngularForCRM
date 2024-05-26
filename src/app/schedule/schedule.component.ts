@@ -125,6 +125,5 @@ export class ScheduleComponent {
     this.getWeekDays(this.currentOffset);
   }
 
-  protected readonly blur = blur;
   protected readonly location = location;
 }

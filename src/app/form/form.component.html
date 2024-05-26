@@ -1,51 +1,67 @@
 <ng-container *ngIf="this.userForm?.formContent == '' &&!showForm">
-  <h4 class="mt-3 text-center">Вы еще не заполняли свою форму, хотите сделать это сейчас?</h4>
-  <button (click)="showForm = true" class="btn btn-primary">Заполнить форму</button>
+  <div class="d-flex flex-column justify-content-center align-items-center">
+    <h4 class="mt-3 text-center">Вы еще не заполняли свою форму, хотите сделать это сейчас?</h4>
+    <button style="width: fit-content" (click)="showForm = true" class="btn mt-3 btn-primary">Заполнить форму</button>
+  </div>
+
 </ng-container>
 <ng-container *ngIf="this.userForm?.formContent != '' && !showForm">
-  <h4 class=" mt-3 text-center">Ваша форма:</h4>
-  <form>
-    <div class=" form-group">
-      <label for="q1"> Был ли опыт психотерапии?</label>
-      <input type="text" class="form-control" value="{{userFormContent?.q1}}" disabled name="q1">
+  <div class="d-flex flex-column justify-content-center ">
+    <h4 class=" mt-3 text-center">Ваша форма:</h4>
+    <form>
+      <div class=" form-group">
+        <label for="q1"> Был ли опыт психотерапии?</label>
+        <input type="text" class="form-control" value="{{userFormContent?.q1}}" disabled name="q1">
 
-    </div>
-    <div class="mt-3 form-group">
-      <label for="q2">Какое у вас отношение к психотерапии :</label>
-      <input type="text" class="form-control" value="{{userFormContent?.q2}}" disabled
-             name="q2">
-    </div>
-    <button class="mt-3 btn btn-primary" (click)="this.showForm = true">Хотите заполнить форму заново?</button>
-  </form>
+      </div>
+      <div class="mt-3 form-group">
+        <label for="q2">Какое у вас отношение к психотерапии :</label>
+        <input type="text" class="form-control" value="{{userFormContent?.q2}}" disabled
+               name="q2">
+      </div>
+      <div class="d-flex justify-content-center">
+
+        <button class="mt-3  btn btn-primary" (click)="this.showForm = true">Хотите заполнить форму заново?</button>
+      </div>
+    </form>
+  </div>
+
 
 
 </ng-container>
 <ng-container *ngIf="showForm">
 
+  <div class="d-flex flex-column justify-content-center">
 
-<h5 class=" mt-3 text-center">Пожалуйста заполните форму:</h5>
-<form [formGroup]="this.formGroup"  (ngSubmit)="updateForm(this.userForm?.formId,form.value)"
-      #form="ngForm">
-  <div class=" form-group">
-    <label for="q1">Question1:</label>
-    <input type="text" formControlName="q1" class="form-control"
-           [ngClass]="{'is-invalid': formGroup.controls['q1'].touched && formGroup.controls['q1'].invalid}" id="q1"
-           name="q1">
-    <div class="invalid-feedback">
-      Заполните поле
-    </div>
+
+    <h4 class=" mt-3 text-center">Пожалуйста заполните форму:</h4>
+    <form [formGroup]="this.formGroup" (ngSubmit)="updateForm(this.userForm?.formId,form.value)"
+          #form="ngForm">
+      <div class=" form-group">
+        <label for="q1">Был ли опыт психотерапии?</label>
+        <input type="text" formControlName="q1" class="form-control"
+               [ngClass]="{'is-invalid': formGroup.controls['q1'].touched && formGroup.controls['q1'].invalid}" id="q1"
+               name="q1">
+        <div class="invalid-feedback">
+          Заполните поле
+        </div>
+      </div>
+      <div class="mt-3 form-group">
+        <label for="q2">Какое у вас отношение к психотерапии :</label>
+        <input type="text" formControlName="q2" class="form-control"
+               [ngClass]="{'is-invalid': formGroup.controls['q2'].touched && formGroup.controls['q2'].invalid}" id="q2"
+               name="q2">
+        <div class="mt-3 invalid-feedback">
+          Заполните поле
+        </div>
+      </div>
+      <div class="d-flex justify-content-center">
+        <button type="submit" style="width: fit-content" class="mt-3 btn btn-primary ">Сохранить</button>
+      </div>
+
+    </form>
   </div>
-  <div class="mt-3 form-group">
-    <label for="q2">Question1:</label>
-    <input type="text" formControlName="q2" class="form-control"
-           [ngClass]="{'is-invalid': formGroup.controls['q2'].touched && formGroup.controls['q2'].invalid}" id="q2"
-           name="q2">
-    <div class="mt-3 invalid-feedback">
-      Заполните поле
-    </div>
-  </div>
-  <button type="submit" style="width: fit-content" class="mt-3 btn btn-primary">Сохранить</button>
-</form>
+
 </ng-container>
 
 
