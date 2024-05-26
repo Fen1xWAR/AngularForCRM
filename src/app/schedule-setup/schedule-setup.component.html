@@ -10,7 +10,7 @@
         <button style=" max-width: fit-content; min-width: 3.5em "
                 [title]="day |date:'dd MMM':'ru' : 'ru' "
                 class="btn col-md-2  col mw-4"
-                (click)="this.getSlotsByDay(day)"
+                (click)="this.selectDay(day)"
                 [ngClass]="{'btn-light': !(day.getDate() == this.selectedDate?.getDate() && day.getMonth() == this.selectedDate.getMonth()),'btn-primary': day.getDate() == this.selectedDate?.getDate() && day.getMonth() == this.selectedDate.getMonth()}"
                 *ngFor="let day of this.dates">
           {{ day |date:'dd MMM': 'ru' : "ru" }} <br>

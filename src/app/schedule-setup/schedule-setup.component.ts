@@ -31,7 +31,7 @@ export class ScheduleSetupComponent {
   protected editableSlot?: Schedule
   protected selectedDate: Date = new Date()
 
-  constructor(private scheduleService: ScheduleService, private modalService: NgbModal ,private calendarService: CalendarService, private psychologistService: PsychologistService, private userdataService: UserDataService) {
+  constructor(private scheduleService: ScheduleService, private modalService: NgbModal, private calendarService: CalendarService, private psychologistService: PsychologistService, private userdataService: UserDataService) {
   }
 
   ngOnInit() {
@@ -49,35 +49,32 @@ export class ScheduleSetupComponent {
     )
 
   }
-
+  selectDay(day : Date){
+    this.selectedDate = day;
+    this.getSlotsByDay(day)
+}
   getWeek() {
     this.dates = this.calendarService.getWeekDays(this.currentOffset)
-    const now = new Date(Date.now());
-    now.setMilliseconds(0)
-    let selectedIndex = this.dates.findIndex(date => date >= now)
-    if (selectedIndex >= 0) {
-      this.selectedDate = this.dates[selectedIndex]
-      this.getSlotsByDay(this.selectedDate)
-    } else {
-      this.slots = []
-    }
+
+    this.getSlotsByDay(this.selectedDate)
+
   }
 
   previousWeek() {
     this.currentOffset--;
     this.getWeek()
+    this.selectedDate = this.dates[6]
   }
 
   nextWeek() {
     this.currentOffset++;
     this.getWeek()
+    this.selectedDate = this.dates[0]
   }
 
   getSlotsByDay(day: Date) {
     this.loadSlots(day).subscribe(slots => {
-      this.selectedDate = day;
       this.slots = slots;
-
       this.slots.sort((a, b) => a.startTime > b.startTime ? 1 : -1)
     })
 
@@ -91,13 +88,14 @@ export class ScheduleSetupComponent {
     return EMPTY
   }
 
-  createSlot(){
+  createSlot() {
     const modalRef = this.modalService.open(ScheduleModalComponent, {
       modalDialogClass: 'modal-dialog-centered',
       size: 'md'
     });
     modalRef.componentInstance.psychologistId = this.currentPsychologist?.psychologistId
   }
+
   editSlot(schedule: Schedule) {
     this.editableSlot = schedule
   }
@@ -123,7 +121,7 @@ export class ScheduleSetupComponent {
     const currentWeek = this.dates
     const nextWeek = this.calendarService.getWeekDays(this.currentOffset + 1)
     for (let i = 0; i < nextWeek.length; i++) {
-      const slots = this.loadSlots(currentWeek[i]).subscribe(slots=>{
+      const slots = this.loadSlots(currentWeek[i]).subscribe(slots => {
         slots.forEach(slot => {
           this.scheduleService.createSchedule({
             psychologistId: slot.psychologistId,
