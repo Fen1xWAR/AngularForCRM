@@ -66,4 +66,6 @@ export class PsychologistsComponent {
       this.loadPsychologists();
     }
   }
+
+  protected readonly location = location;
 }
