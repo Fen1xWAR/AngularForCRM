@@ -39,7 +39,7 @@ export class PsychologistsComponent {
         const contactRequests = psychologists.map(psychologist =>
           this.contactService.getContactByUserId(psychologist.userId).pipe(
             map(contact => ({
-              psychologistId: psychologist.psychologistId, // get psychologistId here
+              psychologistId: psychologist.psychologistId,
               name: contact.name,
               lastName: contact.lastname,
               middlename: contact.middlename,
@@ -53,7 +53,6 @@ export class PsychologistsComponent {
           next: (contacts: PsychologistFullData[]) => {
             newPsychologists.push(...contacts);
             this.psychologists = [...this.psychologists, ...newPsychologists];
-            console.log("complete psychologists", this.psychologists);
             this.haseNextPage = newPsychologists.length === this.pageSize
           }
         });

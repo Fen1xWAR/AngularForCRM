@@ -11,6 +11,7 @@ import {ClientService} from "../services/client.service";
 import {catchError} from "rxjs/operators";
 import {error} from "@angular/compiler-cli/src/transformers/util";
 import {switchMap} from "rxjs";
+import {ToastService} from "../services/Toast/toast-service";
 
 
 @Component({
@@ -34,7 +35,7 @@ export class BookingModalComponent {
   protected readonly Object = Object;
   visitCreationForm: FormGroup = new FormGroup({});
 
-  constructor(public activeModal: NgbActiveModal,private clientService : ClientService, private userDataService : UserDataService, private serviceRepository: ServiceService, private scheduleService: ScheduleService, private visitService: VisitService) {
+  constructor(public activeModal: NgbActiveModal, private clientService: ClientService, private toastService: ToastService, private userDataService: UserDataService, private serviceRepository: ServiceService, private scheduleService: ScheduleService, private visitService: VisitService) {
 
   }
 
@@ -44,7 +45,7 @@ export class BookingModalComponent {
         clientDescription: new FormControl('')
       });
       this.serviceRepository.getServicesByPsychologistId(this.psychologist?.psychologistId).subscribe(services => {
-        services.sort((a: Service, b: Service) => a.servicePrice > b.servicePrice ? 1: -1);
+        services.sort((a: Service, b: Service) => a.servicePrice > b.servicePrice ? 1 : -1);
         services.forEach(service => {
           this.services[service.serviceId] = service;
         })
@@ -62,26 +63,21 @@ export class BookingModalComponent {
   }
 
   createVisit() {
-    console.log("!!!");
     if (!this.slot) {
-      console.error("No slot found!");
       return;
     }
 
     this.scheduleService.getById(this.slot.scheduleId)
       .pipe(
         switchMap(schedule => {
-          console.log(schedule)
           if (schedule.isBooked) {
-            console.error("ALREADY BOOKED!");
-            throw new Error("Schedule already booked");
+            this.toastService.show('Выбранное время уже заронированно', {classname: 'bg-danger text-light'})
           }
           return this.userDataService.getUserData();
         }),
         switchMap(userData => {
           if (!userData.userId) {
-            console.error("No user data found!");
-            throw new Error("No user data found");
+            throw new Error();
           }
           return this.clientService.getClientByUserId(userData.userId);
         }),
@@ -100,14 +96,16 @@ export class BookingModalComponent {
                 this.slot.isBooked = true;
                 return this.scheduleService.updateSchedule(this.slot);
               }
-              throw new Error("No slot found");
+              throw new Error();
             })
           );
         })
       )
       .subscribe(
-        () => {console.log("Visit created and schedule updated successfully"); this.activeModal.close();},
-        error => console.error("Error:", error.message)
+        () => {
+          this.toastService.show('Запись успешно выполнена', {classname: 'bg-success text-light'});
+          this.activeModal.close();
+        },
       );
   }
 

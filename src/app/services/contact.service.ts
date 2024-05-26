@@ -3,6 +3,7 @@ import {Observable, retry} from "rxjs";
 import {catchError, map} from "rxjs/operators";
 import {IOperationResult} from "./user-data.service";
 import {HttpClient} from "@angular/common/http";
+import {apiUrl} from "../variables";
 
 export interface Contact {
   contactId?: string;
@@ -18,7 +19,6 @@ export interface Contact {
 })
 export class ContactService {
 
-  private apiUrl = 'https://localhost:7002/api';
 
   constructor(private http: HttpClient) {
   }
@@ -35,7 +35,7 @@ export class ContactService {
   }
 
   getContactByUserId(id: string) {
-    return this.http.get<IOperationResult<Contact>>(`${this.apiUrl}/Contact/GetByUserId/${id}`).pipe(
+    return this.http.get<IOperationResult<Contact>>(`${apiUrl}/Contact/GetByUserId/${id}`).pipe(
       map(result => {
         if (result.successful && result.result) {
           return result.result;
@@ -50,7 +50,7 @@ export class ContactService {
   }
 
   loadContactById(id: string): Observable<Contact> {
-    return this.http.get<IOperationResult<Contact>>(`${this.apiUrl}/Contact/GetById/${id}`).pipe(
+    return this.http.get<IOperationResult<Contact>>(`${apiUrl}/Contact/GetById/${id}`).pipe(
       map(result => {
         if (result.successful && result.result) {
           return result.result;
@@ -67,6 +67,6 @@ export class ContactService {
   }
 
   updateContact(contact: Partial<Contact>): Observable<any> {
-    return this.http.post(`${this.apiUrl}/Contact/Update`, contact)
+    return this.http.post(`${apiUrl}/Contact/Update`, contact)
   }
 }

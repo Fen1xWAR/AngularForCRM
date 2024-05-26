@@ -116,16 +116,13 @@ export class ScheduleSetupComponent {
       schedule.endTime = endTime.value + (endTime.value.split(':').length == 2 ? ":00" : "")
       this.scheduleService.updateSchedule(schedule).subscribe();
       this.editableSlot = undefined;
-      console.log('save slot ' + schedule.scheduleId)
     }
   }
 
   copyToNextWeek() {
-    console.log("copyToNextWeek");
     const currentWeek = this.dates
     const nextWeek = this.calendarService.getWeekDays(this.currentOffset + 1)
     for (let i = 0; i < nextWeek.length; i++) {
-      console.log(nextWeek[i])
       const slots = this.loadSlots(currentWeek[i]).subscribe(slots=>{
         slots.forEach(slot => {
           this.scheduleService.createSchedule({
@@ -143,7 +140,6 @@ export class ScheduleSetupComponent {
   copyToCurrentWeek() {
     const slots = this.slots
     const dates = this.calendarService.getWeekDays(this.currentOffset)
-    console.log(dates)
     for (let i = 0; i < dates.length; i++) {
 
       if (this.selectedDate != dates[i]) {

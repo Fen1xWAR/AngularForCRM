@@ -13,7 +13,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
   private excludedUrls: string[] = ['/login', '/register', '/refreshToken'];
 
-  private excludeRoutes: string[] = ['/forclient', '/psychologist'];
+  private excludeRoutes: string[] = ['/forpsychologist','/forclient', '/psychologist'];
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
@@ -31,7 +31,7 @@ export class AuthInterceptor implements HttpInterceptor {
       });
     } else {
 
-      if (!this.isExcludeRoutes(this.router.url)) {
+      if (this.isExcludeRoutes(this.router.url)) {
         return next.handle(request);
       }
       location.hash = '/login';

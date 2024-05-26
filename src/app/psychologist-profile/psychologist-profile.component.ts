@@ -36,12 +36,10 @@ export class PsychologistProfileComponent {
   ngOnInit() {
     this.psychologistId = this.route.snapshot.params['id'];
     if (this.psychologistId != undefined) {
-      console.log("psychologistId ", this.psychologistId);
       this.psychologistService.getPsychologistById(this.psychologistId).subscribe(
         psychologist => {
           this.contactService.getContactByUserId(psychologist.userId).subscribe(
             contact => {
-              console.log(contact)
               this.psychologist = {
                 psychologistId: this.psychologistId ?? "",
                 name: contact.name,

@@ -82,7 +82,7 @@ export class MyProfileComponent {
         this.clientService.getClientByUserId(this.UserData.userId).subscribe(data => {
           data.currentProblem = JSON.stringify(formData.currentProblem);
           this.clientService.updateClient(data).subscribe((response) => {
-            console.log("Client updated successfully");
+
           });
         })
 
@@ -91,7 +91,6 @@ export class MyProfileComponent {
         this.psychologistService.getPsychologistByUserId(this.UserData.userId).subscribe(data => {
           data.about = formData.about;
           this.psychologistService.updatePsychologist(data).subscribe((response) => {
-            console.log("Psychologist updated successfully");
           });
         })
 

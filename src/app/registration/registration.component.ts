@@ -38,7 +38,6 @@ export class RegistrationComponent {
 
   register() {
     if(this.registrationForm.valid){
-      console.log(this.registrationForm.value);
       this.authService.register({
         email: this.registrationForm.value['email'],
         password: this.authService.encrypt(this.registrationForm.value['password']),

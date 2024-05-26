@@ -3,11 +3,11 @@ import {HttpClient} from "@angular/common/http";
 import {EMPTY, Observable} from "rxjs";
 import {IOperationResult} from "./auth.service";
 import {catchError, map} from "rxjs/operators";
+import {apiUrl} from "../variables";
 export interface Psychologist {
   psychologistId: string;
   userId: string;
   about : string
-  // Add other fields if necessary
 }
 
 export interface PsychologistFullData {
@@ -24,12 +24,11 @@ export interface PsychologistFullData {
 })
 export class PsychologistService {
 
-  private apiUrl = 'https://localhost:7002/api';
 
   constructor(private http: HttpClient) { }
 
   getPsychologists(pageNumber: number, pageSize: number): Observable<Psychologist[]> {
-    const url = `${this.apiUrl}/Psychologist/Get?page=${pageNumber}&limit=${pageSize}`;
+    const url = `${apiUrl}/Psychologist/Get?page=${pageNumber}&limit=${pageSize}`;
     return this.http.get<IOperationResult<Psychologist[]>>(url).pipe(
       map (result=>{
         if (result.successful && result.result){
@@ -43,7 +42,7 @@ export class PsychologistService {
   }
 
   getPsychologistById(id: string): Observable<Psychologist> {
-    return this.http.get<IOperationResult<Psychologist>>(`${this.apiUrl}/Psychologist/GetById/${id}`).pipe(
+    return this.http.get<IOperationResult<Psychologist>>(`${apiUrl}/Psychologist/GetById/${id}`).pipe(
       map(result => {
         if (result.successful && result.result) {
           return result.result;
@@ -58,7 +57,7 @@ export class PsychologistService {
   }
 
   getPsychologistByUserId(id: string): Observable<Psychologist> {
-    return this.http.get<IOperationResult<Psychologist>>(`${this.apiUrl}/Psychologist/GetByUserId/${id}`).pipe(
+    return this.http.get<IOperationResult<Psychologist>>(`${apiUrl}/Psychologist/GetByUserId/${id}`).pipe(
       map(result => {
         if (result.successful && result.result) {
           return result.result;
@@ -73,6 +72,6 @@ export class PsychologistService {
 
   }
   updatePsychologist(psyhologist : Psychologist){
-    return this.http.post(`${this.apiUrl}/Psychologist/Update`, psyhologist).pipe()
+    return this.http.post(`${apiUrl}/Psychologist/Update`, psyhologist).pipe()
   }
 }

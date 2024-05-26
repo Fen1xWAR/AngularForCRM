@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {catchError, map} from "rxjs/operators";
 import {IOperationResult} from "./auth.service";
+import {apiUrl} from "../variables";
 
 export interface Service {
   serviceId: string;
@@ -17,9 +18,8 @@ export interface Service {
 export class ServiceService {
 
   constructor(private http: HttpClient) { }
-  private apiUrl = "https://localhost:7002/api";
   getServicesByPsychologistId(id : string): Observable<Service[]> {
-    return this.http.get<IOperationResult<Service[]>>(`${this.apiUrl}/Service/GetByPsychologistId/${id}`).pipe(
+    return this.http.get<IOperationResult<Service[]>>(`${apiUrl}/Service/GetByPsychologistId/${id}`).pipe(
       map (result => {
         if(result.successful && result.result){
 
@@ -36,7 +36,7 @@ export class ServiceService {
     );
   }
   getService(id: string): Observable<Service> {
-    return this.http.get<IOperationResult<Service>>(`${this.apiUrl}/Service/GetById/${id}`).pipe(
+    return this.http.get<IOperationResult<Service>>(`${apiUrl}/Service/GetById/${id}`).pipe(
       map(result => {
         if (result.successful && result.result) {
           return result.result;

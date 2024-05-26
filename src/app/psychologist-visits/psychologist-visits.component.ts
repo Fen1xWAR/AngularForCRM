@@ -84,7 +84,6 @@ export class PsychologistVisitsComponent {
             const visits: Visit[] = [];
             schedules.sort((a, b) => a.startTime > b.startTime ? 1 : -1);
             schedules.forEach(schedule => {
-              console.log(schedule)
               if (schedule.isBooked) {
                 this.schedules[schedule.scheduleId] = schedule;
 

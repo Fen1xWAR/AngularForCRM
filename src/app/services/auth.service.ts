@@ -2,8 +2,9 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, EMPTY, Observable} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
-import * as CryptoJS from 'crypto-js';
+import CryptoJS from 'crypto-js';
 import {CookieService, SameSite} from "ngx-cookie-service";
+import {apiUrl} from "../variables";
 
 export interface IOperationResult<T> {
   successful: boolean;
@@ -38,7 +39,6 @@ interface RefreshToken {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'https://localhost:7002/api/User';
   private isLoginIn$$ = new BehaviorSubject<boolean>(false);
   isLoginIn$ = this.isLoginIn$$.asObservable();
 
@@ -51,7 +51,6 @@ export class AuthService {
   }
 
   public encrypt(password: string): string {
-    console.log(CryptoJS.SHA256(password).toString());
     return CryptoJS.SHA256(password).toString();
   }
 
@@ -59,13 +58,12 @@ export class AuthService {
 
     user.deviceId = this.getRefreshToken()?.deviceId;
     user.password = this.encrypt(user.password)
-    return this.http.post<IOperationResult<Tokens>>(`${this.apiUrl}/login`, user).pipe(
+    return this.http.post<IOperationResult<Tokens>>(`${apiUrl}/User/login`, user).pipe(
       map(result => {
         if (result.successful && result.result != undefined) {
           const tokens = result.result;
           this.setTokens(tokens);
           this.setLoginIn(true)
-          console.log(this.isLoginIn$)
           return tokens;
         } else {
           throw new Error(result.errorMessage);
@@ -84,12 +82,10 @@ export class AuthService {
     if (tokens == null) {
       return EMPTY;
     }
-    return this.http.post<IOperationResult<Tokens>>(`${this.apiUrl}/RefreshToken`, tokens).pipe(
+    return this.http.post<IOperationResult<Tokens>>(`${apiUrl}/User/RefreshToken`, tokens).pipe(
       map(result => {
-        console.log(result);
         if (result.successful && result.result != undefined) {
           const tokens = result.result;
-          console.log(tokens)
           this.setTokens(tokens);
           this.setLoginIn(true)
           return tokens;
@@ -102,7 +98,7 @@ export class AuthService {
 
   register(user: UserRegModel): Observable<Tokens> {
 
-    return this.http.post<IOperationResult<Tokens>>(`${this.apiUrl}/Register`, user).pipe(
+    return this.http.post<IOperationResult<Tokens>>(`${apiUrl}/User/Register`, user).pipe(
       map(result => {
         if (result.successful && result.result != undefined) {
           const tokens = result.result;
@@ -123,7 +119,6 @@ export class AuthService {
 
 
   logout(): void {
-    console.log('loggingOut')
     this.setLoginIn(false)
     this.cookieService.delete("jwtToken")
     setTimeout(()=>location.href='/', 200)
@@ -143,17 +138,7 @@ export class AuthService {
 
     this.cookieService.set("jwtToken", tokens.jwtToken, options);
     this.cookieService.set('refreshToken', JSON.stringify(tokens.refreshToken), options);
-    // const expiryDate = new Date();
-    // expiryDate.setDate(expiryDate.getDate() + 7); // Set expiration to 7 days from now
-    //
-    // const options = {
-    //   expires: expiryDate,
-    //   path: '/',
-    //   httpOnly: true,
-    //   sameSite: 'Strict' as SameSite,
-    // };
-    // this.cookieService.set('tokens', JSON.stringify(tokens), options);
-    // // localStorage.setItem('tokens', JSON.stringify(tokens));
+
   }
 
   getTokens(): Tokens | null {
@@ -169,7 +154,6 @@ export class AuthService {
 
   getJwtToken(): string | null {
     const token = this.cookieService.get('jwtToken');
-    // const tokens = this.getTokens();
     if (token) {
       return token
     } else {

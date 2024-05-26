@@ -67,7 +67,6 @@ export class UserProfileSettingsComponent {
 
   loadUserData(): void {
     this.userdataService.getUserData().pipe(
-      tap(() => console.log('Loading user data')),
       switchMap((userData: UserData) => {
         if (userData.userId !== undefined) {
           return this.loadFullUserInfo(userData.userId);
@@ -126,7 +125,6 @@ export class UserProfileSettingsComponent {
     if (this.userDataFull.role === 'Psychologist') {
 
       const psychologist = this.currentRoleObj as Psychologist;
-      console.log(psychologist);
       about = psychologist.about;
 
     }
@@ -164,17 +162,14 @@ export class UserProfileSettingsComponent {
         const currentObj = this.currentRoleObj as Client;
         currentObj.currentProblem = JSON.stringify(formData.currentProblem);
         this.clientService.updateClient(currentObj).subscribe((response) => {
-          console.log("Client updated successfully");
         });
 
       } else if (this.userDataFull?.role === 'Psychologist') {
         const currentObj = this.currentRoleObj as Psychologist;
         currentObj.about = formData.about;
         this.psychologistService.updatePsychologist(currentObj).subscribe((response) => {
-            console.log("Psychologist updated successfully");
           },
           (error) => {
-            console.error("Error updating psychologist")
           });
       } else throw Error("Сюда дойти не должно было!")
     }

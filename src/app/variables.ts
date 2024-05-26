@@ -13,3 +13,4 @@ export const  clientsProblemVariants: Select2Data = [
     label: 'Проблемы в коллективе',
   },
 ];
+export const apiUrl = 'https://localhost:7002/api'

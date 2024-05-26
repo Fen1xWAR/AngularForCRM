@@ -4,6 +4,7 @@ import {EMPTY, Observable} from "rxjs";
 import {IOperationResult} from "./auth.service";
 import {catchError, map} from "rxjs/operators";
 import {Psychologist} from "./psychologist.service";
+import {apiUrl} from "../variables";
 export interface Client{
   clientId: string;
   formId : string;
@@ -14,11 +15,10 @@ export interface Client{
   providedIn: 'root'
 })
 export class ClientService {
-  private apiUrl = 'https://localhost:7002/api';
 
   constructor(private http: HttpClient) { }
   getClientByUserId(userId: string): Observable<Client> {
-    return this.http.get<IOperationResult<Client>>(`${this.apiUrl}/Client/GetByUserId/${userId}`).pipe(
+    return this.http.get<IOperationResult<Client>>(`${apiUrl}/Client/GetByUserId/${userId}`).pipe(
       map(result => {
         if (result.successful && result.result) {
           return result.result;
@@ -31,7 +31,7 @@ export class ClientService {
     );
   }
   getClientById(id: string): Observable<Client> {
-    return this.http.get<IOperationResult<Client>>(`${this.apiUrl}/Client/GetById/${id}`).pipe(
+    return this.http.get<IOperationResult<Client>>(`${apiUrl}/Client/GetById/${id}`).pipe(
       map(result => {
         if (result.successful && result.result) {
           return result.result;
@@ -45,6 +45,6 @@ export class ClientService {
     );
   }
   updateClient(client : Client): Observable<any> {
-    return this.http.post(`${this.apiUrl}/Client/Update`, client)
+    return this.http.post(`${apiUrl}/Client/Update`, client)
   }
 }
