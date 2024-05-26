@@ -85,7 +85,7 @@ export class ScheduleSetupComponent {
 
   loadSlots(day: Date) {
     if (this.currentPsychologist?.userId) {
-      const dataToUpload = `${day.getFullYear()}-${day.getMonth() > 8 ? day.getMonth() + 1 : "0" + (day.getMonth() + 1)}-${day.getDate() > 8 ? day.getDate() : "0" + day.getDate()}`;
+      const dataToUpload = `${day.getFullYear()}-${day.getMonth() > 9 ? day.getMonth() + 1 : "0" + (day.getMonth() + 1)}-${day.getDate() > 9 ? day.getDate() : "0" + day.getDate()}`;
       return this.scheduleService.getByPsychologistIdAndDay(this.currentPsychologist.psychologistId, dataToUpload)
     }
     return EMPTY
